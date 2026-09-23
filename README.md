@@ -1,5 +1,11 @@
 # FastMCP Platform
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Python 3.12+](https://img.shields.io/badge/python-3.12+-blue.svg)](https://www.python.org/downloads/)
+[![Tests](https://img.shields.io/badge/tests-200%20passing-brightgreen.svg)](tests/)
+[![Offline First](https://img.shields.io/badge/mode-offline%20first-informational.svg)](docs/architecture.md)
+
+
 Production-grade platform hosting **171 MCP servers** built on [FastMCP](https://gofastmcp.com), unified by a shared SDK (`mcp_common`), a routing gateway, and a single-image-per-server deployment story.
 
 ## Layout
