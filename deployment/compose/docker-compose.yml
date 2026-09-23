@@ -28,7 +28,7 @@ services:
       <<: *common-env
       MCP_PORT: "8000"
       MCP_AUTH_TOKEN: ${MCP_AUTH_TOKEN:-}
-      GATEWAY_SERVERS: fetch,filesystem,time,github,postgres,sqlite,redis,mongodb,mysql,slack,discord,jira,linear,notion,brave-search,tavily,openai,anthropic,s3,sentry,cloudflare,datadog,grafana,prometheus,new-relic,pagerduty,stripe,hubspot,sendgrid,twilio,mailchimp,1password,snyk,auth0,okta,gitlab,asana,jenkins,airtable,gemini,vercel,netlify,huggingface,confluence,digitalocean,render,fly-io,gitea,terraform,circleci,gitlab-ci,elasticsearch,vault,mistral
+      GATEWAY_SERVERS: fetch,filesystem,time,github,postgres,sqlite,redis,mongodb,mysql,slack,discord,jira,linear,notion,brave-search,tavily,openai,anthropic,s3,sentry,cloudflare,datadog,grafana,prometheus,new-relic,pagerduty,stripe,hubspot,sendgrid,twilio,mailchimp,1password,snyk,auth0,okta,gitlab,asana,jenkins,airtable,gemini,vercel,netlify,huggingface,confluence,digitalocean,render,fly-io,gitea,terraform,circleci,gitlab-ci,elasticsearch,vault,mistral,bitbucket,cohere,groq,openrouter,replicate,supabase
     depends_on:
       - fetch
       - filesystem
@@ -680,6 +680,86 @@ services:
       MISTRAL_API_KEY: ${MISTRAL_API_KEY:-}
     ports:
       - "8139:8139"
+
+  bitbucket:
+    <<: *common
+    build:
+      <<: *server-build
+      args:
+        SERVER_ID: bitbucket
+    environment:
+      <<: *common-env
+      MCP_PORT: "8003"
+      BITBUCKET_USER: ${BITBUCKET_USER:-}
+      BITBUCKET_APP_PASSWORD: ${BITBUCKET_APP_PASSWORD:-}
+    ports:
+      - "8003:8003"
+
+  cohere:
+    <<: *common
+    build:
+      <<: *server-build
+      args:
+        SERVER_ID: cohere
+    environment:
+      <<: *common-env
+      MCP_PORT: "8140"
+      COHERE_API_KEY: ${COHERE_API_KEY:-}
+    ports:
+      - "8140:8140"
+
+  groq:
+    <<: *common
+    build:
+      <<: *server-build
+      args:
+        SERVER_ID: groq
+    environment:
+      <<: *common-env
+      MCP_PORT: "8141"
+      GROQ_API_KEY: ${GROQ_API_KEY:-}
+    ports:
+      - "8141:8141"
+
+  openrouter:
+    <<: *common
+    build:
+      <<: *server-build
+      args:
+        SERVER_ID: openrouter
+    environment:
+      <<: *common-env
+      MCP_PORT: "8138"
+      OPENROUTER_API_KEY: ${OPENROUTER_API_KEY:-}
+    ports:
+      - "8138:8138"
+
+  replicate:
+    <<: *common
+    build:
+      <<: *server-build
+      args:
+        SERVER_ID: replicate
+    environment:
+      <<: *common-env
+      MCP_PORT: "8137"
+      REPLICATE_API_TOKEN: ${REPLICATE_API_TOKEN:-}
+    ports:
+      - "8137:8137"
+
+  supabase:
+    <<: *common
+    build:
+      <<: *server-build
+      args:
+        SERVER_ID: supabase
+    environment:
+      <<: *common-env
+      MCP_PORT: "8027"
+      SUPABASE_URL: ${SUPABASE_URL:-}
+      SUPABASE_KEY: ${SUPABASE_KEY:-}
+    ports:
+      - "8027:8027"
 
 networks:
   mcp:
