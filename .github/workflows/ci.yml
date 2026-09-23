@@ -79,7 +79,7 @@ jobs:
         server: [fetch, filesystem, time]
     steps:
       - uses: actions/checkout@v7
-      - uses: docker/setup-buildx-action@v3
+      - uses: docker/setup-buildx-action@v4
       - name: Build image for ${{ matrix.server }}
         uses: docker/build-push-action@v7
         with:
