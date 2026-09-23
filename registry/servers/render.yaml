@@ -5,15 +5,16 @@ description: Render services + deploys
 auth:
   type: bearer_token
   env:
-  - RENDER_TOKEN
+  - RENDER_API_KEY
 transport: streamable-http
 port: 8040
 image: yourorg/mcp-render
 version: 0.1.0
 tools:
 - list_services
+- get_service
 - list_deploys
 docs: https://api-docs.render.com/
 maintainers:
 - platform-team
-status: active
+status: planned

@@ -13,7 +13,8 @@ version: 0.1.0
 tools:
 - list_apps
 - list_machines
+- get_machine
 docs: https://fly.io/docs/machines/api/
 maintainers:
 - platform-team
-status: active
+status: planned

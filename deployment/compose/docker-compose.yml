@@ -28,7 +28,7 @@ services:
       <<: *common-env
       MCP_PORT: "8000"
       MCP_AUTH_TOKEN: ${MCP_AUTH_TOKEN:-}
-      GATEWAY_SERVERS: fetch,filesystem,time,github,postgres,sqlite,redis,mongodb,mysql,slack,discord,jira,linear,notion,brave-search,tavily,openai,anthropic,s3,sentry,cloudflare,datadog,grafana,prometheus,new-relic,pagerduty,stripe,hubspot,sendgrid,twilio,mailchimp,1password,snyk,auth0,okta,gitlab,asana,jenkins,airtable,gemini,vercel,netlify,huggingface,confluence,digitalocean,render,fly-io,gitea,terraform,circleci,gitlab-ci,elasticsearch,vault,mistral,bitbucket,cohere,groq,openrouter,replicate,supabase,azure-devops,sourcegraph,codecov,argocd,buildkite,github-actions,ansible,pulumi,drone,teamcity
+      GATEWAY_SERVERS: fetch,filesystem,time,github,postgres,sqlite,redis,mongodb,mysql,slack,discord,jira,linear,notion,brave-search,tavily,openai,anthropic,s3,sentry,cloudflare,datadog,grafana,prometheus,new-relic,pagerduty,stripe,hubspot,sendgrid,twilio,mailchimp,1password,snyk,auth0,okta,gitlab,asana,jenkins,airtable,gemini,vercel,netlify,huggingface,confluence,digitalocean,render,fly-io,gitea,terraform,circleci,gitlab-ci,elasticsearch,vault,mistral,bitbucket,cohere,groq,openrouter,replicate,supabase,azure-devops,sourcegraph,codecov,argocd,buildkite,github-actions,ansible,pulumi,drone,teamcity,linode,hetzner,heroku,railway,modal,together-ai
     depends_on:
       - fetch
       - filesystem
@@ -895,6 +895,85 @@ services:
       TEAMCITY_TOKEN: ${TEAMCITY_TOKEN:-}
     ports:
       - "8058:8058"
+
+  linode:
+    <<: *common
+    build:
+      <<: *server-build
+      args:
+        SERVER_ID: linode
+    environment:
+      <<: *common-env
+      MCP_PORT: "8036"
+      LINODE_TOKEN: ${LINODE_TOKEN:-}
+    ports:
+      - "8036:8036"
+
+  hetzner:
+    <<: *common
+    build:
+      <<: *server-build
+      args:
+        SERVER_ID: hetzner
+    environment:
+      <<: *common-env
+      MCP_PORT: "8037"
+      HETZNER_TOKEN: ${HETZNER_TOKEN:-}
+    ports:
+      - "8037:8037"
+
+  heroku:
+    <<: *common
+    build:
+      <<: *server-build
+      args:
+        SERVER_ID: heroku
+    environment:
+      <<: *common-env
+      MCP_PORT: "8043"
+      HEROKU_API_KEY: ${HEROKU_API_KEY:-}
+    ports:
+      - "8043:8043"
+
+  railway:
+    <<: *common
+    build:
+      <<: *server-build
+      args:
+        SERVER_ID: railway
+    environment:
+      <<: *common-env
+      MCP_PORT: "8042"
+      RAILWAY_TOKEN: ${RAILWAY_TOKEN:-}
+    ports:
+      - "8042:8042"
+
+  modal:
+    <<: *common
+    build:
+      <<: *server-build
+      args:
+        SERVER_ID: modal
+    environment:
+      <<: *common-env
+      MCP_PORT: "8143"
+      MODAL_TOKEN: ${MODAL_TOKEN:-}
+      MODAL_TOKEN_ID: ${MODAL_TOKEN_ID:-}
+    ports:
+      - "8143:8143"
+
+  together-ai:
+    <<: *common
+    build:
+      <<: *server-build
+      args:
+        SERVER_ID: together-ai
+    environment:
+      <<: *common-env
+      MCP_PORT: "8142"
+      TOGETHER_API_KEY: ${TOGETHER_API_KEY:-}
+    ports:
+      - "8142:8142"
 
 networks:
   mcp:

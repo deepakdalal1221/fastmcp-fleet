@@ -13,7 +13,8 @@ version: 0.1.0
 tools:
 - list_sites
 - list_deploys
+- get_site
 docs: https://docs.netlify.com/api/get-started/
 maintainers:
 - platform-team
-status: active
+status: planned

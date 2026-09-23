@@ -19,4 +19,4 @@ tools:
 docs: https://www.jenkins.io/doc/book/using/remote-access-api/
 maintainers:
 - platform-team
-status: active
+status: planned

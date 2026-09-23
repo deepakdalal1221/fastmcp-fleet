@@ -17,4 +17,4 @@ tools:
 docs: https://docs.ansible.com/automation-controller/latest/html/controllerapi/
 maintainers:
 - platform-team
-status: active
+status: planned

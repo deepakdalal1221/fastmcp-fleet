@@ -391,7 +391,7 @@ CATALOGUE: list[Entry] = [
         "DigitalOcean API",
         "bearer_token",
         ["DIGITALOCEAN_TOKEN"],
-        ["list_droplets", "list_volumes", "list_load_balancers"],
+        ["list_droplets", "list_apps", "list_databases"],
         "https://docs.digitalocean.com/reference/api/",
     ),
     Entry(
@@ -431,7 +431,7 @@ CATALOGUE: list[Entry] = [
         "Netlify sites + deploys",
         "bearer_token",
         ["NETLIFY_TOKEN"],
-        ["list_sites", "list_deploys"],
+        ["list_sites", "list_deploys", "get_site"],
         "https://docs.netlify.com/api/get-started/",
     ),
     Entry(
@@ -440,8 +440,8 @@ CATALOGUE: list[Entry] = [
         "cloud",
         "Render services + deploys",
         "bearer_token",
-        ["RENDER_TOKEN"],
-        ["list_services", "list_deploys"],
+        ["RENDER_API_KEY"],
+        ["list_services", "get_service", "list_deploys"],
         "https://api-docs.render.com/",
     ),
     Entry(
@@ -451,7 +451,7 @@ CATALOGUE: list[Entry] = [
         "Fly.io apps + machines",
         "bearer_token",
         ["FLY_API_TOKEN"],
-        ["list_apps", "list_machines"],
+        ["list_apps", "list_machines", "get_machine"],
         "https://fly.io/docs/machines/api/",
     ),
     Entry(
@@ -1412,7 +1412,7 @@ CATALOGUE: list[Entry] = [
         "HF Hub + Inference",
         "bearer_token",
         ["HF_TOKEN"],
-        ["list_models", "inference", "list_datasets"],
+        ["list_models", "get_model", "whoami"],
         "https://huggingface.co/docs/api-inference/",
     ),
     Entry(

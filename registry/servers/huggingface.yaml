@@ -12,9 +12,9 @@ image: yourorg/mcp-huggingface
 version: 0.1.0
 tools:
 - list_models
-- inference
-- list_datasets
+- get_model
+- whoami
 docs: https://huggingface.co/docs/api-inference/
 maintainers:
 - platform-team
-status: active
+status: planned
