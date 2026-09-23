@@ -5,11 +5,10 @@ from typing import Annotated
 
 import httpx
 from fastmcp import FastMCP
-from pydantic import Field
-
+from mcp_common import local_store
 from mcp_common.errors import AuthError, ConfigError, NotFoundError, RateLimitError, UpstreamError
 from mcp_common.http import is_offline, make_client
-from mcp_common import local_store
+from pydantic import Field
 
 _TIMEOUT = 30.0
 
@@ -55,7 +54,9 @@ def register_tools(mcp: FastMCP) -> None:
         engines = []
         for path, info in raw.items():
             if isinstance(info, dict) and info.get("type"):
-                engines.append({"path": path, "type": info.get("type"), "description": info.get("description")})
+                engines.append(
+                    {"path": path, "type": info.get("type"), "description": info.get("description")}
+                )
         return {"engines": engines}
 
     @mcp.tool
@@ -65,7 +66,11 @@ def register_tools(mcp: FastMCP) -> None:
     ) -> dict:
         """List secret keys at a KV v2 path (LIST verb)."""
         p = path.strip("/")
-        url = f"{_base()}/{mount.strip('/')}/metadata/{p}" if p else f"{_base()}/{mount.strip('/')}/metadata"
+        url = (
+            f"{_base()}/{mount.strip('/')}/metadata/{p}"
+            if p
+            else f"{_base()}/{mount.strip('/')}/metadata"
+        )
         async with make_client("vault", timeout=_TIMEOUT) as c:
             r = await c.request("LIST", url, headers=_headers())
             _raise_for(r)
@@ -83,5 +88,9 @@ def register_tools(mcp: FastMCP) -> None:
             r = await c.get(url, headers=_headers())
             _raise_for(r)
             data = r.json()
-        inner = ((data.get("data") or {}).get("data") or {})
-        return {"path": path, "keys": sorted(inner.keys()), "version": ((data.get("data") or {}).get("metadata") or {}).get("version")}
+        inner = (data.get("data") or {}).get("data") or {}
+        return {
+            "path": path,
+            "keys": sorted(inner.keys()),
+            "version": ((data.get("data") or {}).get("metadata") or {}).get("version"),
+        }

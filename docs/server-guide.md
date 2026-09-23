@@ -53,6 +53,7 @@ from typing import Annotated
 from pydantic import Field
 from mcp_common.errors import ValidationError, UpstreamError
 
+
 def register_tools(mcp):
     @mcp.tool
     async def do_thing(

@@ -5,11 +5,10 @@ from typing import Annotated
 
 import httpx
 from fastmcp import FastMCP
-from pydantic import Field
-
+from mcp_common import local_store
 from mcp_common.errors import AuthError, ConfigError, NotFoundError, RateLimitError, UpstreamError
 from mcp_common.http import is_offline, make_client
-from mcp_common import local_store
+from pydantic import Field
 
 _BASE = "https://api.cohere.com/v1"
 _TIMEOUT = 30.0
@@ -23,7 +22,11 @@ def _token() -> str:
 
 
 def _headers() -> dict[str, str]:
-    return {"Authorization": f"Bearer {_token()}", "Content-Type": "application/json", "Accept": "application/json"}
+    return {
+        "Authorization": f"Bearer {_token()}",
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+    }
 
 
 def _raise_for(r: httpx.Response) -> None:
@@ -50,13 +53,23 @@ def register_tools(mcp: FastMCP) -> None:
             r = await c.post(f"{_BASE}/chat", headers=_headers(), json=body)
             _raise_for(r)
             data = r.json()
-        return {"text": data.get("text", ""), "model": model, "finish_reason": data.get("finish_reason"), "tokens": {"input": ((data.get("meta") or {}).get("tokens") or {}).get("input_tokens"), "output": ((data.get("meta") or {}).get("tokens") or {}).get("output_tokens")}}
+        return {
+            "text": data.get("text", ""),
+            "model": model,
+            "finish_reason": data.get("finish_reason"),
+            "tokens": {
+                "input": ((data.get("meta") or {}).get("tokens") or {}).get("input_tokens"),
+                "output": ((data.get("meta") or {}).get("tokens") or {}).get("output_tokens"),
+            },
+        }
 
     @mcp.tool
     async def embed(
         texts: Annotated[list[str], Field(description="one or more texts to embed")],
         model: Annotated[str, Field(description="embedding model")] = "embed-english-v3.0",
-        input_type: Annotated[str, Field(description="search_document | search_query | classification | clustering")] = "search_document",
+        input_type: Annotated[
+            str, Field(description="search_document | search_query | classification | clustering")
+        ] = "search_document",
     ) -> dict:
         """Generate Cohere embeddings."""
         body = {"model": model, "texts": texts, "input_type": input_type}
@@ -80,4 +93,9 @@ def register_tools(mcp: FastMCP) -> None:
             r = await c.post(f"{_BASE}/rerank", headers=_headers(), json=body)
             _raise_for(r)
             data = r.json()
-        return {"results": [{"index": rr.get("index"), "relevance_score": rr.get("relevance_score")} for rr in data.get("results", [])]}
+        return {
+            "results": [
+                {"index": rr.get("index"), "relevance_score": rr.get("relevance_score")}
+                for rr in data.get("results", [])
+            ]
+        }

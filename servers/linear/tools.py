@@ -1,16 +1,11 @@
 from __future__ import annotations
 
-from mcp_common.http import is_offline
-
-from mcp_common import local_store
-
 import os
 from typing import Annotated, Any
 
 import httpx
 from fastmcp import FastMCP
-from pydantic import Field
-
+from mcp_common import local_store
 from mcp_common.errors import (
     AuthError,
     ConfigError,
@@ -18,6 +13,8 @@ from mcp_common.errors import (
     UpstreamError,
     ValidationError,
 )
+from mcp_common.http import is_offline, make_client
+from pydantic import Field
 
 _ENDPOINT = "https://api.linear.app/graphql"
 _MAX_FIRST = 100
@@ -152,14 +149,34 @@ def register_tools(mcp: FastMCP) -> None:
                 return {"issues": []}
             stored = await local_store.list_all("linear", f"issues:{team_id}")
             issues = [row["value"] for row in stored][:limit]
-            return {"issues": [{"identifier": i["identifier"], "title": i["title"], "state": i["state"]["name"]} for i in issues]}
+            return {
+                "issues": [
+                    {
+                        "identifier": i["identifier"],
+                        "title": i["title"],
+                        "state": i["state"]["name"],
+                    }
+                    for i in issues
+                ]
+            }
         query = "query Issues($first:Int){issues(first:$first){nodes{id identifier title state{name} team{id}}}}"
         async with make_client("linear", timeout=_TIMEOUT) as c:
-            r = await c.post(_BASE, headers=_headers(), json={"query": query, "variables": {"first": limit}})
+            r = await c.post(
+                _BASE, headers=_headers(), json={"query": query, "variables": {"first": limit}}
+            )
             _raise_for(r)
             j = r.json()
         nodes = (((j.get("data") or {}).get("issues") or {}).get("nodes")) or []
-        return {"issues": [{"identifier": n["identifier"], "title": n["title"], "state": (n.get("state") or {}).get("name")} for n in nodes]}
+        return {
+            "issues": [
+                {
+                    "identifier": n["identifier"],
+                    "title": n["title"],
+                    "state": (n.get("state") or {}).get("name"),
+                }
+                for n in nodes
+            ]
+        }
 
     @mcp.tool
     async def create_issue(
@@ -172,17 +189,36 @@ def register_tools(mcp: FastMCP) -> None:
             col = f"issues:{team_id}"
             n = local_store.next_id("linear", col)
             iid = f"OFF-{n:03d}"
-            issue = {"id": iid, "identifier": iid, "title": title, "description": description, "state": {"name": "Todo"}, "team": {"id": team_id}}
+            issue = {
+                "id": iid,
+                "identifier": iid,
+                "title": title,
+                "description": description,
+                "state": {"name": "Todo"},
+                "team": {"id": team_id},
+            }
             await local_store.put("linear", col, iid, issue)
-            return {"id": iid, "identifier": iid, "title": title, "url": f"https://linear.app/offline/issue/{iid}"}
+            return {
+                "id": iid,
+                "identifier": iid,
+                "title": title,
+                "url": f"https://linear.app/offline/issue/{iid}",
+            }
         query = "mutation IssueCreate($input: IssueCreateInput!){issueCreate(input:$input){issue{id identifier title url state{name}}}}"
         variables = {"input": {"teamId": team_id, "title": title, "description": description}}
         async with make_client("linear", timeout=_TIMEOUT) as c:
-            r = await c.post(_BASE, headers=_headers(), json={"query": query, "variables": variables})
+            r = await c.post(
+                _BASE, headers=_headers(), json={"query": query, "variables": variables}
+            )
             _raise_for(r)
             j = r.json()
         i = (((j.get("data") or {}).get("issueCreate") or {}).get("issue")) or {}
-        return {"id": i.get("id"), "identifier": i.get("identifier"), "title": i.get("title"), "url": i.get("url")}
+        return {
+            "id": i.get("id"),
+            "identifier": i.get("identifier"),
+            "title": i.get("title"),
+            "url": i.get("url"),
+        }
 
     @mcp.tool
     async def list_teams(

@@ -5,8 +5,6 @@ from typing import Annotated
 
 import httpx
 from fastmcp import FastMCP
-from pydantic import Field
-
 from mcp_common.errors import (
     AuthError,
     ConfigError,
@@ -14,6 +12,8 @@ from mcp_common.errors import (
     RateLimitError,
     UpstreamError,
 )
+from mcp_common.http import make_client
+from pydantic import Field
 
 _BASE = "https://api.vercel.com"
 _TIMEOUT = 30.0
@@ -97,12 +97,16 @@ def register_tools(mcp: FastMCP) -> None:
 
     @mcp.tool
     async def get_deployment(
-        deployment_id: Annotated[str, Field(min_length=1, description="Vercel deployment id (uid)")],
+        deployment_id: Annotated[
+            str, Field(min_length=1, description="Vercel deployment id (uid)")
+        ],
     ) -> dict:
         """Get a single Vercel deployment by id."""
         params = _team_params()
         async with make_client("vercel", timeout=_TIMEOUT) as c:
-            r = await c.get(f"{_BASE}/v13/deployments/{deployment_id}", headers=_headers(), params=params)
+            r = await c.get(
+                f"{_BASE}/v13/deployments/{deployment_id}", headers=_headers(), params=params
+            )
             _raise_for(r)
             d = r.json()
         return {

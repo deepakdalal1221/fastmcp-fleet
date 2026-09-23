@@ -5,8 +5,6 @@ from typing import Annotated
 
 import httpx
 from fastmcp import FastMCP
-from pydantic import Field
-
 from mcp_common.errors import (
     AuthError,
     ConfigError,
@@ -14,6 +12,8 @@ from mcp_common.errors import (
     RateLimitError,
     UpstreamError,
 )
+from mcp_common.http import make_client
+from pydantic import Field
 
 _TIMEOUT = 30.0
 
@@ -55,7 +55,9 @@ def register_tools(mcp: FastMCP) -> None:
     ) -> dict:
         """List Confluence spaces visible to the caller."""
         async with make_client("confluence", timeout=_TIMEOUT) as c:
-            r = await c.get(f"{_base()}/space", auth=_auth(), headers=_headers(), params={"limit": limit})
+            r = await c.get(
+                f"{_base()}/space", auth=_auth(), headers=_headers(), params={"limit": limit}
+            )
             _raise_for(r)
             data = r.json()
         return {
@@ -67,7 +69,10 @@ def register_tools(mcp: FastMCP) -> None:
 
     @mcp.tool
     async def search_content(
-        cql: Annotated[str, Field(min_length=1, description="Confluence CQL, e.g. 'type = page AND space = DOCS'")],
+        cql: Annotated[
+            str,
+            Field(min_length=1, description="Confluence CQL, e.g. 'type = page AND space = DOCS'"),
+        ],
         limit: Annotated[int, Field(ge=1, le=100)] = 25,
     ) -> dict:
         """Search Confluence content with CQL."""

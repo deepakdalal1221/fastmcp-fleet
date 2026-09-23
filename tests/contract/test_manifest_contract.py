@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import pytest
-
 from mcp_common.registry import ServerManifest, load_catalogue, load_manifest
 
 VALID_AUTH_TYPES = {

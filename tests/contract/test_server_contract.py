@@ -3,7 +3,6 @@ from __future__ import annotations
 import importlib
 
 import pytest
-
 from mcp_common import create_server
 from mcp_common.testing import call_tool
 

@@ -5,8 +5,6 @@ from typing import Annotated
 
 import httpx
 from fastmcp import FastMCP
-from pydantic import Field
-
 from mcp_common.errors import (
     AuthError,
     ConfigError,
@@ -14,6 +12,8 @@ from mcp_common.errors import (
     RateLimitError,
     UpstreamError,
 )
+from mcp_common.http import make_client
+from pydantic import Field
 
 _BASE = "https://api.render.com/v1"
 _TIMEOUT = 30.0
@@ -68,7 +68,9 @@ def register_tools(mcp: FastMCP) -> None:
 
     @mcp.tool
     async def get_service(
-        service_id: Annotated[str, Field(min_length=1, description="Render service id (starts with 'srv-')")],
+        service_id: Annotated[
+            str, Field(min_length=1, description="Render service id (starts with 'srv-')")
+        ],
     ) -> dict:
         """Get a single Render service by id."""
         async with make_client("render", timeout=_TIMEOUT) as c:

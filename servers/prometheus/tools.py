@@ -6,9 +6,9 @@ from typing import Annotated
 
 import httpx
 from fastmcp import FastMCP
-from pydantic import Field
-
 from mcp_common.errors import AuthError, ConfigError, NotFoundError, RateLimitError, UpstreamError
+from mcp_common.http import make_client
+from pydantic import Field
 
 _TIMEOUT = 30.0
 
@@ -46,12 +46,17 @@ def register_tools(mcp: FastMCP) -> None:
             r = await client.get(f"{_base()}/query", headers=_headers(), params={"query": query})
         _raise_for(r)
         data = r.json()
-        return {"status": data.get("status"), "result": data.get("data", {}).get("result", [])[:200]}
+        return {
+            "status": data.get("status"),
+            "result": data.get("data", {}).get("result", [])[:200],
+        }
 
     @mcp.tool
     async def query_range(
         query: Annotated[str, Field(description="PromQL expression")],
-        from_seconds_ago: Annotated[int, Field(description="Window start relative to now", ge=1, le=86400)] = 3600,
+        from_seconds_ago: Annotated[
+            int, Field(description="Window start relative to now", ge=1, le=86400)
+        ] = 3600,
         step: Annotated[str, Field(description="Resolution step, e.g. '60s'")] = "60s",
     ) -> dict:
         """Execute a range PromQL query over a time window."""
@@ -61,7 +66,10 @@ def register_tools(mcp: FastMCP) -> None:
             r = await client.get(f"{_base()}/query_range", headers=_headers(), params=params)
         _raise_for(r)
         data = r.json()
-        return {"status": data.get("status"), "result": data.get("data", {}).get("result", [])[:200]}
+        return {
+            "status": data.get("status"),
+            "result": data.get("data", {}).get("result", [])[:200],
+        }
 
     @mcp.tool
     async def list_targets() -> dict:

@@ -3,9 +3,8 @@ from __future__ import annotations
 import os
 from typing import Annotated, Any
 
-from pydantic import Field
-
 from mcp_common.errors import ConfigError, UpstreamError, ValidationError
+from pydantic import Field
 
 try:
     import redis.asyncio as aioredis
@@ -49,9 +48,7 @@ def register_tools(mcp) -> None:
     async def set(
         key: Annotated[str, Field(description="Redis key")],
         value: Annotated[str, Field(description="Value to store")],
-        ttl_seconds: Annotated[
-            int | None, Field(description="Optional TTL in seconds")
-        ] = None,
+        ttl_seconds: Annotated[int | None, Field(description="Optional TTL in seconds")] = None,
     ) -> dict:
         """Set a string value at key, optionally with TTL."""
         if not key:

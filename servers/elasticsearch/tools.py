@@ -5,11 +5,10 @@ from typing import Annotated
 
 import httpx
 from fastmcp import FastMCP
-from pydantic import Field
-
+from mcp_common import local_store
 from mcp_common.errors import AuthError, ConfigError, NotFoundError, RateLimitError, UpstreamError
 from mcp_common.http import is_offline, make_client
-from mcp_common import local_store
+from pydantic import Field
 
 _TIMEOUT = 30.0
 
@@ -50,11 +49,29 @@ def register_tools(mcp: FastMCP) -> None:
         """Execute an Elasticsearch _search against an index."""
         body = {"query": query or {"match_all": {}}, "size": size}
         async with make_client("elasticsearch", timeout=_TIMEOUT) as c:
-            r = await c.post(f"{_base()}/{index}/_search", auth=_auth(), json=body, headers={"Content-Type": "application/json"})
+            r = await c.post(
+                f"{_base()}/{index}/_search",
+                auth=_auth(),
+                json=body,
+                headers={"Content-Type": "application/json"},
+            )
             _raise_for(r)
             data = r.json()
         hits = (data.get("hits") or {}).get("hits") or []
-        return {"total": ((data.get("hits") or {}).get("total") or {}).get("value") if isinstance((data.get("hits") or {}).get("total"), dict) else (data.get("hits") or {}).get("total"), "hits": [{"_id": h.get("_id"), "_index": h.get("_index"), "_score": h.get("_score"), "_source": h.get("_source")} for h in hits]}
+        return {
+            "total": ((data.get("hits") or {}).get("total") or {}).get("value")
+            if isinstance((data.get("hits") or {}).get("total"), dict)
+            else (data.get("hits") or {}).get("total"),
+            "hits": [
+                {
+                    "_id": h.get("_id"),
+                    "_index": h.get("_index"),
+                    "_score": h.get("_score"),
+                    "_source": h.get("_source"),
+                }
+                for h in hits
+            ],
+        }
 
     @mcp.tool
     async def list_indices() -> dict:
@@ -64,7 +81,17 @@ def register_tools(mcp: FastMCP) -> None:
             _raise_for(r)
             data = r.json()
         rows = data if isinstance(data, list) else []
-        return {"indices": [{"index": i.get("index"), "health": i.get("health"), "status": i.get("status"), "docs_count": i.get("docs.count")} for i in rows]}
+        return {
+            "indices": [
+                {
+                    "index": i.get("index"),
+                    "health": i.get("health"),
+                    "status": i.get("status"),
+                    "docs_count": i.get("docs.count"),
+                }
+                for i in rows
+            ]
+        }
 
     @mcp.tool
     async def get_index(
@@ -76,4 +103,11 @@ def register_tools(mcp: FastMCP) -> None:
             _raise_for(r)
             data = r.json()
         info = data.get(index, {})
-        return {"index": index, "aliases": list((info.get("aliases") or {}).keys()), "mappings_properties": list((((info.get("mappings") or {}).get("properties")) or {}).keys()), "settings_index": ((info.get("settings") or {}).get("index") or {})}
+        return {
+            "index": index,
+            "aliases": list((info.get("aliases") or {}).keys()),
+            "mappings_properties": list(
+                (((info.get("mappings") or {}).get("properties")) or {}).keys()
+            ),
+            "settings_index": ((info.get("settings") or {}).get("index") or {}),
+        }

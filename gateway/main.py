@@ -5,7 +5,6 @@ import importlib
 import os
 
 from fastmcp import FastMCP
-
 from mcp_common.config import ServerSettings
 from mcp_common.errors import ConfigError
 from mcp_common.health import register_health
@@ -49,7 +48,9 @@ def build_gateway(server_ids: list[str]) -> tuple[FastMCP, ServerSettings, list[
             gateway.add_middleware(BearerAuthMiddleware(GATEWAY_ID, cfg.auth_token))
             log.info("gateway.auth_enabled")
         else:
-            log.warning("gateway.auth_disabled", note="MCP_AUTH_TOKEN not set; gateway is unauthenticated")
+            log.warning(
+                "gateway.auth_disabled", note="MCP_AUTH_TOKEN not set; gateway is unauthenticated"
+            )
         if cfg.rate_limit_enabled:
             gateway.add_middleware(
                 RateLimitMiddleware(

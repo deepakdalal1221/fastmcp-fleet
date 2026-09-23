@@ -4,9 +4,8 @@ import os
 from typing import Annotated, Any
 from urllib.parse import unquote, urlparse
 
-from pydantic import Field
-
 from mcp_common.errors import ConfigError, NotFoundError, UpstreamError, ValidationError
+from pydantic import Field
 
 try:
     import aiomysql

@@ -5,9 +5,9 @@ from typing import Annotated
 
 import httpx
 from fastmcp import FastMCP
-from pydantic import Field
-
 from mcp_common.errors import AuthError, ConfigError, NotFoundError, RateLimitError, UpstreamError
+from mcp_common.http import make_client
+from pydantic import Field
 
 _BASE = "https://api.hubapi.com/crm/v3"
 _TIMEOUT = 30.0
@@ -43,7 +43,9 @@ def register_tools(mcp: FastMCP) -> None:
     ) -> dict:
         """List HubSpot contacts."""
         async with make_client("hubspot", timeout=_TIMEOUT) as client:
-            r = await client.get(f"{_BASE}/objects/contacts", headers=_headers(), params={"limit": limit})
+            r = await client.get(
+                f"{_BASE}/objects/contacts", headers=_headers(), params={"limit": limit}
+            )
         _raise_for(r)
         return {
             "contacts": [
@@ -64,7 +66,9 @@ def register_tools(mcp: FastMCP) -> None:
     ) -> dict:
         """List HubSpot deals."""
         async with make_client("hubspot", timeout=_TIMEOUT) as client:
-            r = await client.get(f"{_BASE}/objects/deals", headers=_headers(), params={"limit": limit})
+            r = await client.get(
+                f"{_BASE}/objects/deals", headers=_headers(), params={"limit": limit}
+            )
         _raise_for(r)
         return {
             "deals": [
@@ -84,7 +88,9 @@ def register_tools(mcp: FastMCP) -> None:
     ) -> dict:
         """List HubSpot companies."""
         async with make_client("hubspot", timeout=_TIMEOUT) as client:
-            r = await client.get(f"{_BASE}/objects/companies", headers=_headers(), params={"limit": limit})
+            r = await client.get(
+                f"{_BASE}/objects/companies", headers=_headers(), params={"limit": limit}
+            )
         _raise_for(r)
         return {
             "companies": [

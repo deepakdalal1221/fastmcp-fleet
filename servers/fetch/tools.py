@@ -5,9 +5,8 @@ from typing import Annotated
 
 import httpx
 from fastmcp import FastMCP
-from pydantic import Field
-
 from mcp_common.errors import UpstreamError, ValidationError
+from pydantic import Field
 
 _MAX_BYTES = 100_000
 _TAG_RE = re.compile(r"<[^>]+>")
@@ -41,7 +40,9 @@ def register_tools(mcp: FastMCP) -> None:
     @mcp.tool
     async def fetch(
         url: Annotated[str, Field(description="Absolute HTTP(S) URL to fetch")],
-        timeout: Annotated[float, Field(ge=0.1, le=120.0, description="Request timeout in seconds")] = 30.0,
+        timeout: Annotated[
+            float, Field(ge=0.1, le=120.0, description="Request timeout in seconds")
+        ] = 30.0,
     ) -> dict:
         """Fetch a URL and return the response body as text with status and content-type."""
         _validate_url(url)
@@ -57,8 +58,12 @@ def register_tools(mcp: FastMCP) -> None:
 
     @mcp.tool
     async def fetch_markdown(
-        url: Annotated[str, Field(description="Absolute HTTP(S) URL to fetch and convert to plain text")],
-        timeout: Annotated[float, Field(ge=0.1, le=120.0, description="Request timeout in seconds")] = 30.0,
+        url: Annotated[
+            str, Field(description="Absolute HTTP(S) URL to fetch and convert to plain text")
+        ],
+        timeout: Annotated[
+            float, Field(ge=0.1, le=120.0, description="Request timeout in seconds")
+        ] = 30.0,
     ) -> dict:
         """Fetch a URL and return its HTML stripped to plain text."""
         _validate_url(url)

@@ -10,6 +10,7 @@ Fixture lookup order:
   3. `servers/<server_id>/fixtures/default.json`
   4. Synthetic `{"offline": true, ...}` payload
 """
+
 from __future__ import annotations
 
 import json
@@ -34,6 +35,7 @@ class OfflineTransport(httpx.AsyncBaseTransport):
             self.dir = Path(fixture_dir)
         else:
             from mcp_common.registry import ROOT_DIR
+
             self.dir = ROOT_DIR / "servers" / server_id / "fixtures"
 
     def _lookup(self, request: httpx.Request) -> dict[str, Any]:

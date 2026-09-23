@@ -5,8 +5,6 @@ from typing import Annotated
 
 import httpx
 from fastmcp import FastMCP
-from pydantic import Field
-
 from mcp_common.errors import (
     AuthError,
     ConfigError,
@@ -14,6 +12,8 @@ from mcp_common.errors import (
     RateLimitError,
     UpstreamError,
 )
+from mcp_common.http import make_client
+from pydantic import Field
 
 _BASE = "https://huggingface.co/api"
 _TIMEOUT = 30.0
@@ -72,7 +72,9 @@ def register_tools(mcp: FastMCP) -> None:
 
     @mcp.tool
     async def get_model(
-        model_id: Annotated[str, Field(min_length=1, description="model id like 'meta-llama/Llama-3-8B'")],
+        model_id: Annotated[
+            str, Field(min_length=1, description="model id like 'meta-llama/Llama-3-8B'")
+        ],
     ) -> dict:
         """Get a single Hugging Face model by id."""
         async with make_client("huggingface", timeout=_TIMEOUT) as c:

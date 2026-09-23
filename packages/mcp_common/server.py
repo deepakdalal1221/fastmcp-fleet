@@ -12,7 +12,9 @@ from mcp_common.middleware import RateLimitMiddleware, TimingLoggingMiddleware
 from mcp_common.registry import ServerManifest, load_manifest
 
 
-def create_server(server_id: str, *, settings: ServerSettings | None = None) -> tuple[FastMCP, ServerManifest, ServerSettings]:
+def create_server(
+    server_id: str, *, settings: ServerSettings | None = None
+) -> tuple[FastMCP, ServerManifest, ServerSettings]:
     manifest = load_manifest(server_id)
     cfg = settings or ServerSettings(server_id=server_id, port=manifest.port)
     setup_logging(level=cfg.log_level, fmt=cfg.log_format)

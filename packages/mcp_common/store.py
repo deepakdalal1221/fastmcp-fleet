@@ -8,6 +8,7 @@ the same offline session.
 Only meaningful when running with `MCP_OFFLINE=1`; in live mode the real
 upstream API owns state and this layer is unused.
 """
+
 from __future__ import annotations
 
 import asyncio
@@ -18,7 +19,6 @@ from pathlib import Path
 from typing import Any, Iterator
 
 from mcp_common.registry import ROOT_DIR
-
 
 _SCHEMA = """
 CREATE TABLE IF NOT EXISTS store (
@@ -37,6 +37,7 @@ def _db_path(server_id: str) -> Path:
     live at $MCP_STATE_DIR/<server_id>.db and survive container restarts.
     """
     import os as _os
+
     override = _os.environ.get("MCP_STATE_DIR", "").strip()
     if override:
         d = Path(override)

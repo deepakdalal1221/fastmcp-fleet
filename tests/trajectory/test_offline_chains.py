@@ -3,6 +3,7 @@
 Runs each stateful server through a create-write + list-read cycle and asserts
 the written entity appears in the read result. Requires MCP_OFFLINE=1.
 """
+
 from __future__ import annotations
 
 import asyncio
@@ -12,7 +13,6 @@ import tempfile
 from pathlib import Path
 
 import pytest
-
 
 # ---------------------------------------------------------------------------
 # Offline env setup applied to every test in this module
@@ -27,10 +27,19 @@ def _offline_env():
     os.environ["MCP_STATE_DIR"] = _STATE_DIR
     # Dummy env vars so _token()/_auth() paths in each server dont raise
     for var in (
-        "GITHUB_TOKEN", "JIRA_URL", "JIRA_USER", "JIRA_TOKEN",
-        "ASANA_TOKEN", "LINEAR_API_KEY", "SLACK_BOT_TOKEN",
-        "STRIPE_SECRET_KEY", "TWILIO_ACCOUNT_SID", "TWILIO_AUTH_TOKEN",
-        "PAGERDUTY_TOKEN", "PAGERDUTY_FROM", "NOTION_TOKEN",
+        "GITHUB_TOKEN",
+        "JIRA_URL",
+        "JIRA_USER",
+        "JIRA_TOKEN",
+        "ASANA_TOKEN",
+        "LINEAR_API_KEY",
+        "SLACK_BOT_TOKEN",
+        "STRIPE_SECRET_KEY",
+        "TWILIO_ACCOUNT_SID",
+        "TWILIO_AUTH_TOKEN",
+        "PAGERDUTY_TOKEN",
+        "PAGERDUTY_FROM",
+        "NOTION_TOKEN",
     ):
         os.environ.setdefault(var, "offline-dummy")
     yield
@@ -40,10 +49,13 @@ def _offline_env():
 async def _register(server_id: str):
     """Load a server's tools and return {tool_name: callable}."""
     from mcp_common import local_store
+
     await local_store.reset(server_id)
     import importlib
+
     mod = importlib.import_module(f"servers.{server_id}.tools")
     from fastmcp import FastMCP
+
     m = FastMCP(name=server_id)
     mod.register_tools(m)
     tool_list = await m.list_tools()
@@ -54,11 +66,12 @@ async def _register(server_id: str):
 # Roundtrip tests
 # ---------------------------------------------------------------------------
 
+
 @pytest.mark.asyncio
 @pytest.mark.trajectory
 async def test_github_roundtrip():
     fns = await _register("github")
-    w = await fns["create_issue"](owner="acme", repo="app", title="Bug A")
+    await fns["create_issue"](owner="acme", repo="app", title="Bug A")
     r = await fns["list_issues"](owner="acme", repo="app")
     assert len(r["issues"]) == 1
     assert r["issues"][0]["title"] == "Bug A"
@@ -148,6 +161,7 @@ async def test_notion_roundtrip():
 # Cross-server chain: github issue -> jira issue -> slack message
 # ---------------------------------------------------------------------------
 
+
 @pytest.mark.asyncio
 @pytest.mark.trajectory
 async def test_chain_github_jira_slack():
@@ -160,7 +174,9 @@ async def test_chain_github_jira_slack():
     assert g["title"] == "Chain test"
 
     # 2. Create Jira issue that references GH
-    j = await jr["create_issue"](project_key="CHAIN", summary=f"Track {g['title']} (GH #{g['number']})")
+    j = await jr["create_issue"](
+        project_key="CHAIN", summary=f"Track {g['title']} (GH #{g['number']})"
+    )
     assert "CHAIN-" in j["key"]
 
     # 3. Post Slack message linking both

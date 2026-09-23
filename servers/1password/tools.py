@@ -5,9 +5,9 @@ from typing import Annotated
 
 import httpx
 from fastmcp import FastMCP
-from pydantic import Field
-
 from mcp_common.errors import AuthError, ConfigError, NotFoundError, RateLimitError, UpstreamError
+from mcp_common.http import make_client
+from pydantic import Field
 
 _TIMEOUT = 30.0
 
@@ -70,7 +70,12 @@ def register_tools(mcp: FastMCP) -> None:
         _raise_for(r)
         return {
             "items": [
-                {"id": i.get("id"), "title": i.get("title"), "category": i.get("category"), "updatedAt": i.get("updatedAt")}
+                {
+                    "id": i.get("id"),
+                    "title": i.get("title"),
+                    "category": i.get("category"),
+                    "updatedAt": i.get("updatedAt"),
+                }
                 for i in r.json()
             ]
         }
@@ -94,4 +99,9 @@ def register_tools(mcp: FastMCP) -> None:
             }
             for f in it.get("fields", [])
         ]
-        return {"id": it.get("id"), "title": it.get("title"), "category": it.get("category"), "fields": fields}
+        return {
+            "id": it.get("id"),
+            "title": it.get("title"),
+            "category": it.get("category"),
+            "fields": fields,
+        }

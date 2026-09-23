@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import pytest
-
 from mcp_common.registry import load_catalogue
 
 

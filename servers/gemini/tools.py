@@ -5,8 +5,6 @@ from typing import Annotated
 
 import httpx
 from fastmcp import FastMCP
-from pydantic import Field
-
 from mcp_common.errors import (
     AuthError,
     ConfigError,
@@ -14,6 +12,8 @@ from mcp_common.errors import (
     RateLimitError,
     UpstreamError,
 )
+from mcp_common.http import make_client
+from pydantic import Field
 
 _BASE = "https://generativelanguage.googleapis.com/v1beta"
 _TIMEOUT = 60.0
@@ -83,7 +83,9 @@ def register_tools(mcp: FastMCP) -> None:
     @mcp.tool
     async def embed_content(
         text: Annotated[str, Field(min_length=1, description="text to embed")],
-        model: Annotated[str, Field(description="Gemini embedding model id")] = "text-embedding-004",
+        model: Annotated[
+            str, Field(description="Gemini embedding model id")
+        ] = "text-embedding-004",
     ) -> dict:
         """Embed a text string with a Gemini embedding model."""
         body = {"content": {"parts": [{"text": text}]}}

@@ -5,9 +5,9 @@ from typing import Annotated
 
 import httpx
 from fastmcp import FastMCP
-from pydantic import Field
-
 from mcp_common.errors import AuthError, ConfigError, NotFoundError, RateLimitError, UpstreamError
+from mcp_common.http import make_client
+from pydantic import Field
 
 _BASE = "https://api.cloudflare.com/client/v4"
 _TIMEOUT = 30.0
@@ -57,12 +57,19 @@ def register_tools(mcp: FastMCP) -> None:
             r = await client.get(f"{_BASE}/zones", headers=_headers(), params=params)
         _raise_for(r)
         data = r.json()
-        return {"zones": [{"id": z["id"], "name": z["name"], "status": z["status"]} for z in data.get("result", [])]}
+        return {
+            "zones": [
+                {"id": z["id"], "name": z["name"], "status": z["status"]}
+                for z in data.get("result", [])
+            ]
+        }
 
     @mcp.tool
     async def list_dns_records(
         zone_id: Annotated[str, Field(description="Cloudflare zone id")],
-        record_type: Annotated[str | None, Field(description="Filter by record type (A, AAAA, CNAME, etc.)")] = None,
+        record_type: Annotated[
+            str | None, Field(description="Filter by record type (A, AAAA, CNAME, etc.)")
+        ] = None,
     ) -> dict:
         """List DNS records for a zone."""
         params: dict[str, str] = {}
@@ -99,7 +106,11 @@ def register_tools(mcp: FastMCP) -> None:
         data = r.json()
         return {
             "workers": [
-                {"id": w["id"], "created_on": w.get("created_on"), "modified_on": w.get("modified_on")}
+                {
+                    "id": w["id"],
+                    "created_on": w.get("created_on"),
+                    "modified_on": w.get("modified_on"),
+                }
                 for w in data.get("result", [])
             ]
         }

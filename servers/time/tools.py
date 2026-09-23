@@ -5,9 +5,8 @@ from typing import Annotated
 from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 from fastmcp import FastMCP
-from pydantic import Field
-
 from mcp_common.errors import ValidationError
+from pydantic import Field
 
 
 def _zone(tz: str) -> ZoneInfo:
@@ -20,7 +19,9 @@ def _zone(tz: str) -> ZoneInfo:
 def register_tools(mcp: FastMCP) -> None:
     @mcp.tool
     async def now(
-        tz: Annotated[str, Field(description="IANA timezone name (e.g. UTC, America/Los_Angeles)")] = "UTC",
+        tz: Annotated[
+            str, Field(description="IANA timezone name (e.g. UTC, America/Los_Angeles)")
+        ] = "UTC",
     ) -> dict:
         """Return the current time in the given IANA timezone as ISO-8601."""
         dt = datetime.now(tz=_zone(tz))
@@ -28,7 +29,10 @@ def register_tools(mcp: FastMCP) -> None:
 
     @mcp.tool
     async def convert_timezone(
-        iso: Annotated[str, Field(description="ISO-8601 datetime; naive values are treated as being in from_tz")],
+        iso: Annotated[
+            str,
+            Field(description="ISO-8601 datetime; naive values are treated as being in from_tz"),
+        ],
         from_tz: Annotated[str, Field(description="Source IANA timezone")],
         to_tz: Annotated[str, Field(description="Target IANA timezone")],
     ) -> dict:
@@ -57,7 +61,9 @@ def register_tools(mcp: FastMCP) -> None:
     async def parse(
         text: Annotated[str, Field(description="Datetime string to parse")],
         fmt: Annotated[str, Field(description="strptime format string matching the input")],
-        tz: Annotated[str, Field(description="IANA timezone to attach if the parsed value is naive")] = "UTC",
+        tz: Annotated[
+            str, Field(description="IANA timezone to attach if the parsed value is naive")
+        ] = "UTC",
     ) -> dict:
         """Parse a datetime string with strptime and return it as ISO-8601 in the given timezone."""
         try:

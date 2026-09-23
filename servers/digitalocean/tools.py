@@ -5,8 +5,6 @@ from typing import Annotated
 
 import httpx
 from fastmcp import FastMCP
-from pydantic import Field
-
 from mcp_common.errors import (
     AuthError,
     ConfigError,
@@ -14,6 +12,8 @@ from mcp_common.errors import (
     RateLimitError,
     UpstreamError,
 )
+from mcp_common.http import make_client
+from pydantic import Field
 
 _BASE = "https://api.digitalocean.com/v2"
 _TIMEOUT = 30.0
@@ -60,7 +60,11 @@ def register_tools(mcp: FastMCP) -> None:
                     "region": (d.get("region") or {}).get("slug"),
                     "size": (d.get("size") or {}).get("slug"),
                     "public_ip": next(
-                        (n["ip_address"] for n in (d.get("networks", {}) or {}).get("v4", []) if n.get("type") == "public"),
+                        (
+                            n["ip_address"]
+                            for n in (d.get("networks", {}) or {}).get("v4", [])
+                            if n.get("type") == "public"
+                        ),
                         None,
                     ),
                 }

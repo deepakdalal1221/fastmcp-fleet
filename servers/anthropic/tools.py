@@ -5,8 +5,6 @@ from typing import Annotated, Any
 
 import httpx
 from fastmcp import FastMCP
-from pydantic import Field
-
 from mcp_common.errors import (
     AuthError,
     ConfigError,
@@ -14,6 +12,8 @@ from mcp_common.errors import (
     UpstreamError,
     ValidationError,
 )
+from mcp_common.http import make_client
+from pydantic import Field
 
 _BASE_URL = "https://api.anthropic.com/v1"
 _API_VERSION = "2023-06-01"
@@ -65,18 +65,10 @@ def register_tools(mcp: FastMCP) -> None:
     @mcp.tool
     async def messages(
         prompt: Annotated[str, Field(description="User message content.")],
-        model: Annotated[
-            str, Field(description="Anthropic model id.")
-        ] = "claude-sonnet-4-6",
-        system: Annotated[
-            str, Field(description="Optional system prompt.")
-        ] = "",
-        max_tokens: Annotated[
-            int, Field(description="Max output tokens (1-8192).")
-        ] = 1024,
-        temperature: Annotated[
-            float, Field(description="Sampling temperature 0.0-1.0.")
-        ] = 0.7,
+        model: Annotated[str, Field(description="Anthropic model id.")] = "claude-sonnet-4-6",
+        system: Annotated[str, Field(description="Optional system prompt.")] = "",
+        max_tokens: Annotated[int, Field(description="Max output tokens (1-8192).")] = 1024,
+        temperature: Annotated[float, Field(description="Sampling temperature 0.0-1.0.")] = 0.7,
     ) -> dict[str, Any]:
         """Call Anthropic Messages API for a single-turn chat completion."""
         if not prompt.strip():
@@ -108,9 +100,7 @@ def register_tools(mcp: FastMCP) -> None:
 
         content_blocks = payload.get("content", [])
         text = "".join(
-            block.get("text", "")
-            for block in content_blocks
-            if block.get("type") == "text"
+            block.get("text", "") for block in content_blocks if block.get("type") == "text"
         )
 
         usage = payload.get("usage", {})

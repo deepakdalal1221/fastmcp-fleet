@@ -1,16 +1,11 @@
 from __future__ import annotations
 
-from mcp_common.http import is_offline
-
-from mcp_common import local_store
-
 import os
 from typing import Annotated
 
 import httpx
 from fastmcp import FastMCP
-from pydantic import Field
-
+from mcp_common import local_store
 from mcp_common.errors import (
     AuthError,
     ConfigError,
@@ -18,6 +13,8 @@ from mcp_common.errors import (
     RateLimitError,
     UpstreamError,
 )
+from mcp_common.http import is_offline, make_client
+from pydantic import Field
 
 _BASE = "https://app.asana.com/api/1.0"
 _TIMEOUT = 30.0
@@ -82,7 +79,9 @@ def register_tools(mcp: FastMCP) -> None:
             tasks = [row["value"] for row in stored][:limit]
             return {"tasks": [{"gid": t["gid"], "name": t["name"]} for t in tasks]}
         async with make_client("asana", timeout=_TIMEOUT) as c:
-            r = await c.get(f"{_BASE}/projects/{project_id}/tasks", headers=_headers(), params={"limit": limit})
+            r = await c.get(
+                f"{_BASE}/projects/{project_id}/tasks", headers=_headers(), params={"limit": limit}
+            )
             _raise_for(r)
             data = r.json().get("data", [])
         return {"tasks": [{"gid": t["gid"], "name": t["name"]} for t in data]}
@@ -99,7 +98,12 @@ def register_tools(mcp: FastMCP) -> None:
             col = f"tasks:{project_id}"
             n = local_store.next_id("asana", col)
             gid = f"1000{n}"
-            task = {"gid": gid, "name": name, "notes": notes, "permalink_url": f"https://app.asana.com/0/{project_id}/{gid}"}
+            task = {
+                "gid": gid,
+                "name": name,
+                "notes": notes,
+                "permalink_url": f"https://app.asana.com/0/{project_id}/{gid}",
+            }
             await local_store.put("asana", col, gid, task)
             return {"gid": gid, "name": name, "permalink_url": task["permalink_url"]}
         data = {"name": name, "projects": [project_id]}
@@ -112,4 +116,3 @@ def register_tools(mcp: FastMCP) -> None:
             _raise_for(r)
             t = r.json().get("data", {})
         return {"gid": t.get("gid"), "name": t.get("name"), "permalink_url": t.get("permalink_url")}
-

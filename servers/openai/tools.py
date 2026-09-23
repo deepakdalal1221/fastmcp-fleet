@@ -5,8 +5,6 @@ from typing import Annotated, Any
 
 import httpx
 from fastmcp import FastMCP
-from pydantic import Field
-
 from mcp_common.errors import (
     AuthError,
     ConfigError,
@@ -14,6 +12,8 @@ from mcp_common.errors import (
     UpstreamError,
     ValidationError,
 )
+from mcp_common.http import make_client
+from pydantic import Field
 
 _API_BASE = "https://api.openai.com/v1"
 
@@ -46,9 +46,7 @@ def _raise_for_status(response: httpx.Response) -> None:
         raise UpstreamError(f"OpenAI HTTP {response.status_code}: {response.text[:200]}")
 
 
-async def _post(
-    client: httpx.AsyncClient, path: str, body: dict[str, Any]
-) -> dict[str, Any]:
+async def _post(client: httpx.AsyncClient, path: str, body: dict[str, Any]) -> dict[str, Any]:
     try:
         response = await client.post(f"{_API_BASE}{path}", json=body, headers=_headers())
     except httpx.RequestError as exc:
@@ -133,7 +131,9 @@ def register_tools(mcp: FastMCP) -> None:
     async def generate_image(
         prompt: Annotated[str, Field(description="Image description")],
         model: Annotated[str, Field(description="Image model")] = "dall-e-3",
-        size: Annotated[str, Field(description="e.g. 1024x1024, 1792x1024, 1024x1792")] = "1024x1024",
+        size: Annotated[
+            str, Field(description="e.g. 1024x1024, 1792x1024, 1024x1792")
+        ] = "1024x1024",
         n: Annotated[int, Field(description="Number of images (1-4)")] = 1,
     ) -> dict:
         """Generate images via OpenAI image API."""

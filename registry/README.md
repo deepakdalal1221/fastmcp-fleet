@@ -30,5 +30,6 @@ status: string            # planned | pilot | active | deprecated
 
 ```python
 from mcp_common.registry import load_catalogue
+
 catalogue = load_catalogue()  # list[ServerManifest]
 ```

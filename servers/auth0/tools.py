@@ -5,9 +5,9 @@ from typing import Annotated
 
 import httpx
 from fastmcp import FastMCP
-from pydantic import Field
-
 from mcp_common.errors import AuthError, ConfigError, NotFoundError, RateLimitError, UpstreamError
+from mcp_common.http import make_client
+from pydantic import Field
 
 _TIMEOUT = 30.0
 
@@ -53,7 +53,9 @@ def register_tools(mcp: FastMCP) -> None:
     ) -> dict:
         """List Auth0 users."""
         async with make_client("auth0", timeout=_TIMEOUT) as client:
-            r = await client.get(f"{_base()}/users", headers=_headers(), params={"per_page": per_page})
+            r = await client.get(
+                f"{_base()}/users", headers=_headers(), params={"per_page": per_page}
+            )
         _raise_for(r)
         return {
             "users": [
@@ -74,11 +76,17 @@ def register_tools(mcp: FastMCP) -> None:
     ) -> dict:
         """List Auth0 applications (clients)."""
         async with make_client("auth0", timeout=_TIMEOUT) as client:
-            r = await client.get(f"{_base()}/clients", headers=_headers(), params={"per_page": per_page})
+            r = await client.get(
+                f"{_base()}/clients", headers=_headers(), params={"per_page": per_page}
+            )
         _raise_for(r)
         return {
             "clients": [
-                {"client_id": c.get("client_id"), "name": c.get("name"), "app_type": c.get("app_type")}
+                {
+                    "client_id": c.get("client_id"),
+                    "name": c.get("name"),
+                    "app_type": c.get("app_type"),
+                }
                 for c in r.json()
             ]
         }
@@ -91,7 +99,12 @@ def register_tools(mcp: FastMCP) -> None:
         _raise_for(r)
         return {
             "rules": [
-                {"id": r_.get("id"), "name": r_.get("name"), "enabled": r_.get("enabled"), "stage": r_.get("stage")}
+                {
+                    "id": r_.get("id"),
+                    "name": r_.get("name"),
+                    "enabled": r_.get("enabled"),
+                    "stage": r_.get("stage"),
+                }
                 for r_ in r.json()
             ]
         }

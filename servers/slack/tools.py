@@ -1,17 +1,14 @@
 from __future__ import annotations
 
-from mcp_common.http import is_offline
-
-from mcp_common import local_store
-
 import os
 from typing import Annotated, Any
 
 import httpx
 from fastmcp import FastMCP
-from pydantic import Field
-
+from mcp_common import local_store
 from mcp_common.errors import AuthError, ConfigError, RateLimitError, UpstreamError, ValidationError
+from mcp_common.http import is_offline, make_client
+from pydantic import Field
 
 _API_BASE = "https://slack.com/api"
 _MAX_LIMIT = 200
@@ -75,9 +72,7 @@ async def _get(client: httpx.AsyncClient, path: str, params: dict[str, Any]) -> 
     return payload
 
 
-async def _post_json(
-    client: httpx.AsyncClient, path: str, body: dict[str, Any]
-) -> dict[str, Any]:
+async def _post_json(client: httpx.AsyncClient, path: str, body: dict[str, Any]) -> dict[str, Any]:
     try:
         response = await client.post(f"{_API_BASE}/{path}", json=body, headers=_headers())
     except httpx.RequestError as exc:
@@ -156,7 +151,13 @@ def register_tools(mcp: FastMCP) -> None:
             col = f"messages:{channel}"
             n = local_store.next_id("slack", col)
             ts = f"{1700000000 + n}.{n:06d}"
-            msg = {"ts": ts, "channel": channel, "text": text, "thread_ts": thread_ts, "user": "U_OFFLINE"}
+            msg = {
+                "ts": ts,
+                "channel": channel,
+                "text": text,
+                "thread_ts": thread_ts,
+                "user": "U_OFFLINE",
+            }
             await local_store.put("slack", col, ts, msg)
             return {"ok": True, "channel": channel, "ts": ts, "message": {"text": text}}
         payload = {"channel": channel, "text": text}
@@ -168,7 +169,12 @@ def register_tools(mcp: FastMCP) -> None:
             j = r.json()
         if not j.get("ok"):
             raise UpstreamError(f"slack error: {j.get('error')}")
-        return {"ok": True, "channel": j.get("channel"), "ts": j.get("ts"), "message": j.get("message")}
+        return {
+            "ok": True,
+            "channel": j.get("channel"),
+            "ts": j.get("ts"),
+            "message": j.get("message"),
+        }
 
     @mcp.tool
     async def list_users(
@@ -190,12 +196,22 @@ def register_tools(mcp: FastMCP) -> None:
         if is_offline():
             stored = await local_store.list_all("slack", f"messages:{channel}")
             msgs = [row["value"] for row in stored][:limit]
-            return {"messages": [{"ts": m["ts"], "user": m["user"], "text": m["text"]} for m in msgs]}
+            return {
+                "messages": [{"ts": m["ts"], "user": m["user"], "text": m["text"]} for m in msgs]
+            }
         async with make_client("slack", timeout=_TIMEOUT) as c:
-            r = await c.get(f"{_BASE}/conversations.history", headers=_headers(), params={"channel": channel, "limit": limit})
+            r = await c.get(
+                f"{_BASE}/conversations.history",
+                headers=_headers(),
+                params={"channel": channel, "limit": limit},
+            )
             _raise_for(r)
             j = r.json()
         if not j.get("ok"):
             raise UpstreamError(f"slack error: {j.get('error')}")
-        return {"messages": [{"ts": m["ts"], "user": m.get("user"), "text": m.get("text", "")} for m in j.get("messages", [])]}
-
+        return {
+            "messages": [
+                {"ts": m["ts"], "user": m.get("user"), "text": m.get("text", "")}
+                for m in j.get("messages", [])
+            ]
+        }

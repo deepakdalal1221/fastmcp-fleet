@@ -1,17 +1,14 @@
 from __future__ import annotations
 
-from mcp_common.http import is_offline
-
-from mcp_common import local_store
-
 import os
 from typing import Annotated
 
 import httpx
 from fastmcp import FastMCP
-from pydantic import Field
-
+from mcp_common import local_store
 from mcp_common.errors import AuthError, ConfigError, NotFoundError, RateLimitError, UpstreamError
+from mcp_common.http import is_offline, make_client
+from pydantic import Field
 
 _TIMEOUT = 30.0
 
@@ -62,7 +59,14 @@ def register_tools(mcp: FastMCP) -> None:
             col = f"messages:{to}"
             n = local_store.next_id("twilio", col)
             sid = f"SMoffline{n:010d}"
-            msg = {"sid": sid, "to": to, "from": from_, "body": body, "status": "queued", "direction": "outbound-api"}
+            msg = {
+                "sid": sid,
+                "to": to,
+                "from": from_,
+                "body": body,
+                "status": "queued",
+                "direction": "outbound-api",
+            }
             await local_store.put("twilio", col, sid, msg)
             return {"sid": sid, "to": to, "from": from_, "status": "queued"}
         data = {"To": to, "From": from_, "Body": body}
@@ -70,7 +74,12 @@ def register_tools(mcp: FastMCP) -> None:
             r = await c.post(f"{_base()}/Messages.json", auth=_auth(), data=data)
             _raise_for(r)
             j = r.json()
-        return {"sid": j.get("sid"), "to": j.get("to"), "from": j.get("from"), "status": j.get("status")}
+        return {
+            "sid": j.get("sid"),
+            "to": j.get("to"),
+            "from": j.get("from"),
+            "status": j.get("status"),
+        }
 
     @mcp.tool
     async def list_messages(
@@ -84,7 +93,18 @@ def register_tools(mcp: FastMCP) -> None:
             else:
                 stored = []
             msgs = [row["value"] for row in stored][:limit]
-            return {"messages": [{"sid": m["sid"], "to": m["to"], "from": m["from"], "body": m["body"], "status": m["status"]} for m in msgs]}
+            return {
+                "messages": [
+                    {
+                        "sid": m["sid"],
+                        "to": m["to"],
+                        "from": m["from"],
+                        "body": m["body"],
+                        "status": m["status"],
+                    }
+                    for m in msgs
+                ]
+            }
         params = {"PageSize": limit}
         if to:
             params["To"] = to
@@ -92,13 +112,26 @@ def register_tools(mcp: FastMCP) -> None:
             r = await c.get(f"{_base()}/Messages.json", auth=_auth(), params=params)
             _raise_for(r)
             j = r.json()
-        return {"messages": [{"sid": m.get("sid"), "to": m.get("to"), "from": m.get("from"), "body": m.get("body"), "status": m.get("status")} for m in j.get("messages", [])]}
+        return {
+            "messages": [
+                {
+                    "sid": m.get("sid"),
+                    "to": m.get("to"),
+                    "from": m.get("from"),
+                    "body": m.get("body"),
+                    "status": m.get("status"),
+                }
+                for m in j.get("messages", [])
+            ]
+        }
 
     @mcp.tool
     async def make_call(
         to: Annotated[str, Field(description="Callee phone number in E.164 format")],
         from_number: Annotated[str, Field(description="Twilio-owned phone number in E.164 format")],
-        url: Annotated[str, Field(description="TwiML URL Twilio will fetch when the call connects")],
+        url: Annotated[
+            str, Field(description="TwiML URL Twilio will fetch when the call connects")
+        ],
     ) -> dict:
         """Start an outbound voice call via Twilio."""
         async with make_client("twilio", timeout=_TIMEOUT) as client:
@@ -109,4 +142,9 @@ def register_tools(mcp: FastMCP) -> None:
             )
         _raise_for(r)
         j = r.json()
-        return {"sid": j.get("sid"), "status": j.get("status"), "to": j.get("to"), "from": j.get("from")}
+        return {
+            "sid": j.get("sid"),
+            "status": j.get("status"),
+            "to": j.get("to"),
+            "from": j.get("from"),
+        }

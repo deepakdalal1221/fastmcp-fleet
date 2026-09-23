@@ -5,8 +5,6 @@ from typing import Annotated
 
 import httpx
 from fastmcp import FastMCP
-from pydantic import Field
-
 from mcp_common.errors import (
     AuthError,
     ConfigError,
@@ -14,6 +12,8 @@ from mcp_common.errors import (
     RateLimitError,
     UpstreamError,
 )
+from mcp_common.http import make_client
+from pydantic import Field
 
 _BASE = "https://api.machines.dev/v1"
 _TIMEOUT = 30.0
@@ -44,7 +44,9 @@ def _raise_for(r: httpx.Response) -> None:
 def register_tools(mcp: FastMCP) -> None:
     @mcp.tool
     async def list_apps(
-        org_slug: Annotated[str, Field(description="Fly.io org slug (e.g. 'personal')")] = "personal",
+        org_slug: Annotated[
+            str, Field(description="Fly.io org slug (e.g. 'personal')")
+        ] = "personal",
     ) -> dict:
         """List Fly.io apps for an organization."""
         async with make_client("fly-io", timeout=_TIMEOUT) as c:

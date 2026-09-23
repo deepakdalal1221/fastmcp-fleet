@@ -4,9 +4,8 @@ import os
 from typing import Annotated, Any
 
 from fastmcp import FastMCP
-from pydantic import Field
-
 from mcp_common.errors import ConfigError, NotFoundError, UpstreamError, ValidationError
+from pydantic import Field
 
 try:
     import asyncpg
@@ -51,8 +50,12 @@ def register_tools(mcp: FastMCP) -> None:
     @mcp.tool
     async def query(
         sql: Annotated[str, Field(description="Parameterized SQL. Use $1, $2 for params.")],
-        params: Annotated[list[Any] | None, Field(description="Positional parameter values")] = None,
-        limit: Annotated[int, Field(description=f"Max rows to return (1-{_MAX_ROWS})")] = _DEFAULT_ROWS,
+        params: Annotated[
+            list[Any] | None, Field(description="Positional parameter values")
+        ] = None,
+        limit: Annotated[
+            int, Field(description=f"Max rows to return (1-{_MAX_ROWS})")
+        ] = _DEFAULT_ROWS,
     ) -> dict:
         """Execute a read-only SQL query and return rows as list of dicts."""
         if not sql.strip():

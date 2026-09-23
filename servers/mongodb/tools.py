@@ -3,9 +3,8 @@ from __future__ import annotations
 import os
 from typing import Annotated, Any
 
-from pydantic import Field
-
 from mcp_common.errors import ConfigError, UpstreamError, ValidationError
+from pydantic import Field
 
 try:
     from motor.motor_asyncio import AsyncIOMotorClient

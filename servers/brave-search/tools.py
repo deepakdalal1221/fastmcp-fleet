@@ -5,8 +5,6 @@ from typing import Annotated, Any
 
 import httpx
 from fastmcp import FastMCP
-from pydantic import Field
-
 from mcp_common.errors import (
     AuthError,
     ConfigError,
@@ -14,6 +12,8 @@ from mcp_common.errors import (
     UpstreamError,
     ValidationError,
 )
+from mcp_common.http import make_client
+from pydantic import Field
 
 _API_BASE = "https://api.search.brave.com/res/v1"
 _MAX_COUNT = 20
@@ -48,14 +48,10 @@ def _raise_for_status(response: httpx.Response) -> None:
     if response.status_code >= 500:
         raise UpstreamError(f"Brave Search upstream error: HTTP {response.status_code}")
     if response.status_code >= 400:
-        raise UpstreamError(
-            f"Brave Search HTTP {response.status_code}: {response.text[:200]}"
-        )
+        raise UpstreamError(f"Brave Search HTTP {response.status_code}: {response.text[:200]}")
 
 
-async def _get(
-    client: httpx.AsyncClient, path: str, params: dict[str, Any]
-) -> dict[str, Any]:
+async def _get(client: httpx.AsyncClient, path: str, params: dict[str, Any]) -> dict[str, Any]:
     try:
         response = await client.get(f"{_API_BASE}{path}", params=params, headers=_headers())
     except httpx.RequestError as exc:

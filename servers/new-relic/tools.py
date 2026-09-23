@@ -5,9 +5,9 @@ from typing import Annotated
 
 import httpx
 from fastmcp import FastMCP
-from pydantic import Field
-
 from mcp_common.errors import AuthError, ConfigError, NotFoundError, RateLimitError, UpstreamError
+from mcp_common.http import make_client
+from pydantic import Field
 
 _BASE = "https://api.newrelic.com/graphql"
 _TIMEOUT = 30.0
@@ -64,25 +64,30 @@ def register_tools(mcp: FastMCP) -> None:
         """Run an NRQL query against the configured New Relic account."""
         escaped = query.replace("\\", "\\\\").replace('"', '\\"')
         gql = (
-            "{ actor { account(id: " + str(_account()) + ") { nrql(query: \"" + escaped
-            + "\") { results } } } }"
+            "{ actor { account(id: "
+            + str(_account())
+            + ') { nrql(query: "'
+            + escaped
+            + '") { results } } } }'
         )
         data = await _post_graphql(gql)
-        results = (
-            data.get("actor", {}).get("account", {}).get("nrql", {}).get("results", [])
-        )
+        results = data.get("actor", {}).get("account", {}).get("nrql", {}).get("results", [])
         return {"results": results[:500]}
 
     @mcp.tool
     async def list_alerts() -> dict:
         """List New Relic alert policies for the account."""
         gql = (
-            "{ actor { account(id: " + str(_account())
+            "{ actor { account(id: "
+            + str(_account())
             + ") { alerts { policiesSearch { policies { id name incidentPreference } } } } } }"
         )
         data = await _post_graphql(gql)
         policies = (
-            data.get("actor", {}).get("account", {}).get("alerts", {})
-            .get("policiesSearch", {}).get("policies", [])
+            data.get("actor", {})
+            .get("account", {})
+            .get("alerts", {})
+            .get("policiesSearch", {})
+            .get("policies", [])
         )
         return {"policies": policies}

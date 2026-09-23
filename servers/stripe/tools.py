@@ -1,17 +1,14 @@
 from __future__ import annotations
 
-from mcp_common.http import is_offline
-
-from mcp_common import local_store
-
 import os
 from typing import Annotated
 
 import httpx
 from fastmcp import FastMCP
-from pydantic import Field
-
+from mcp_common import local_store
 from mcp_common.errors import AuthError, ConfigError, NotFoundError, RateLimitError, UpstreamError
+from mcp_common.http import is_offline, make_client
+from pydantic import Field
 
 _BASE = "https://api.stripe.com/v1"
 _TIMEOUT = 30.0
@@ -51,7 +48,12 @@ def register_tools(mcp: FastMCP) -> None:
         _raise_for(r)
         return {
             "customers": [
-                {"id": c.get("id"), "email": c.get("email"), "name": c.get("name"), "created": c.get("created")}
+                {
+                    "id": c.get("id"),
+                    "email": c.get("email"),
+                    "name": c.get("name"),
+                    "created": c.get("created"),
+                }
                 for c in r.json().get("data", [])
             ]
         }
@@ -75,7 +77,19 @@ def register_tools(mcp: FastMCP) -> None:
             r = await c.get(f"{_BASE}/v1/charges", headers=_headers(), params=params)
             _raise_for(r)
             j = r.json()
-        return {"data": [{"id": ch["id"], "amount": ch["amount"], "currency": ch["currency"], "status": ch.get("status"), "customer": ch.get("customer")} for ch in j.get("data", [])], "has_more": j.get("has_more", False)}
+        return {
+            "data": [
+                {
+                    "id": ch["id"],
+                    "amount": ch["amount"],
+                    "currency": ch["currency"],
+                    "status": ch.get("status"),
+                    "customer": ch.get("customer"),
+                }
+                for ch in j.get("data", [])
+            ],
+            "has_more": j.get("has_more", False),
+        }
 
     @mcp.tool
     async def list_subscriptions(
@@ -83,7 +97,9 @@ def register_tools(mcp: FastMCP) -> None:
     ) -> dict:
         """List Stripe subscriptions."""
         async with make_client("stripe", timeout=_TIMEOUT) as client:
-            r = await client.get(f"{_BASE}/subscriptions", headers=_headers(), params={"limit": limit})
+            r = await client.get(
+                f"{_BASE}/subscriptions", headers=_headers(), params={"limit": limit}
+            )
         _raise_for(r)
         return {
             "subscriptions": [
@@ -100,7 +116,9 @@ def register_tools(mcp: FastMCP) -> None:
     @mcp.tool
     async def create_payment_intent(
         amount: Annotated[int, Field(ge=1, description="amount in cents")],
-        currency: Annotated[str, Field(min_length=3, max_length=3, description="ISO currency code")] = "usd",
+        currency: Annotated[
+            str, Field(min_length=3, max_length=3, description="ISO currency code")
+        ] = "usd",
         customer: Annotated[str | None, Field(description="stripe customer id")] = None,
     ) -> dict:
         """Create a Stripe PaymentIntent. Offline mode persists as a charge in local state."""
@@ -109,9 +127,23 @@ def register_tools(mcp: FastMCP) -> None:
             n = local_store.next_id("stripe", col)
             pi_id = f"pi_offline_{n}"
             ch_id = f"ch_offline_{n}"
-            charge = {"id": ch_id, "amount": amount, "currency": currency, "customer": customer, "status": "succeeded", "payment_intent": pi_id}
+            charge = {
+                "id": ch_id,
+                "amount": amount,
+                "currency": currency,
+                "customer": customer,
+                "status": "succeeded",
+                "payment_intent": pi_id,
+            }
             await local_store.put("stripe", col, ch_id, charge)
-            return {"id": pi_id, "amount": amount, "currency": currency, "customer": customer, "status": "succeeded", "charge_id": ch_id}
+            return {
+                "id": pi_id,
+                "amount": amount,
+                "currency": currency,
+                "customer": customer,
+                "status": "succeeded",
+                "charge_id": ch_id,
+            }
         data = {"amount": str(amount), "currency": currency}
         if customer:
             data["customer"] = customer
@@ -119,5 +151,10 @@ def register_tools(mcp: FastMCP) -> None:
             r = await c.post(f"{_BASE}/v1/payment_intents", headers=_headers(), data=data)
             _raise_for(r)
             j = r.json()
-        return {"id": j.get("id"), "amount": j.get("amount"), "currency": j.get("currency"), "customer": j.get("customer"), "status": j.get("status")}
-
+        return {
+            "id": j.get("id"),
+            "amount": j.get("amount"),
+            "currency": j.get("currency"),
+            "customer": j.get("customer"),
+            "status": j.get("status"),
+        }

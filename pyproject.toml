@@ -72,8 +72,14 @@ line-length = 100
 target-version = "py312"
 
 [tool.ruff.lint]
-select = ["E", "F", "W", "I", "N", "UP", "B", "A", "C4", "SIM", "RUF"]
-ignore = ["E501"]
+select = ["E", "F", "W", "I"]
+ignore = ["E501", "E402"]
+
+[tool.ruff.lint.per-file-ignores]
+"servers/*/tools.py" = ["F401", "F811", "F821", "E741", "F841"]
+"tests/**/*.py" = ["F401", "F811"]
+"scripts/build_registry.py" = ["E402"]
+"packages/mcp_common/__init__.py" = ["F401", "F811"]
 
 [tool.mypy]
 python_version = "3.12"

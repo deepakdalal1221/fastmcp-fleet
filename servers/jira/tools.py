@@ -1,19 +1,13 @@
 from __future__ import annotations
 
-from mcp_common.http import is_offline
-
-import re
-
-from mcp_common import local_store
-
 import base64
 import os
+import re
 from typing import Annotated, Any
 
 import httpx
 from fastmcp import FastMCP
-from pydantic import Field
-
+from mcp_common import local_store
 from mcp_common.errors import (
     AuthError,
     ConfigError,
@@ -22,6 +16,8 @@ from mcp_common.errors import (
     UpstreamError,
     ValidationError,
 )
+from mcp_common.http import is_offline, make_client
+from pydantic import Field
 
 _MAX_RESULTS = 100
 
@@ -82,9 +78,7 @@ async def _request(
 ) -> Any:
     url = f"{_base_url()}/rest/api/3{path}"
     try:
-        response = await client.request(
-            method, url, params=params, json=body, headers=_headers()
-        )
+        response = await client.request(method, url, params=params, json=body, headers=_headers())
     except httpx.RequestError as exc:
         raise UpstreamError(f"Jira request failed: {exc}") from exc
     _raise_for_status(response)
@@ -139,12 +133,34 @@ def register_tools(mcp: FastMCP) -> None:
             if m:
                 stored = await local_store.list_all("jira", f"issues:{m.group(1)}")
                 issues = [row["value"] for row in stored][:max_results]
-            return {"issues": [{"key": i["key"], "summary": i["fields"]["summary"], "status": i["fields"]["status"]["name"]} for i in issues]}
+            return {
+                "issues": [
+                    {
+                        "key": i["key"],
+                        "summary": i["fields"]["summary"],
+                        "status": i["fields"]["status"]["name"],
+                    }
+                    for i in issues
+                ]
+            }
         async with make_client("jira", timeout=_TIMEOUT) as c:
-            r = await c.get(f"{_base()}/rest/api/3/search", auth=_auth(), params={"jql": jql, "maxResults": max_results})
+            r = await c.get(
+                f"{_base()}/rest/api/3/search",
+                auth=_auth(),
+                params={"jql": jql, "maxResults": max_results},
+            )
             _raise_for(r)
             data = r.json()
-        return {"issues": [{"key": i["key"], "summary": i["fields"].get("summary"), "status": (i["fields"].get("status") or {}).get("name")} for i in data.get("issues", [])]}
+        return {
+            "issues": [
+                {
+                    "key": i["key"],
+                    "summary": i["fields"].get("summary"),
+                    "status": (i["fields"].get("status") or {}).get("name"),
+                }
+                for i in data.get("issues", [])
+            ]
+        }
 
     @mcp.tool
     async def get_issue(
@@ -169,10 +185,26 @@ def register_tools(mcp: FastMCP) -> None:
             col = f"issues:{project_key}"
             n = local_store.next_id("jira", col)
             key = f"{project_key}-{n}"
-            issue = {"key": key, "id": str(1000 + n), "fields": {"summary": summary, "description": description, "issuetype": {"name": issue_type}, "status": {"name": "To Do"}, "project": {"key": project_key}}}
+            issue = {
+                "key": key,
+                "id": str(1000 + n),
+                "fields": {
+                    "summary": summary,
+                    "description": description,
+                    "issuetype": {"name": issue_type},
+                    "status": {"name": "To Do"},
+                    "project": {"key": project_key},
+                },
+            }
             await local_store.put("jira", col, key, issue)
             return {"key": key, "id": issue["id"], "summary": summary, "status": "To Do"}
-        payload = {"fields": {"project": {"key": project_key}, "summary": summary, "issuetype": {"name": issue_type}}}
+        payload = {
+            "fields": {
+                "project": {"key": project_key},
+                "summary": summary,
+                "issuetype": {"name": issue_type},
+            }
+        }
         if description is not None:
             payload["fields"]["description"] = description
         async with make_client("jira", timeout=_TIMEOUT) as c:
@@ -185,7 +217,9 @@ def register_tools(mcp: FastMCP) -> None:
     async def update_issue(
         key: Annotated[str, Field(description="Issue key, e.g. ENG-123")],
         summary: Annotated[str | None, Field(description="New summary (optional)")] = None,
-        description: Annotated[str | None, Field(description="New description text (optional)")] = None,
+        description: Annotated[
+            str | None, Field(description="New description text (optional)")
+        ] = None,
     ) -> dict:
         """Update summary and/or description on a Jira issue."""
         if not key.strip():

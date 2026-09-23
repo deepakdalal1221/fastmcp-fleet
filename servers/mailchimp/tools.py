@@ -5,9 +5,9 @@ from typing import Annotated
 
 import httpx
 from fastmcp import FastMCP
-from pydantic import Field
-
 from mcp_common.errors import AuthError, ConfigError, NotFoundError, RateLimitError, UpstreamError
+from mcp_common.http import make_client
+from pydantic import Field
 
 _TIMEOUT = 30.0
 
@@ -90,7 +90,10 @@ def register_tools(mcp: FastMCP) -> None:
     async def add_subscriber(
         list_id: Annotated[str, Field(description="Mailchimp audience/list id")],
         email: Annotated[str, Field(description="Subscriber email address")],
-        status: Annotated[str, Field(description="Subscriber status: subscribed | pending | unsubscribed | cleaned")] = "subscribed",
+        status: Annotated[
+            str,
+            Field(description="Subscriber status: subscribed | pending | unsubscribed | cleaned"),
+        ] = "subscribed",
     ) -> dict:
         """Add a subscriber to a Mailchimp audience."""
         async with make_client("mailchimp", timeout=_TIMEOUT) as client:
@@ -101,4 +104,8 @@ def register_tools(mcp: FastMCP) -> None:
             )
         _raise_for(r)
         j = r.json()
-        return {"id": j.get("id"), "email_address": j.get("email_address"), "status": j.get("status")}
+        return {
+            "id": j.get("id"),
+            "email_address": j.get("email_address"),
+            "status": j.get("status"),
+        }

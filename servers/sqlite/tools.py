@@ -6,9 +6,8 @@ import sqlite3
 from pathlib import Path
 from typing import Annotated, Any
 
-from pydantic import Field
-
 from mcp_common.errors import ConfigError, NotFoundError, ValidationError
+from pydantic import Field
 
 _MAX_ROWS = 1000
 

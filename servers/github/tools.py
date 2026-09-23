@@ -1,15 +1,11 @@
 from __future__ import annotations
 
-from mcp_common import local_store
-from mcp_common.http import is_offline, make_client
-
 import os
 from typing import Annotated, Any
 
 import httpx
 from fastmcp import FastMCP
-from pydantic import Field
-
+from mcp_common import local_store
 from mcp_common.errors import (
     AuthError,
     ConfigError,
@@ -18,6 +14,8 @@ from mcp_common.errors import (
     UpstreamError,
     ValidationError,
 )
+from mcp_common.http import is_offline, make_client
+from pydantic import Field
 
 _API_BASE = "https://api.github.com"
 _DEFAULT_PER_PAGE = 30
@@ -277,5 +275,3 @@ def register_tools(mcp: FastMCP) -> None:
         async with httpx.AsyncClient(timeout=30.0) as client:
             data = await _get(client, f"/repos/{owner}/{repo}/commits", params=params)
         return {"repo": f"{owner}/{repo}", "commits": [_commit_slim(c) for c in data]}
-
-

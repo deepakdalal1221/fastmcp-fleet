@@ -5,8 +5,6 @@ from typing import Annotated
 
 import httpx
 from fastmcp import FastMCP
-from pydantic import Field
-
 from mcp_common.errors import (
     AuthError,
     ConfigError,
@@ -14,6 +12,8 @@ from mcp_common.errors import (
     RateLimitError,
     UpstreamError,
 )
+from mcp_common.http import make_client
+from pydantic import Field
 
 _TIMEOUT = 30.0
 
@@ -66,7 +66,9 @@ def register_tools(mcp: FastMCP) -> None:
     @mcp.tool
     async def trigger_build(
         job_name: Annotated[str, Field(min_length=1, description="Jenkins job name")],
-        parameters: Annotated[dict | None, Field(description="build parameters as JSON object")] = None,
+        parameters: Annotated[
+            dict | None, Field(description="build parameters as JSON object")
+        ] = None,
     ) -> dict:
         """Trigger a Jenkins build for the named job."""
         path = "buildWithParameters" if parameters else "build"

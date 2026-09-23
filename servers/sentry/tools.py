@@ -5,8 +5,6 @@ from typing import Annotated, Any
 
 import httpx
 from fastmcp import FastMCP
-from pydantic import Field
-
 from mcp_common.errors import (
     AuthError,
     ConfigError,
@@ -15,6 +13,8 @@ from mcp_common.errors import (
     UpstreamError,
     ValidationError,
 )
+from mcp_common.http import make_client
+from pydantic import Field
 
 _TIMEOUT = 30.0
 _MAX_LIMIT = 100
@@ -68,13 +68,9 @@ def _clamp(n: int, lo: int, hi: int) -> int:
     return n
 
 
-async def _get(
-    client: httpx.AsyncClient, path: str, params: dict[str, Any] | None = None
-) -> Any:
+async def _get(client: httpx.AsyncClient, path: str, params: dict[str, Any] | None = None) -> Any:
     try:
-        response = await client.get(
-            f"{_base_url()}{path}", headers=_headers(), params=params
-        )
+        response = await client.get(f"{_base_url()}{path}", headers=_headers(), params=params)
     except httpx.RequestError as exc:
         raise UpstreamError(f"Sentry request failed: {exc}") from exc
     _raise_for_status(response)
@@ -112,13 +108,9 @@ def _event_slim(event: dict[str, Any]) -> dict[str, Any]:
 def register_tools(mcp: FastMCP) -> None:
     @mcp.tool
     async def list_issues(
-        organization_slug: Annotated[
-            str, Field(description="Sentry organization slug.")
-        ],
+        organization_slug: Annotated[str, Field(description="Sentry organization slug.")],
         project_slug: Annotated[str, Field(description="Sentry project slug.")],
-        query: Annotated[
-            str, Field(description="Optional Sentry search query.")
-        ] = "is:unresolved",
+        query: Annotated[str, Field(description="Optional Sentry search query.")] = "is:unresolved",
         limit: Annotated[int, Field(description="Max issues to return (1-100).")] = 25,
     ) -> dict[str, Any]:
         """List Sentry issues for a project."""

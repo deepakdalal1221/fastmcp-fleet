@@ -1,4 +1,5 @@
 """Shared httpx.AsyncClient factory that respects MCP_OFFLINE."""
+
 from __future__ import annotations
 
 import os

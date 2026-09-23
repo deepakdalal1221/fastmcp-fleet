@@ -5,8 +5,6 @@ from typing import Annotated, Any
 
 import httpx
 from fastmcp import FastMCP
-from pydantic import Field
-
 from mcp_common.errors import (
     AuthError,
     ConfigError,
@@ -14,6 +12,8 @@ from mcp_common.errors import (
     UpstreamError,
     ValidationError,
 )
+from mcp_common.http import make_client
+from pydantic import Field
 
 _API_BASE = "https://api.tavily.com"
 _MAX_RESULTS = 20
@@ -51,14 +51,10 @@ def _raise_for_status(response: httpx.Response) -> None:
         raise UpstreamError(f"Tavily HTTP {response.status_code}: {response.text[:200]}")
 
 
-async def _post(
-    client: httpx.AsyncClient, path: str, body: dict[str, Any]
-) -> dict[str, Any]:
+async def _post(client: httpx.AsyncClient, path: str, body: dict[str, Any]) -> dict[str, Any]:
     body_with_key = {"api_key": _api_key(), **body}
     try:
-        response = await client.post(
-            f"{_API_BASE}{path}", json=body_with_key, headers=_headers()
-        )
+        response = await client.post(f"{_API_BASE}{path}", json=body_with_key, headers=_headers())
     except httpx.RequestError as exc:
         raise UpstreamError(f"Tavily request failed: {exc}") from exc
     _raise_for_status(response)

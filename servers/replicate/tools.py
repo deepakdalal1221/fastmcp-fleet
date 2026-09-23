@@ -5,11 +5,10 @@ from typing import Annotated
 
 import httpx
 from fastmcp import FastMCP
-from pydantic import Field
-
+from mcp_common import local_store
 from mcp_common.errors import AuthError, ConfigError, NotFoundError, RateLimitError, UpstreamError
 from mcp_common.http import is_offline, make_client
-from mcp_common import local_store
+from pydantic import Field
 
 _BASE = "https://api.replicate.com/v1"
 _TIMEOUT = 30.0
@@ -23,7 +22,11 @@ def _token() -> str:
 
 
 def _headers() -> dict[str, str]:
-    return {"Authorization": f"Token {_token()}", "Content-Type": "application/json", "Accept": "application/json"}
+    return {
+        "Authorization": f"Token {_token()}",
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+    }
 
 
 def _raise_for(r: httpx.Response) -> None:
@@ -48,7 +51,17 @@ def register_tools(mcp: FastMCP) -> None:
             _raise_for(r)
             data = r.json()
         results = (data.get("results") or [])[:limit]
-        return {"models": [{"owner": m.get("owner"), "name": m.get("name"), "description": m.get("description"), "run_count": m.get("run_count")} for m in results]}
+        return {
+            "models": [
+                {
+                    "owner": m.get("owner"),
+                    "name": m.get("name"),
+                    "description": m.get("description"),
+                    "run_count": m.get("run_count"),
+                }
+                for m in results
+            ]
+        }
 
     @mcp.tool
     async def run_prediction(
@@ -61,7 +74,12 @@ def register_tools(mcp: FastMCP) -> None:
             r = await c.post(f"{_BASE}/predictions", headers=_headers(), json=body)
             _raise_for(r)
             p = r.json()
-        return {"id": p.get("id"), "status": p.get("status"), "urls": p.get("urls"), "created_at": p.get("created_at")}
+        return {
+            "id": p.get("id"),
+            "status": p.get("status"),
+            "urls": p.get("urls"),
+            "created_at": p.get("created_at"),
+        }
 
     @mcp.tool
     async def get_prediction(
@@ -72,4 +90,10 @@ def register_tools(mcp: FastMCP) -> None:
             r = await c.get(f"{_BASE}/predictions/{prediction_id}", headers=_headers())
             _raise_for(r)
             p = r.json()
-        return {"id": p.get("id"), "status": p.get("status"), "output": p.get("output"), "error": p.get("error"), "logs": (p.get("logs") or "")[:400]}
+        return {
+            "id": p.get("id"),
+            "status": p.get("status"),
+            "output": p.get("output"),
+            "error": p.get("error"),
+            "logs": (p.get("logs") or "")[:400],
+        }

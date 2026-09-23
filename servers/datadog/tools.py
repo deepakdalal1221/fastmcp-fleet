@@ -5,9 +5,9 @@ from typing import Annotated
 
 import httpx
 from fastmcp import FastMCP
-from pydantic import Field
-
 from mcp_common.errors import AuthError, ConfigError, NotFoundError, RateLimitError, UpstreamError
+from mcp_common.http import make_client
+from pydantic import Field
 
 _TIMEOUT = 30.0
 
@@ -54,11 +54,16 @@ def _raise_for(r: httpx.Response) -> None:
 def register_tools(mcp: FastMCP) -> None:
     @mcp.tool
     async def query_metric(
-        query: Annotated[str, Field(description="Datadog metric query, e.g. 'avg:system.cpu.user{*}'")],
-        from_seconds_ago: Annotated[int, Field(description="Window start relative to now", ge=1, le=86400)] = 3600,
+        query: Annotated[
+            str, Field(description="Datadog metric query, e.g. 'avg:system.cpu.user{*}'")
+        ],
+        from_seconds_ago: Annotated[
+            int, Field(description="Window start relative to now", ge=1, le=86400)
+        ] = 3600,
     ) -> dict:
         """Run a Datadog metric query for the given time window."""
         import time
+
         now = int(time.time())
         params = {"from": now - from_seconds_ago, "to": now, "query": query}
         async with make_client("datadog", timeout=_TIMEOUT) as client:
@@ -69,7 +74,11 @@ def register_tools(mcp: FastMCP) -> None:
             "query": query,
             "status": data.get("status"),
             "series": [
-                {"metric": s.get("metric"), "points": s.get("pointlist", [])[:100], "scope": s.get("scope")}
+                {
+                    "metric": s.get("metric"),
+                    "points": s.get("pointlist", [])[:100],
+                    "scope": s.get("scope"),
+                }
                 for s in data.get("series", [])
             ],
         }
@@ -87,7 +96,12 @@ def register_tools(mcp: FastMCP) -> None:
         _raise_for(r)
         return {
             "monitors": [
-                {"id": m["id"], "name": m.get("name"), "type": m.get("type"), "overall_state": m.get("overall_state")}
+                {
+                    "id": m["id"],
+                    "name": m.get("name"),
+                    "type": m.get("type"),
+                    "overall_state": m.get("overall_state"),
+                }
                 for m in r.json()
             ]
         }
@@ -95,11 +109,14 @@ def register_tools(mcp: FastMCP) -> None:
     @mcp.tool
     async def search_logs(
         query: Annotated[str, Field(description="Datadog log search query")],
-        from_seconds_ago: Annotated[int, Field(description="Window start relative to now", ge=1, le=86400)] = 900,
+        from_seconds_ago: Annotated[
+            int, Field(description="Window start relative to now", ge=1, le=86400)
+        ] = 900,
         limit: Annotated[int, Field(description="Max log lines to return", ge=1, le=1000)] = 50,
     ) -> dict:
         """Search Datadog logs within a time window."""
         import time
+
         now_ms = int(time.time() * 1000)
         payload = {
             "filter": {

@@ -5,11 +5,10 @@ from typing import Annotated
 
 import httpx
 from fastmcp import FastMCP
-from pydantic import Field
-
+from mcp_common import local_store
 from mcp_common.errors import AuthError, ConfigError, NotFoundError, RateLimitError, UpstreamError
 from mcp_common.http import is_offline, make_client
-from mcp_common import local_store
+from pydantic import Field
 
 _BASE = "https://api.mistral.ai/v1"
 _TIMEOUT = 60.0
@@ -23,7 +22,11 @@ def _token() -> str:
 
 
 def _headers() -> dict[str, str]:
-    return {"Authorization": f"Bearer {_token()}", "Accept": "application/json", "Content-Type": "application/json"}
+    return {
+        "Authorization": f"Bearer {_token()}",
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+    }
 
 
 def _raise_for(r: httpx.Response) -> None:
@@ -46,7 +49,12 @@ def register_tools(mcp: FastMCP) -> None:
         max_tokens: Annotated[int, Field(ge=1, le=8192)] = 1024,
     ) -> dict:
         """Send a chat completion to Mistral."""
-        body = {"model": model, "messages": [{"role": "user", "content": prompt}], "temperature": temperature, "max_tokens": max_tokens}
+        body = {
+            "model": model,
+            "messages": [{"role": "user", "content": prompt}],
+            "temperature": temperature,
+            "max_tokens": max_tokens,
+        }
         async with make_client("mistral", timeout=_TIMEOUT) as c:
             r = await c.post(f"{_BASE}/chat/completions", headers=_headers(), json=body)
             _raise_for(r)
@@ -55,10 +63,19 @@ def register_tools(mcp: FastMCP) -> None:
         text = ""
         finish = None
         if choices:
-            text = ((choices[0].get("message") or {}).get("content") or "")
+            text = (choices[0].get("message") or {}).get("content") or ""
             finish = choices[0].get("finish_reason")
         usage = data.get("usage", {})
-        return {"text": text, "model": data.get("model", model), "finish_reason": finish, "usage": {"prompt_tokens": usage.get("prompt_tokens"), "completion_tokens": usage.get("completion_tokens"), "total_tokens": usage.get("total_tokens")}}
+        return {
+            "text": text,
+            "model": data.get("model", model),
+            "finish_reason": finish,
+            "usage": {
+                "prompt_tokens": usage.get("prompt_tokens"),
+                "completion_tokens": usage.get("completion_tokens"),
+                "total_tokens": usage.get("total_tokens"),
+            },
+        }
 
     @mcp.tool
     async def embed(
@@ -71,7 +88,7 @@ def register_tools(mcp: FastMCP) -> None:
             r = await c.post(f"{_BASE}/embeddings", headers=_headers(), json=body)
             _raise_for(r)
             data = r.json()
-        emb = ((data.get("data") or [{}])[0].get("embedding") or [])
+        emb = (data.get("data") or [{}])[0].get("embedding") or []
         return {"model": model, "dimensions": len(emb), "embedding_preview": emb[:8]}
 
     @mcp.tool
@@ -81,4 +98,9 @@ def register_tools(mcp: FastMCP) -> None:
             r = await c.get(f"{_BASE}/models", headers=_headers())
             _raise_for(r)
             data = r.json()
-        return {"models": [{"id": m.get("id"), "created": m.get("created"), "owned_by": m.get("owned_by")} for m in data.get("data", [])]}
+        return {
+            "models": [
+                {"id": m.get("id"), "created": m.get("created"), "owned_by": m.get("owned_by")}
+                for m in data.get("data", [])
+            ]
+        }

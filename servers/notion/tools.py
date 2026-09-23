@@ -1,16 +1,11 @@
 from __future__ import annotations
 
-from mcp_common.http import is_offline
-
-from mcp_common import local_store
-
 import os
 from typing import Annotated, Any
 
 import httpx
 from fastmcp import FastMCP
-from pydantic import Field
-
+from mcp_common import local_store
 from mcp_common.errors import (
     AuthError,
     ConfigError,
@@ -19,6 +14,8 @@ from mcp_common.errors import (
     UpstreamError,
     ValidationError,
 )
+from mcp_common.http import is_offline, make_client
+from pydantic import Field
 
 _API_BASE = "https://api.notion.com/v1"
 _NOTION_VERSION = "2022-06-28"
@@ -68,9 +65,7 @@ async def _request(
     body: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     try:
-        response = await client.request(
-            method, f"{_API_BASE}{path}", json=body, headers=_headers()
-        )
+        response = await client.request(method, f"{_API_BASE}{path}", json=body, headers=_headers())
     except httpx.RequestError as exc:
         raise UpstreamError(f"Notion request failed: {exc}") from exc
     _raise_for_status(response)
@@ -123,7 +118,11 @@ def register_tools(mcp: FastMCP) -> None:
                 q = query.lower()
                 pages = [p for p in pages if q in (p.get("title", "") or "").lower()]
             pages = pages[:limit]
-            return {"results": [{"id": p["id"], "title": p.get("title"), "url": p.get("url")} for p in pages]}
+            return {
+                "results": [
+                    {"id": p["id"], "title": p.get("title"), "url": p.get("url")} for p in pages
+                ]
+            }
         payload = {"query": query, "page_size": limit}
         async with make_client("notion", timeout=_TIMEOUT) as c:
             r = await c.post(f"{_BASE}/search", headers=_headers(), json=payload)
@@ -161,10 +160,20 @@ def register_tools(mcp: FastMCP) -> None:
             col = f"pages:{parent_id}"
             n = local_store.next_id("notion", col)
             pid = f"offline-page-{n:04d}"
-            page = {"id": pid, "object": "page", "parent": {parent_type: parent_id}, "properties": {"title": [{"plain_text": title}]}, "title": title, "url": f"https://www.notion.so/offline/{pid}"}
+            page = {
+                "id": pid,
+                "object": "page",
+                "parent": {parent_type: parent_id},
+                "properties": {"title": [{"plain_text": title}]},
+                "title": title,
+                "url": f"https://www.notion.so/offline/{pid}",
+            }
             await local_store.put("notion", col, pid, page)
             return {"id": pid, "title": title, "url": page["url"]}
-        payload = {"parent": {parent_type: parent_id}, "properties": {"title": {"title": [{"text": {"content": title}}]}}}
+        payload = {
+            "parent": {parent_type: parent_id},
+            "properties": {"title": {"title": [{"text": {"content": title}}]}},
+        }
         async with make_client("notion", timeout=_TIMEOUT) as c:
             r = await c.post(f"{_BASE}/pages", headers=_headers(), json=payload)
             _raise_for(r)
@@ -181,9 +190,7 @@ def register_tools(mcp: FastMCP) -> None:
             raise ValidationError("database_id must not be empty")
         body = {"page_size": _clamp(page_size)}
         async with make_client("notion", timeout=30.0) as client:
-            data = await _request(
-                client, "POST", f"/databases/{database_id}/query", body=body
-            )
+            data = await _request(client, "POST", f"/databases/{database_id}/query", body=body)
         results = [_result_slim(r) for r in (data.get("results") or [])]
         return {
             "database_id": database_id,

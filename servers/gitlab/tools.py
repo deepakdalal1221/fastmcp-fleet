@@ -6,8 +6,6 @@ from urllib.parse import quote
 
 import httpx
 from fastmcp import FastMCP
-from pydantic import Field
-
 from mcp_common.errors import (
     AuthError,
     ConfigError,
@@ -15,6 +13,8 @@ from mcp_common.errors import (
     RateLimitError,
     UpstreamError,
 )
+from mcp_common.http import make_client
+from pydantic import Field
 
 _BASE = "https://gitlab.com/api/v4"
 _TIMEOUT = 30.0
@@ -50,7 +50,9 @@ def register_tools(mcp: FastMCP) -> None:
     @mcp.tool
     async def list_projects(
         per_page: Annotated[int, Field(ge=1, le=100, description="page size")] = 20,
-        membership: Annotated[bool, Field(description="only projects the token owner belongs to")] = True,
+        membership: Annotated[
+            bool, Field(description="only projects the token owner belongs to")
+        ] = True,
     ) -> dict:
         """List GitLab projects visible to the caller."""
         async with make_client("gitlab", timeout=_TIMEOUT) as c:
@@ -144,7 +146,12 @@ def register_tools(mcp: FastMCP) -> None:
             )
             _raise_for(r)
             i = r.json()
-        return {"iid": i["iid"], "title": i["title"], "state": i["state"], "web_url": i.get("web_url")}
+        return {
+            "iid": i["iid"],
+            "title": i["title"],
+            "state": i["state"],
+            "web_url": i.get("web_url"),
+        }
 
     @mcp.tool
     async def list_merge_requests(

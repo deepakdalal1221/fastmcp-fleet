@@ -5,8 +5,6 @@ import os
 from typing import Annotated, Any
 
 from fastmcp import FastMCP
-from pydantic import Field
-
 from mcp_common.errors import (
     AuthError,
     ConfigError,
@@ -14,6 +12,7 @@ from mcp_common.errors import (
     UpstreamError,
     ValidationError,
 )
+from pydantic import Field
 
 try:
     import aioboto3
@@ -89,9 +88,7 @@ def register_tools(mcp: FastMCP) -> None:
         buckets = [
             {
                 "name": b.get("Name"),
-                "creation_date": b["CreationDate"].isoformat()
-                if b.get("CreationDate")
-                else None,
+                "creation_date": b["CreationDate"].isoformat() if b.get("CreationDate") else None,
             }
             for b in response.get("Buckets", [])
         ]
@@ -123,9 +120,7 @@ def register_tools(mcp: FastMCP) -> None:
                 "key": o.get("Key"),
                 "size": o.get("Size"),
                 "etag": (o.get("ETag") or "").strip('"'),
-                "last_modified": o["LastModified"].isoformat()
-                if o.get("LastModified")
-                else None,
+                "last_modified": o["LastModified"].isoformat() if o.get("LastModified") else None,
                 "storage_class": o.get("StorageClass"),
             }
             for o in response.get("Contents", [])
@@ -179,9 +174,7 @@ def register_tools(mcp: FastMCP) -> None:
         bucket: Annotated[str, Field(description="S3 bucket name.")],
         key: Annotated[str, Field(description="S3 object key.")],
         content: Annotated[str, Field(description="Object body (utf-8 text).")],
-        content_type: Annotated[
-            str, Field(description="Content-Type header.")
-        ] = "text/plain",
+        content_type: Annotated[str, Field(description="Content-Type header.")] = "text/plain",
     ) -> dict[str, Any]:
         """Upload a utf-8 text object to S3. Max body 5MB."""
         if not bucket.strip() or not key.strip():

@@ -3,10 +3,9 @@ from __future__ import annotations
 from pathlib import Path
 
 import click
-
 from mcp_common.registry import ServerManifest, load_manifest
 
-_MAIN_TEMPLATE = '''from __future__ import annotations
+_MAIN_TEMPLATE = """from __future__ import annotations
 
 from mcp_common import create_server, load_manifest
 from mcp_common.server import parse_runtime_args, run
@@ -26,9 +25,9 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-'''
+"""
 
-_TOOLS_HEADER = '''from __future__ import annotations
+_TOOLS_HEADER = """from __future__ import annotations
 
 from fastmcp import FastMCP
 
@@ -37,7 +36,7 @@ from mcp_common.errors import UpstreamError, ValidationError
 {auth_line}
 
 def register_tools(mcp: FastMCP) -> None:
-'''
+"""
 
 _TOOL_STUB = '''    @mcp.tool
     async def {tool_name}() -> dict:

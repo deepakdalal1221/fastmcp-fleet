@@ -6,9 +6,9 @@ from typing import Annotated
 
 import httpx
 from fastmcp import FastMCP
-from pydantic import Field
-
 from mcp_common.errors import AuthError, ConfigError, NotFoundError, RateLimitError, UpstreamError
+from mcp_common.http import make_client
+from pydantic import Field
 
 _TIMEOUT = 30.0
 
@@ -57,7 +57,12 @@ def register_tools(mcp: FastMCP) -> None:
         _raise_for(r)
         return {
             "dashboards": [
-                {"uid": d.get("uid"), "title": d.get("title"), "url": d.get("url"), "folder": d.get("folderTitle")}
+                {
+                    "uid": d.get("uid"),
+                    "title": d.get("title"),
+                    "url": d.get("url"),
+                    "folder": d.get("folderTitle"),
+                }
                 for d in r.json()
             ]
         }
@@ -66,7 +71,9 @@ def register_tools(mcp: FastMCP) -> None:
     async def query_datasource(
         datasource_uid: Annotated[str, Field(description="Grafana datasource UID")],
         query: Annotated[str, Field(description="Datasource query expression")],
-        from_seconds_ago: Annotated[int, Field(description="Window start relative to now", ge=1, le=86400)] = 3600,
+        from_seconds_ago: Annotated[
+            int, Field(description="Window start relative to now", ge=1, le=86400)
+        ] = 3600,
     ) -> dict:
         """Query a Grafana datasource with a PromQL/SQL/LogQL expression."""
         now_ms = int(time.time() * 1000)

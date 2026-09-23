@@ -5,11 +5,10 @@ from typing import Annotated
 
 import httpx
 from fastmcp import FastMCP
-from pydantic import Field
-
+from mcp_common import local_store
 from mcp_common.errors import AuthError, ConfigError, NotFoundError, RateLimitError, UpstreamError
 from mcp_common.http import is_offline, make_client
-from mcp_common import local_store
+from pydantic import Field
 
 _BASE = "https://api.bitbucket.org/2.0"
 _TIMEOUT = 30.0
@@ -53,10 +52,26 @@ def register_tools(mcp: FastMCP) -> None:
     ) -> dict:
         """List Bitbucket repositories in a workspace."""
         async with make_client("bitbucket", timeout=_TIMEOUT) as c:
-            r = await c.get(f"{_BASE}/repositories/{workspace}", auth=_auth(), headers=_headers(), params={"pagelen": pagelen})
+            r = await c.get(
+                f"{_BASE}/repositories/{workspace}",
+                auth=_auth(),
+                headers=_headers(),
+                params={"pagelen": pagelen},
+            )
             _raise_for(r)
             data = r.json()
-        return {"repositories": [{"uuid": v.get("uuid"), "full_name": v.get("full_name"), "slug": v.get("slug"), "is_private": v.get("is_private"), "mainbranch": (v.get("mainbranch") or {}).get("name")} for v in data.get("values", [])]}
+        return {
+            "repositories": [
+                {
+                    "uuid": v.get("uuid"),
+                    "full_name": v.get("full_name"),
+                    "slug": v.get("slug"),
+                    "is_private": v.get("is_private"),
+                    "mainbranch": (v.get("mainbranch") or {}).get("name"),
+                }
+                for v in data.get("values", [])
+            ]
+        }
 
     @mcp.tool
     async def get_repository(
@@ -65,10 +80,19 @@ def register_tools(mcp: FastMCP) -> None:
     ) -> dict:
         """Get a single Bitbucket repository."""
         async with make_client("bitbucket", timeout=_TIMEOUT) as c:
-            r = await c.get(f"{_BASE}/repositories/{workspace}/{repo_slug}", auth=_auth(), headers=_headers())
+            r = await c.get(
+                f"{_BASE}/repositories/{workspace}/{repo_slug}", auth=_auth(), headers=_headers()
+            )
             _raise_for(r)
             v = r.json()
-        return {"uuid": v.get("uuid"), "full_name": v.get("full_name"), "description": v.get("description"), "size": v.get("size"), "is_private": v.get("is_private"), "mainbranch": (v.get("mainbranch") or {}).get("name")}
+        return {
+            "uuid": v.get("uuid"),
+            "full_name": v.get("full_name"),
+            "description": v.get("description"),
+            "size": v.get("size"),
+            "is_private": v.get("is_private"),
+            "mainbranch": (v.get("mainbranch") or {}).get("name"),
+        }
 
     @mcp.tool
     async def list_pullrequests(
@@ -79,7 +103,26 @@ def register_tools(mcp: FastMCP) -> None:
     ) -> dict:
         """List Bitbucket pull requests."""
         async with make_client("bitbucket", timeout=_TIMEOUT) as c:
-            r = await c.get(f"{_BASE}/repositories/{workspace}/{repo_slug}/pullrequests", auth=_auth(), headers=_headers(), params={"state": state, "pagelen": pagelen})
+            r = await c.get(
+                f"{_BASE}/repositories/{workspace}/{repo_slug}/pullrequests",
+                auth=_auth(),
+                headers=_headers(),
+                params={"state": state, "pagelen": pagelen},
+            )
             _raise_for(r)
             data = r.json()
-        return {"pullrequests": [{"id": v.get("id"), "title": v.get("title"), "state": v.get("state"), "author": (v.get("author") or {}).get("display_name"), "source_branch": ((v.get("source") or {}).get("branch") or {}).get("name"), "destination_branch": ((v.get("destination") or {}).get("branch") or {}).get("name")} for v in data.get("values", [])]}
+        return {
+            "pullrequests": [
+                {
+                    "id": v.get("id"),
+                    "title": v.get("title"),
+                    "state": v.get("state"),
+                    "author": (v.get("author") or {}).get("display_name"),
+                    "source_branch": ((v.get("source") or {}).get("branch") or {}).get("name"),
+                    "destination_branch": ((v.get("destination") or {}).get("branch") or {}).get(
+                        "name"
+                    ),
+                }
+                for v in data.get("values", [])
+            ]
+        }

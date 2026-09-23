@@ -1,17 +1,14 @@
 from __future__ import annotations
 
-from mcp_common.http import is_offline, make_client
-
-from mcp_common import local_store
-
 import os
 from typing import Annotated
 
 import httpx
 from fastmcp import FastMCP
-from pydantic import Field
-
+from mcp_common import local_store
 from mcp_common.errors import AuthError, ConfigError, NotFoundError, RateLimitError, UpstreamError
+from mcp_common.http import is_offline, make_client
+from pydantic import Field
 
 _BASE = "https://api.pagerduty.com"
 _TIMEOUT = 30.0
@@ -51,7 +48,9 @@ def register_tools(mcp: FastMCP) -> None:
     @mcp.tool
     async def list_incidents(
         service_id: Annotated[str | None, Field(description="filter by service id")] = None,
-        status: Annotated[str, Field(description="triggered | acknowledged | resolved | all")] = "triggered",
+        status: Annotated[
+            str, Field(description="triggered | acknowledged | resolved | all")
+        ] = "triggered",
         limit: Annotated[int, Field(ge=1, le=100)] = 20,
     ) -> dict:
         """List PagerDuty incidents. Offline mode returns locally-created incidents."""
@@ -64,7 +63,17 @@ def register_tools(mcp: FastMCP) -> None:
             if status != "all":
                 incidents = [i for i in incidents if i.get("status") == status]
             incidents = incidents[:limit]
-            return {"incidents": [{"id": i["id"], "title": i["title"], "urgency": i["urgency"], "status": i["status"]} for i in incidents]}
+            return {
+                "incidents": [
+                    {
+                        "id": i["id"],
+                        "title": i["title"],
+                        "urgency": i["urgency"],
+                        "status": i["status"],
+                    }
+                    for i in incidents
+                ]
+            }
         params = {"limit": limit, "statuses[]": status if status != "all" else None}
         if service_id:
             params["service_ids[]"] = service_id
@@ -73,7 +82,17 @@ def register_tools(mcp: FastMCP) -> None:
             r = await c.get(f"{_BASE}/incidents", headers=_headers(), params=params)
             _raise_for(r)
             j = r.json()
-        return {"incidents": [{"id": i.get("id"), "title": i.get("title"), "urgency": i.get("urgency"), "status": i.get("status")} for i in j.get("incidents", [])]}
+        return {
+            "incidents": [
+                {
+                    "id": i.get("id"),
+                    "title": i.get("title"),
+                    "urgency": i.get("urgency"),
+                    "status": i.get("status"),
+                }
+                for i in j.get("incidents", [])
+            ]
+        }
 
     @mcp.tool
     async def create_incident(
@@ -87,18 +106,41 @@ def register_tools(mcp: FastMCP) -> None:
             col = f"incidents:{service_id}"
             n = local_store.next_id("pagerduty", col)
             iid = f"PDOFF{n:04d}"
-            inc = {"id": iid, "title": title, "urgency": urgency, "status": "triggered", "service": {"id": service_id}, "description": details}
+            inc = {
+                "id": iid,
+                "title": title,
+                "urgency": urgency,
+                "status": "triggered",
+                "service": {"id": service_id},
+                "description": details,
+            }
             await local_store.put("pagerduty", col, iid, inc)
             return {"id": iid, "title": title, "urgency": urgency, "status": "triggered"}
-        payload = {"incident": {"type": "incident", "title": title, "service": {"id": service_id, "type": "service_reference"}, "urgency": urgency}}
+        payload = {
+            "incident": {
+                "type": "incident",
+                "title": title,
+                "service": {"id": service_id, "type": "service_reference"},
+                "urgency": urgency,
+            }
+        }
         if details is not None:
             payload["incident"]["body"] = {"type": "incident_body", "details": details}
         async with make_client("pagerduty", timeout=_TIMEOUT) as c:
-            r = await c.post(f"{_BASE}/incidents", headers={**_headers(), "From": os.environ.get("PAGERDUTY_FROM", "offline@mcp")}, json=payload)
+            r = await c.post(
+                f"{_BASE}/incidents",
+                headers={**_headers(), "From": os.environ.get("PAGERDUTY_FROM", "offline@mcp")},
+                json=payload,
+            )
             _raise_for(r)
             j = r.json()
         i = j.get("incident", {})
-        return {"id": i.get("id"), "title": i.get("title"), "urgency": i.get("urgency"), "status": i.get("status")}
+        return {
+            "id": i.get("id"),
+            "title": i.get("title"),
+            "urgency": i.get("urgency"),
+            "status": i.get("status"),
+        }
 
     @mcp.tool
     async def list_services(
