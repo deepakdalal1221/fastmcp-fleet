@@ -50,3 +50,43 @@ create:
 clean:
 	rm -rf .pytest_cache .mypy_cache .ruff_cache dist build *.egg-info
 	find . -type d -name __pycache__ -exec rm -rf {} +
+
+# ============================================================================
+# Sequential compose orchestration
+# ============================================================================
+COMPOSE ?= docker compose -f deployment/compose/docker-compose.yml
+SLEEP_BETWEEN ?= 1
+
+.PHONY: up up-sequential up-parallel down ps logs
+
+## up: start all services one by one (aliased to up-sequential)
+up: up-sequential
+
+## up-sequential: bring up every service one at a time (fetch first, gateway last)
+up-sequential:
+	@echo "Starting services sequentially..."
+	@svcs=$$($(COMPOSE) config --services | grep -v '^gateway$$' | sort); \
+	for svc in $$svcs; do \
+		echo "-> up $$svc"; \
+		$(COMPOSE) up -d --no-deps $$svc; \
+		sleep $(SLEEP_BETWEEN); \
+	done; \
+	echo "-> up gateway"; \
+	$(COMPOSE) up -d --no-deps gateway
+	@echo "All services up. $(COMPOSE) ps"
+
+## up-parallel: original parallel behavior (all services at once)
+up-parallel:
+	$(COMPOSE) up -d
+
+## down: stop and remove all services
+down:
+	$(COMPOSE) down
+
+## ps: list running compose services
+ps:
+	$(COMPOSE) ps
+
+## logs: tail gateway logs
+logs:
+	$(COMPOSE) logs -f gateway
