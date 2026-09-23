@@ -28,7 +28,7 @@ services:
       <<: *common-env
       MCP_PORT: "8000"
       MCP_AUTH_TOKEN: ${MCP_AUTH_TOKEN:-}
-      GATEWAY_SERVERS: fetch,filesystem,time,github,postgres,sqlite,redis,mongodb,mysql,slack,discord,jira,linear,notion,brave-search,tavily,openai,anthropic,s3,sentry,cloudflare,datadog,grafana,prometheus,new-relic,pagerduty,stripe,hubspot,sendgrid,twilio,mailchimp,1password,snyk,auth0,okta,gitlab,asana,jenkins,airtable,gemini,vercel,netlify,huggingface,confluence,digitalocean,render,fly-io,gitea,terraform,circleci,gitlab-ci,elasticsearch,vault,mistral,bitbucket,cohere,groq,openrouter,replicate,supabase
+      GATEWAY_SERVERS: fetch,filesystem,time,github,postgres,sqlite,redis,mongodb,mysql,slack,discord,jira,linear,notion,brave-search,tavily,openai,anthropic,s3,sentry,cloudflare,datadog,grafana,prometheus,new-relic,pagerduty,stripe,hubspot,sendgrid,twilio,mailchimp,1password,snyk,auth0,okta,gitlab,asana,jenkins,airtable,gemini,vercel,netlify,huggingface,confluence,digitalocean,render,fly-io,gitea,terraform,circleci,gitlab-ci,elasticsearch,vault,mistral,bitbucket,cohere,groq,openrouter,replicate,supabase,azure-devops,sourcegraph,codecov,argocd,buildkite,github-actions
     depends_on:
       - fetch
       - filesystem
@@ -760,6 +760,86 @@ services:
       SUPABASE_KEY: ${SUPABASE_KEY:-}
     ports:
       - "8027:8027"
+
+  azure-devops:
+    <<: *common
+    build:
+      <<: *server-build
+      args:
+        SERVER_ID: azure-devops
+    environment:
+      <<: *common-env
+      MCP_PORT: "8008"
+      AZURE_DEVOPS_ORG: ${AZURE_DEVOPS_ORG:-}
+      AZURE_DEVOPS_TOKEN: ${AZURE_DEVOPS_TOKEN:-}
+    ports:
+      - "8008:8008"
+
+  sourcegraph:
+    <<: *common
+    build:
+      <<: *server-build
+      args:
+        SERVER_ID: sourcegraph
+    environment:
+      <<: *common-env
+      MCP_PORT: "8009"
+      SOURCEGRAPH_TOKEN: ${SOURCEGRAPH_TOKEN:-}
+    ports:
+      - "8009:8009"
+
+  codecov:
+    <<: *common
+    build:
+      <<: *server-build
+      args:
+        SERVER_ID: codecov
+    environment:
+      <<: *common-env
+      MCP_PORT: "8010"
+      CODECOV_TOKEN: ${CODECOV_TOKEN:-}
+    ports:
+      - "8010:8010"
+
+  argocd:
+    <<: *common
+    build:
+      <<: *server-build
+      args:
+        SERVER_ID: argocd
+    environment:
+      <<: *common-env
+      MCP_PORT: "8052"
+      ARGOCD_URL: ${ARGOCD_URL:-}
+      ARGOCD_TOKEN: ${ARGOCD_TOKEN:-}
+    ports:
+      - "8052:8052"
+
+  buildkite:
+    <<: *common
+    build:
+      <<: *server-build
+      args:
+        SERVER_ID: buildkite
+    environment:
+      <<: *common-env
+      MCP_PORT: "8057"
+      BUILDKITE_TOKEN: ${BUILDKITE_TOKEN:-}
+    ports:
+      - "8057:8057"
+
+  github-actions:
+    <<: *common
+    build:
+      <<: *server-build
+      args:
+        SERVER_ID: github-actions
+    environment:
+      <<: *common-env
+      MCP_PORT: "8054"
+      GITHUB_TOKEN: ${GITHUB_TOKEN:-}
+    ports:
+      - "8054:8054"
 
 networks:
   mcp:

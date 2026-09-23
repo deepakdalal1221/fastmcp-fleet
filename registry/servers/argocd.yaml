@@ -17,4 +17,4 @@ tools:
 docs: https://argo-cd.readthedocs.io/en/stable/developer-guide/api-docs/
 maintainers:
 - platform-team
-status: planned
+status: active
