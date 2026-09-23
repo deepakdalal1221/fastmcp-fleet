@@ -18,6 +18,9 @@ x-server-build: &server-build
 
 services:
   gateway:
+    depends_on:
+      together-ai:
+        condition: service_started
     <<: *common
     build:
       context: ../..
@@ -29,18 +32,20 @@ services:
       MCP_PORT: "8000"
       MCP_AUTH_TOKEN: ${MCP_AUTH_TOKEN:-}
       GATEWAY_SERVERS: fetch,filesystem,time,github,postgres,sqlite,redis,mongodb,mysql,slack,discord,jira,linear,notion,brave-search,tavily,openai,anthropic,s3,sentry,cloudflare,datadog,grafana,prometheus,new-relic,pagerduty,stripe,hubspot,sendgrid,twilio,mailchimp,1password,snyk,auth0,okta,gitlab,asana,jenkins,airtable,gemini,vercel,netlify,huggingface,confluence,digitalocean,render,fly-io,gitea,terraform,circleci,gitlab-ci,elasticsearch,vault,mistral,bitbucket,cohere,groq,openrouter,replicate,supabase,azure-devops,sourcegraph,codecov,argocd,buildkite,github-actions,ansible,pulumi,drone,teamcity,linode,hetzner,heroku,railway,modal,together-ai
-    depends_on:
-      - fetch
-      - filesystem
-      - time
 
   fetch:
+    depends_on:
+      gateway:
+        condition: service_started
     <<: *common
     build: { <<: *server-build, args: { SERVER_ID: fetch } }
     environment: { <<: *common-env, MCP_PORT: "8162" }
     ports: ["8162:8162"]
 
   filesystem:
+    depends_on:
+      fetch:
+        condition: service_started
     <<: *common
     build: { <<: *server-build, args: { SERVER_ID: filesystem } }
     environment:
@@ -52,12 +57,18 @@ services:
     ports: ["8100:8100"]
 
   time:
+    depends_on:
+      filesystem:
+        condition: service_started
     <<: *common
     build: { <<: *server-build, args: { SERVER_ID: time } }
     environment: { <<: *common-env, MCP_PORT: "8163" }
     ports: ["8163:8163"]
 
   github:
+    depends_on:
+      time:
+        condition: service_started
     <<: *common
     build: { <<: *server-build, args: { SERVER_ID: github } }
     environment:
@@ -67,6 +78,9 @@ services:
     ports: ["8001:8001"]
 
   postgres:
+    depends_on:
+      github:
+        condition: service_started
     <<: *common
     build: { <<: *server-build, args: { SERVER_ID: postgres } }
     environment:
@@ -76,6 +90,9 @@ services:
     ports: ["8011:8011"]
 
   sqlite:
+    depends_on:
+      postgres:
+        condition: service_started
     <<: *common
     build: { <<: *server-build, args: { SERVER_ID: sqlite } }
     environment:
@@ -87,6 +104,9 @@ services:
     ports: ["8014:8014"]
 
   redis:
+    depends_on:
+      sqlite:
+        condition: service_started
     <<: *common
     build: { <<: *server-build, args: { SERVER_ID: redis } }
     environment:
@@ -96,6 +116,9 @@ services:
     ports: ["8016:8016"]
 
   mongodb:
+    depends_on:
+      redis:
+        condition: service_started
     <<: *common
     build: { <<: *server-build, args: { SERVER_ID: mongodb } }
     environment:
@@ -105,6 +128,9 @@ services:
     ports: ["8015:8015"]
 
   mysql:
+    depends_on:
+      mongodb:
+        condition: service_started
     <<: *common
     build: { <<: *server-build, args: { SERVER_ID: mysql } }
     environment:
@@ -114,6 +140,9 @@ services:
     ports: ["8012:8012"]
 
   slack:
+    depends_on:
+      mysql:
+        condition: service_started
     <<: *common
     build: { <<: *server-build, args: { SERVER_ID: slack } }
     environment:
@@ -123,6 +152,9 @@ services:
     ports: ["8061:8061"]
 
   discord:
+    depends_on:
+      slack:
+        condition: service_started
     <<: *common
     build: { <<: *server-build, args: { SERVER_ID: discord } }
     environment:
@@ -132,6 +164,9 @@ services:
     ports: ["8062:8062"]
 
   jira:
+    depends_on:
+      discord:
+        condition: service_started
     <<: *common
     build: { <<: *server-build, args: { SERVER_ID: jira } }
     environment:
@@ -143,6 +178,9 @@ services:
     ports: ["8071:8071"]
 
   linear:
+    depends_on:
+      jira:
+        condition: service_started
     <<: *common
     build: { <<: *server-build, args: { SERVER_ID: linear } }
     environment:
@@ -152,6 +190,9 @@ services:
     ports: ["8072:8072"]
 
   notion:
+    depends_on:
+      linear:
+        condition: service_started
     <<: *common
     build: { <<: *server-build, args: { SERVER_ID: notion } }
     environment:
@@ -161,6 +202,9 @@ services:
     ports: ["8081:8081"]
 
   brave-search:
+    depends_on:
+      notion:
+        condition: service_started
     <<: *common
     build: { <<: *server-build, args: { SERVER_ID: brave-search } }
     environment:
@@ -170,6 +214,9 @@ services:
     ports: ["8101:8101"]
 
   tavily:
+    depends_on:
+      brave-search:
+        condition: service_started
     <<: *common
     build: { <<: *server-build, args: { SERVER_ID: tavily } }
     environment:
@@ -179,6 +226,9 @@ services:
     ports: ["8105:8105"]
 
   openai:
+    depends_on:
+      tavily:
+        condition: service_started
     <<: *common
     build: { <<: *server-build, args: { SERVER_ID: openai } }
     environment:
@@ -188,6 +238,9 @@ services:
     ports: ["8134:8134"]
 
   anthropic:
+    depends_on:
+      openai:
+        condition: service_started
     <<: *common
     build: { <<: *server-build, args: { SERVER_ID: anthropic } }
     environment:
@@ -197,6 +250,9 @@ services:
     ports: ["8135:8135"]
 
   s3:
+    depends_on:
+      anthropic:
+        condition: service_started
     <<: *common
     build: { <<: *server-build, args: { SERVER_ID: s3 } }
     environment:
@@ -208,6 +264,9 @@ services:
     ports: ["8095:8095"]
 
   sentry:
+    depends_on:
+      s3:
+        condition: service_started
     <<: *common
     build: { <<: *server-build, args: { SERVER_ID: sentry } }
     environment:
@@ -219,6 +278,9 @@ services:
 
 
   cloudflare:
+    depends_on:
+      sentry:
+        condition: service_started
     <<: *common
     build:
       <<: *server-build
@@ -233,6 +295,9 @@ services:
       - "8034:8034"
 
   datadog:
+    depends_on:
+      cloudflare:
+        condition: service_started
     <<: *common
     build:
       <<: *server-build
@@ -248,6 +313,9 @@ services:
       - "8116:8116"
 
   grafana:
+    depends_on:
+      datadog:
+        condition: service_started
     <<: *common
     build:
       <<: *server-build
@@ -262,6 +330,9 @@ services:
       - "8119:8119"
 
   prometheus:
+    depends_on:
+      grafana:
+        condition: service_started
     <<: *common
     build:
       <<: *server-build
@@ -275,6 +346,9 @@ services:
       - "8120:8120"
 
   new-relic:
+    depends_on:
+      prometheus:
+        condition: service_started
     <<: *common
     build:
       <<: *server-build
@@ -289,6 +363,9 @@ services:
       - "8117:8117"
 
   pagerduty:
+    depends_on:
+      new-relic:
+        condition: service_started
     <<: *common
     build:
       <<: *server-build
@@ -302,6 +379,9 @@ services:
       - "8125:8125"
 
   stripe:
+    depends_on:
+      pagerduty:
+        condition: service_started
     <<: *common
     build:
       <<: *server-build
@@ -315,6 +395,9 @@ services:
       - "8154:8154"
 
   hubspot:
+    depends_on:
+      stripe:
+        condition: service_started
     <<: *common
     build:
       <<: *server-build
@@ -328,6 +411,9 @@ services:
       - "8153:8153"
 
   sendgrid:
+    depends_on:
+      hubspot:
+        condition: service_started
     <<: *common
     build:
       <<: *server-build
@@ -341,6 +427,9 @@ services:
       - "8069:8069"
 
   twilio:
+    depends_on:
+      sendgrid:
+        condition: service_started
     <<: *common
     build:
       <<: *server-build
@@ -355,6 +444,9 @@ services:
       - "8068:8068"
 
   mailchimp:
+    depends_on:
+      twilio:
+        condition: service_started
     <<: *common
     build:
       <<: *server-build
@@ -369,6 +461,9 @@ services:
       - "8161:8161"
 
   1password:
+    depends_on:
+      mailchimp:
+        condition: service_started
     <<: *common
     build:
       <<: *server-build
@@ -383,6 +478,9 @@ services:
       - "8127:8127"
 
   snyk:
+    depends_on:
+      1password:
+        condition: service_started
     <<: *common
     build:
       <<: *server-build
@@ -397,6 +495,9 @@ services:
       - "8132:8132"
 
   auth0:
+    depends_on:
+      snyk:
+        condition: service_started
     <<: *common
     build:
       <<: *server-build
@@ -411,6 +512,9 @@ services:
       - "8131:8131"
 
   okta:
+    depends_on:
+      auth0:
+        condition: service_started
     <<: *common
     build:
       <<: *server-build
@@ -425,6 +529,9 @@ services:
       - "8130:8130"
 
   gitlab:
+    depends_on:
+      okta:
+        condition: service_started
     <<: *common
     build:
       <<: *server-build
@@ -438,6 +545,9 @@ services:
       - "8002:8002"
 
   asana:
+    depends_on:
+      gitlab:
+        condition: service_started
     <<: *common
     build:
       <<: *server-build
@@ -451,6 +561,9 @@ services:
       - "8073:8073"
 
   jenkins:
+    depends_on:
+      asana:
+        condition: service_started
     <<: *common
     build:
       <<: *server-build
@@ -466,6 +579,9 @@ services:
       - "8053:8053"
 
   airtable:
+    depends_on:
+      jenkins:
+        condition: service_started
     <<: *common
     build:
       <<: *server-build
@@ -479,6 +595,9 @@ services:
       - "8172:8172"
 
   gemini:
+    depends_on:
+      airtable:
+        condition: service_started
     <<: *common
     build:
       <<: *server-build
@@ -492,6 +611,9 @@ services:
       - "8173:8173"
 
   vercel:
+    depends_on:
+      gemini:
+        condition: service_started
     <<: *common
     build:
       <<: *server-build
@@ -506,6 +628,9 @@ services:
       - "8038:8038"
 
   netlify:
+    depends_on:
+      vercel:
+        condition: service_started
     <<: *common
     build:
       <<: *server-build
@@ -519,6 +644,9 @@ services:
       - "8039:8039"
 
   huggingface:
+    depends_on:
+      netlify:
+        condition: service_started
     <<: *common
     build:
       <<: *server-build
@@ -532,6 +660,9 @@ services:
       - "8136:8136"
 
   confluence:
+    depends_on:
+      huggingface:
+        condition: service_started
     <<: *common
     build:
       <<: *server-build
@@ -547,6 +678,9 @@ services:
       - "8082:8082"
 
   digitalocean:
+    depends_on:
+      confluence:
+        condition: service_started
     <<: *common
     build:
       <<: *server-build
@@ -560,6 +694,9 @@ services:
       - "8035:8035"
 
   render:
+    depends_on:
+      digitalocean:
+        condition: service_started
     <<: *common
     build:
       <<: *server-build
@@ -573,6 +710,9 @@ services:
       - "8040:8040"
 
   fly-io:
+    depends_on:
+      render:
+        condition: service_started
     <<: *common
     build:
       <<: *server-build
@@ -586,6 +726,9 @@ services:
       - "8041:8041"
 
   gitea:
+    depends_on:
+      fly-io:
+        condition: service_started
     <<: *common
     build:
       <<: *server-build
@@ -600,6 +743,9 @@ services:
       - "8004:8004"
 
   terraform:
+    depends_on:
+      gitea:
+        condition: service_started
     <<: *common
     build:
       <<: *server-build
@@ -613,6 +759,9 @@ services:
       - "8048:8048"
 
   circleci:
+    depends_on:
+      terraform:
+        condition: service_started
     <<: *common
     build:
       <<: *server-build
@@ -626,6 +775,9 @@ services:
       - "8056:8056"
 
   gitlab-ci:
+    depends_on:
+      circleci:
+        condition: service_started
     <<: *common
     build:
       <<: *server-build
@@ -640,6 +792,9 @@ services:
       - "8055:8055"
 
   elasticsearch:
+    depends_on:
+      gitlab-ci:
+        condition: service_started
     <<: *common
     build:
       <<: *server-build
@@ -655,6 +810,9 @@ services:
       - "8017:8017"
 
   vault:
+    depends_on:
+      elasticsearch:
+        condition: service_started
     <<: *common
     build:
       <<: *server-build
@@ -669,6 +827,9 @@ services:
       - "8126:8126"
 
   mistral:
+    depends_on:
+      vault:
+        condition: service_started
     <<: *common
     build:
       <<: *server-build
@@ -682,6 +843,9 @@ services:
       - "8139:8139"
 
   bitbucket:
+    depends_on:
+      mistral:
+        condition: service_started
     <<: *common
     build:
       <<: *server-build
@@ -696,6 +860,9 @@ services:
       - "8003:8003"
 
   cohere:
+    depends_on:
+      bitbucket:
+        condition: service_started
     <<: *common
     build:
       <<: *server-build
@@ -709,6 +876,9 @@ services:
       - "8140:8140"
 
   groq:
+    depends_on:
+      cohere:
+        condition: service_started
     <<: *common
     build:
       <<: *server-build
@@ -722,6 +892,9 @@ services:
       - "8141:8141"
 
   openrouter:
+    depends_on:
+      groq:
+        condition: service_started
     <<: *common
     build:
       <<: *server-build
@@ -735,6 +908,9 @@ services:
       - "8138:8138"
 
   replicate:
+    depends_on:
+      openrouter:
+        condition: service_started
     <<: *common
     build:
       <<: *server-build
@@ -748,6 +924,9 @@ services:
       - "8137:8137"
 
   supabase:
+    depends_on:
+      replicate:
+        condition: service_started
     <<: *common
     build:
       <<: *server-build
@@ -762,6 +941,9 @@ services:
       - "8027:8027"
 
   azure-devops:
+    depends_on:
+      supabase:
+        condition: service_started
     <<: *common
     build:
       <<: *server-build
@@ -776,6 +958,9 @@ services:
       - "8008:8008"
 
   sourcegraph:
+    depends_on:
+      azure-devops:
+        condition: service_started
     <<: *common
     build:
       <<: *server-build
@@ -789,6 +974,9 @@ services:
       - "8009:8009"
 
   codecov:
+    depends_on:
+      sourcegraph:
+        condition: service_started
     <<: *common
     build:
       <<: *server-build
@@ -802,6 +990,9 @@ services:
       - "8010:8010"
 
   argocd:
+    depends_on:
+      codecov:
+        condition: service_started
     <<: *common
     build:
       <<: *server-build
@@ -816,6 +1007,9 @@ services:
       - "8052:8052"
 
   buildkite:
+    depends_on:
+      argocd:
+        condition: service_started
     <<: *common
     build:
       <<: *server-build
@@ -829,6 +1023,9 @@ services:
       - "8057:8057"
 
   github-actions:
+    depends_on:
+      buildkite:
+        condition: service_started
     <<: *common
     build:
       <<: *server-build
@@ -842,6 +1039,9 @@ services:
       - "8054:8054"
 
   ansible:
+    depends_on:
+      github-actions:
+        condition: service_started
     <<: *common
     build:
       <<: *server-build
@@ -856,6 +1056,9 @@ services:
       - "8049:8049"
 
   pulumi:
+    depends_on:
+      ansible:
+        condition: service_started
     <<: *common
     build:
       <<: *server-build
@@ -869,6 +1072,9 @@ services:
       - "8050:8050"
 
   drone:
+    depends_on:
+      pulumi:
+        condition: service_started
     <<: *common
     build:
       <<: *server-build
@@ -883,6 +1089,9 @@ services:
       - "8059:8059"
 
   teamcity:
+    depends_on:
+      drone:
+        condition: service_started
     <<: *common
     build:
       <<: *server-build
@@ -897,6 +1106,9 @@ services:
       - "8058:8058"
 
   linode:
+    depends_on:
+      teamcity:
+        condition: service_started
     <<: *common
     build:
       <<: *server-build
@@ -910,6 +1122,9 @@ services:
       - "8036:8036"
 
   hetzner:
+    depends_on:
+      linode:
+        condition: service_started
     <<: *common
     build:
       <<: *server-build
@@ -923,6 +1138,9 @@ services:
       - "8037:8037"
 
   heroku:
+    depends_on:
+      hetzner:
+        condition: service_started
     <<: *common
     build:
       <<: *server-build
@@ -936,6 +1154,9 @@ services:
       - "8043:8043"
 
   railway:
+    depends_on:
+      heroku:
+        condition: service_started
     <<: *common
     build:
       <<: *server-build
@@ -949,6 +1170,9 @@ services:
       - "8042:8042"
 
   modal:
+    depends_on:
+      railway:
+        condition: service_started
     <<: *common
     build:
       <<: *server-build
@@ -963,6 +1187,9 @@ services:
       - "8143:8143"
 
   together-ai:
+    depends_on:
+      modal:
+        condition: service_started
     <<: *common
     build:
       <<: *server-build
