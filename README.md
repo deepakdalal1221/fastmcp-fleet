@@ -12,8 +12,7 @@
 > **A local-first FastMCP platform of 160+ mock MCP servers — GitHub, Slack, Stripe, Jira, Notion, Cloudflare, Datadog, and more — running behind one central gateway. Zero live API calls. Deterministic. Perfect for agent trajectory testing and OpenHands integration.**
 
 <p align="center">
-  <img src="docs/assets/hero.png" alt="fastmcp-fleet — 49 mock MCP servers behind a central gateway" width="820">
-  <br><em>Replace this with your own screenshot — see <a href="docs/assets/README.md">docs/assets/README.md</a> for how to generate one.</em>
+  <img src="docs/assets/hero.svg" alt="fastmcp-fleet — 49 mock MCP servers behind a central gateway" width="820">
 </p>
 
 ---
@@ -251,7 +250,7 @@ Breakdown:
 - **10 offline trajectory tests** exercise create → read chains across the 9 stateful servers, plus one cross-server chain (`github issue → jira issue → slack message`)
 
 <p align="center">
-  <img src="docs/assets/tests.png" alt="pytest output — 200 passed" width="640">
+  <img src="docs/assets/tests.svg" alt="pytest output — 200 passed" width="640">
 </p>
 
 ---

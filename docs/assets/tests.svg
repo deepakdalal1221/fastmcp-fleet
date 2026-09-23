@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 380" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace">
+  <rect width="900" height="380" fill="#f5f5f4" rx="14"/>
+  <rect x="30" y="30" width="840" height="320" rx="12" fill="#0b1220" stroke="#1e293b" stroke-width="1"/>
+
+  <circle cx="52" cy="52" r="6" fill="#ef4444"/>
+  <circle cx="72" cy="52" r="6" fill="#f59e0b"/>
+  <circle cx="92" cy="52" r="6" fill="#22c55e"/>
+  <text x="450" y="57" text-anchor="middle" font-size="12" fill="#94a3b8">fastmcp-fleet</text>
+
+  <g font-size="14" fill="#e2e8f0">
+    <text x="60" y="100"><tspan fill="#22c55e">$</tspan> uv run python -m pytest tests/ -q</text>
+    <text x="60" y="140" fill="#22c55e">........................................................................</text>
+    <text x="800" y="140" text-anchor="end" fill="#94a3b8">[ 36%]</text>
+    <text x="60" y="164" fill="#22c55e">........................................................................</text>
+    <text x="800" y="164" text-anchor="end" fill="#94a3b8">[ 72%]</text>
+    <text x="60" y="188" fill="#22c55e">........................................................</text>
+    <text x="800" y="188" text-anchor="end" fill="#94a3b8">[100%]</text>
+
+    <text x="60" y="234" font-size="18" font-weight="700" fill="#22c55e">200 passed in 1.10s</text>
+
+    <text x="60" y="286" fill="#64748b">   190 contract tests  &#183;  10 offline trajectory tests</text>
+    <text x="60" y="310" fill="#64748b">   9 stateful servers  &#183;  1 cross-server chain</text>
+  </g>
+</svg>
