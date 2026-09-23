@@ -17,4 +17,4 @@ tools:
 docs: https://developer.hashicorp.com/terraform/cloud-docs/api-docs
 maintainers:
 - platform-team
-status: planned
+status: active

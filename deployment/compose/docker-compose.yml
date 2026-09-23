@@ -28,7 +28,7 @@ services:
       <<: *common-env
       MCP_PORT: "8000"
       MCP_AUTH_TOKEN: ${MCP_AUTH_TOKEN:-}
-      GATEWAY_SERVERS: fetch,filesystem,time,github,postgres,sqlite,redis,mongodb,mysql,slack,discord,jira,linear,notion,brave-search,tavily,openai,anthropic,s3,sentry,cloudflare,datadog,grafana,prometheus,new-relic,pagerduty,stripe,hubspot,sendgrid,twilio,mailchimp,1password,snyk,auth0,okta,gitlab,asana,jenkins,airtable,gemini,vercel,netlify,huggingface,confluence,digitalocean,render,fly-io,gitea
+      GATEWAY_SERVERS: fetch,filesystem,time,github,postgres,sqlite,redis,mongodb,mysql,slack,discord,jira,linear,notion,brave-search,tavily,openai,anthropic,s3,sentry,cloudflare,datadog,grafana,prometheus,new-relic,pagerduty,stripe,hubspot,sendgrid,twilio,mailchimp,1password,snyk,auth0,okta,gitlab,asana,jenkins,airtable,gemini,vercel,netlify,huggingface,confluence,digitalocean,render,fly-io,gitea,terraform,circleci,gitlab-ci,elasticsearch,vault,mistral
     depends_on:
       - fetch
       - filesystem
@@ -598,6 +598,88 @@ services:
       GITEA_TOKEN: ${GITEA_TOKEN:-}
     ports:
       - "8004:8004"
+
+  terraform:
+    <<: *common
+    build:
+      <<: *server-build
+      args:
+        SERVER_ID: terraform
+    environment:
+      <<: *common-env
+      MCP_PORT: "8048"
+      TFC_TOKEN: ${TFC_TOKEN:-}
+    ports:
+      - "8048:8048"
+
+  circleci:
+    <<: *common
+    build:
+      <<: *server-build
+      args:
+        SERVER_ID: circleci
+    environment:
+      <<: *common-env
+      MCP_PORT: "8056"
+      CIRCLECI_TOKEN: ${CIRCLECI_TOKEN:-}
+    ports:
+      - "8056:8056"
+
+  gitlab-ci:
+    <<: *common
+    build:
+      <<: *server-build
+      args:
+        SERVER_ID: gitlab-ci
+    environment:
+      <<: *common-env
+      MCP_PORT: "8055"
+      GITLAB_TOKEN: ${GITLAB_TOKEN:-}
+      GITLAB_URL: ${GITLAB_URL:-}
+    ports:
+      - "8055:8055"
+
+  elasticsearch:
+    <<: *common
+    build:
+      <<: *server-build
+      args:
+        SERVER_ID: elasticsearch
+    environment:
+      <<: *common-env
+      MCP_PORT: "8017"
+      ELASTIC_URL: ${ELASTIC_URL:-}
+      ELASTIC_USER: ${ELASTIC_USER:-}
+      ELASTIC_PASSWORD: ${ELASTIC_PASSWORD:-}
+    ports:
+      - "8017:8017"
+
+  vault:
+    <<: *common
+    build:
+      <<: *server-build
+      args:
+        SERVER_ID: vault
+    environment:
+      <<: *common-env
+      MCP_PORT: "8126"
+      VAULT_ADDR: ${VAULT_ADDR:-}
+      VAULT_TOKEN: ${VAULT_TOKEN:-}
+    ports:
+      - "8126:8126"
+
+  mistral:
+    <<: *common
+    build:
+      <<: *server-build
+      args:
+        SERVER_ID: mistral
+    environment:
+      <<: *common-env
+      MCP_PORT: "8139"
+      MISTRAL_API_KEY: ${MISTRAL_API_KEY:-}
+    ports:
+      - "8139:8139"
 
 networks:
   mcp:

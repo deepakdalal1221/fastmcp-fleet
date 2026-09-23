@@ -16,4 +16,4 @@ tools:
 docs: https://docs.gitlab.com/ee/api/pipelines.html
 maintainers:
 - platform-team
-status: planned
+status: active
