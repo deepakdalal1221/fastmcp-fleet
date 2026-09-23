@@ -1,0 +1,29 @@
+"""Shared httpx.AsyncClient factory that respects MCP_OFFLINE."""
+from __future__ import annotations
+
+import os
+
+import httpx
+
+from mcp_common.offline import OfflineTransport
+
+
+def _offline_from_env() -> bool:
+    return os.environ.get("MCP_OFFLINE", "").strip() in ("1", "true", "yes")
+
+
+def make_client(server_id: str, timeout: float = 30.0, **kwargs) -> httpx.AsyncClient:
+    """Build an httpx.AsyncClient.
+
+    When MCP_OFFLINE=1, requests are handled by OfflineTransport instead of
+    hitting the real network. Otherwise behaves like a normal AsyncClient.
+    """
+    if _offline_from_env():
+        transport = OfflineTransport(server_id)
+        return httpx.AsyncClient(transport=transport, timeout=timeout, **kwargs)
+    return httpx.AsyncClient(timeout=timeout, **kwargs)
+
+
+def is_offline() -> bool:
+    """Return True when running in offline mode."""
+    return _offline_from_env()
