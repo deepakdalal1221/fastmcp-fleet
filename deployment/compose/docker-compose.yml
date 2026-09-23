@@ -1,0 +1,604 @@
+x-common: &common
+  restart: unless-stopped
+  volumes:
+    - ./state:/state
+  environment: &common-env
+    MCP_TRANSPORT: streamable-http
+    MCP_HOST: 0.0.0.0
+    MCP_LOG_FORMAT: json
+    MCP_LOG_LEVEL: INFO
+    MCP_OFFLINE: "1"
+    MCP_STATE_DIR: /state
+  networks:
+    - mcp
+
+x-server-build: &server-build
+  context: ../..
+  dockerfile: docker/Dockerfile.server
+
+services:
+  gateway:
+    <<: *common
+    build:
+      context: ../..
+      dockerfile: gateway/Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      <<: *common-env
+      MCP_PORT: "8000"
+      MCP_AUTH_TOKEN: ${MCP_AUTH_TOKEN:-}
+      GATEWAY_SERVERS: fetch,filesystem,time,github,postgres,sqlite,redis,mongodb,mysql,slack,discord,jira,linear,notion,brave-search,tavily,openai,anthropic,s3,sentry,cloudflare,datadog,grafana,prometheus,new-relic,pagerduty,stripe,hubspot,sendgrid,twilio,mailchimp,1password,snyk,auth0,okta,gitlab,asana,jenkins,airtable,gemini,vercel,netlify,huggingface,confluence,digitalocean,render,fly-io,gitea
+    depends_on:
+      - fetch
+      - filesystem
+      - time
+
+  fetch:
+    <<: *common
+    build: { <<: *server-build, args: { SERVER_ID: fetch } }
+    environment: { <<: *common-env, MCP_PORT: "8162" }
+    ports: ["8162:8162"]
+
+  filesystem:
+    <<: *common
+    build: { <<: *server-build, args: { SERVER_ID: filesystem } }
+    environment:
+      <<: *common-env
+      MCP_PORT: "8100"
+      FS_ROOT: /data
+    volumes:
+      - ./fs-data:/data
+    ports: ["8100:8100"]
+
+  time:
+    <<: *common
+    build: { <<: *server-build, args: { SERVER_ID: time } }
+    environment: { <<: *common-env, MCP_PORT: "8163" }
+    ports: ["8163:8163"]
+
+  github:
+    <<: *common
+    build: { <<: *server-build, args: { SERVER_ID: github } }
+    environment:
+      <<: *common-env
+      MCP_PORT: "8001"
+      GITHUB_TOKEN: ${GITHUB_TOKEN:-}
+    ports: ["8001:8001"]
+
+  postgres:
+    <<: *common
+    build: { <<: *server-build, args: { SERVER_ID: postgres } }
+    environment:
+      <<: *common-env
+      MCP_PORT: "8011"
+      POSTGRES_DSN: ${POSTGRES_DSN:-}
+    ports: ["8011:8011"]
+
+  sqlite:
+    <<: *common
+    build: { <<: *server-build, args: { SERVER_ID: sqlite } }
+    environment:
+      <<: *common-env
+      MCP_PORT: "8014"
+      SQLITE_PATH: /data/db.sqlite
+    volumes:
+      - ./sqlite-data:/data
+    ports: ["8014:8014"]
+
+  redis:
+    <<: *common
+    build: { <<: *server-build, args: { SERVER_ID: redis } }
+    environment:
+      <<: *common-env
+      MCP_PORT: "8016"
+      REDIS_URL: ${REDIS_URL:-redis://redis-server:6379/0}
+    ports: ["8016:8016"]
+
+  mongodb:
+    <<: *common
+    build: { <<: *server-build, args: { SERVER_ID: mongodb } }
+    environment:
+      <<: *common-env
+      MCP_PORT: "8015"
+      MONGODB_URI: ${MONGODB_URI:-}
+    ports: ["8015:8015"]
+
+  mysql:
+    <<: *common
+    build: { <<: *server-build, args: { SERVER_ID: mysql } }
+    environment:
+      <<: *common-env
+      MCP_PORT: "8012"
+      MYSQL_DSN: ${MYSQL_DSN:-}
+    ports: ["8012:8012"]
+
+  slack:
+    <<: *common
+    build: { <<: *server-build, args: { SERVER_ID: slack } }
+    environment:
+      <<: *common-env
+      MCP_PORT: "8061"
+      SLACK_BOT_TOKEN: ${SLACK_BOT_TOKEN:-}
+    ports: ["8061:8061"]
+
+  discord:
+    <<: *common
+    build: { <<: *server-build, args: { SERVER_ID: discord } }
+    environment:
+      <<: *common-env
+      MCP_PORT: "8062"
+      DISCORD_BOT_TOKEN: ${DISCORD_BOT_TOKEN:-}
+    ports: ["8062:8062"]
+
+  jira:
+    <<: *common
+    build: { <<: *server-build, args: { SERVER_ID: jira } }
+    environment:
+      <<: *common-env
+      MCP_PORT: "8071"
+      JIRA_BASE_URL: ${JIRA_BASE_URL:-}
+      JIRA_EMAIL: ${JIRA_EMAIL:-}
+      JIRA_API_TOKEN: ${JIRA_API_TOKEN:-}
+    ports: ["8071:8071"]
+
+  linear:
+    <<: *common
+    build: { <<: *server-build, args: { SERVER_ID: linear } }
+    environment:
+      <<: *common-env
+      MCP_PORT: "8072"
+      LINEAR_API_KEY: ${LINEAR_API_KEY:-}
+    ports: ["8072:8072"]
+
+  notion:
+    <<: *common
+    build: { <<: *server-build, args: { SERVER_ID: notion } }
+    environment:
+      <<: *common-env
+      MCP_PORT: "8081"
+      NOTION_TOKEN: ${NOTION_TOKEN:-}
+    ports: ["8081:8081"]
+
+  brave-search:
+    <<: *common
+    build: { <<: *server-build, args: { SERVER_ID: brave-search } }
+    environment:
+      <<: *common-env
+      MCP_PORT: "8101"
+      BRAVE_API_KEY: ${BRAVE_API_KEY:-}
+    ports: ["8101:8101"]
+
+  tavily:
+    <<: *common
+    build: { <<: *server-build, args: { SERVER_ID: tavily } }
+    environment:
+      <<: *common-env
+      MCP_PORT: "8105"
+      TAVILY_API_KEY: ${TAVILY_API_KEY:-}
+    ports: ["8105:8105"]
+
+  openai:
+    <<: *common
+    build: { <<: *server-build, args: { SERVER_ID: openai } }
+    environment:
+      <<: *common-env
+      MCP_PORT: "8134"
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+    ports: ["8134:8134"]
+
+  anthropic:
+    <<: *common
+    build: { <<: *server-build, args: { SERVER_ID: anthropic } }
+    environment:
+      <<: *common-env
+      MCP_PORT: "8135"
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+    ports: ["8135:8135"]
+
+  s3:
+    <<: *common
+    build: { <<: *server-build, args: { SERVER_ID: s3 } }
+    environment:
+      <<: *common-env
+      MCP_PORT: "8095"
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID:-}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY:-}
+      AWS_REGION: ${AWS_REGION:-us-east-1}
+    ports: ["8095:8095"]
+
+  sentry:
+    <<: *common
+    build: { <<: *server-build, args: { SERVER_ID: sentry } }
+    environment:
+      <<: *common-env
+      MCP_PORT: "8118"
+      SENTRY_AUTH_TOKEN: ${SENTRY_AUTH_TOKEN:-}
+      SENTRY_ORG: ${SENTRY_ORG:-}
+    ports: ["8118:8118"]
+
+
+  cloudflare:
+    <<: *common
+    build:
+      <<: *server-build
+      args:
+        SERVER_ID: cloudflare
+    environment:
+      <<: *common-env
+      MCP_PORT: "8034"
+      CLOUDFLARE_API_TOKEN: ${CLOUDFLARE_API_TOKEN:-}
+      CLOUDFLARE_ACCOUNT_ID: ${CLOUDFLARE_ACCOUNT_ID:-}
+    ports:
+      - "8034:8034"
+
+  datadog:
+    <<: *common
+    build:
+      <<: *server-build
+      args:
+        SERVER_ID: datadog
+    environment:
+      <<: *common-env
+      MCP_PORT: "8116"
+      DATADOG_API_KEY: ${DATADOG_API_KEY:-}
+      DATADOG_APP_KEY: ${DATADOG_APP_KEY:-}
+      DATADOG_SITE: ${DATADOG_SITE:-}
+    ports:
+      - "8116:8116"
+
+  grafana:
+    <<: *common
+    build:
+      <<: *server-build
+      args:
+        SERVER_ID: grafana
+    environment:
+      <<: *common-env
+      MCP_PORT: "8119"
+      GRAFANA_URL: ${GRAFANA_URL:-}
+      GRAFANA_TOKEN: ${GRAFANA_TOKEN:-}
+    ports:
+      - "8119:8119"
+
+  prometheus:
+    <<: *common
+    build:
+      <<: *server-build
+      args:
+        SERVER_ID: prometheus
+    environment:
+      <<: *common-env
+      MCP_PORT: "8120"
+      PROMETHEUS_URL: ${PROMETHEUS_URL:-}
+    ports:
+      - "8120:8120"
+
+  new-relic:
+    <<: *common
+    build:
+      <<: *server-build
+      args:
+        SERVER_ID: new-relic
+    environment:
+      <<: *common-env
+      MCP_PORT: "8117"
+      NEWRELIC_API_KEY: ${NEWRELIC_API_KEY:-}
+      NEWRELIC_ACCOUNT: ${NEWRELIC_ACCOUNT:-}
+    ports:
+      - "8117:8117"
+
+  pagerduty:
+    <<: *common
+    build:
+      <<: *server-build
+      args:
+        SERVER_ID: pagerduty
+    environment:
+      <<: *common-env
+      MCP_PORT: "8125"
+      PAGERDUTY_TOKEN: ${PAGERDUTY_TOKEN:-}
+    ports:
+      - "8125:8125"
+
+  stripe:
+    <<: *common
+    build:
+      <<: *server-build
+      args:
+        SERVER_ID: stripe
+    environment:
+      <<: *common-env
+      MCP_PORT: "8154"
+      STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY:-}
+    ports:
+      - "8154:8154"
+
+  hubspot:
+    <<: *common
+    build:
+      <<: *server-build
+      args:
+        SERVER_ID: hubspot
+    environment:
+      <<: *common-env
+      MCP_PORT: "8153"
+      HUBSPOT_TOKEN: ${HUBSPOT_TOKEN:-}
+    ports:
+      - "8153:8153"
+
+  sendgrid:
+    <<: *common
+    build:
+      <<: *server-build
+      args:
+        SERVER_ID: sendgrid
+    environment:
+      <<: *common-env
+      MCP_PORT: "8069"
+      SENDGRID_API_KEY: ${SENDGRID_API_KEY:-}
+    ports:
+      - "8069:8069"
+
+  twilio:
+    <<: *common
+    build:
+      <<: *server-build
+      args:
+        SERVER_ID: twilio
+    environment:
+      <<: *common-env
+      MCP_PORT: "8068"
+      TWILIO_ACCOUNT_SID: ${TWILIO_ACCOUNT_SID:-}
+      TWILIO_AUTH_TOKEN: ${TWILIO_AUTH_TOKEN:-}
+    ports:
+      - "8068:8068"
+
+  mailchimp:
+    <<: *common
+    build:
+      <<: *server-build
+      args:
+        SERVER_ID: mailchimp
+    environment:
+      <<: *common-env
+      MCP_PORT: "8161"
+      MAILCHIMP_API_KEY: ${MAILCHIMP_API_KEY:-}
+      MAILCHIMP_SERVER: ${MAILCHIMP_SERVER:-}
+    ports:
+      - "8161:8161"
+
+  1password:
+    <<: *common
+    build:
+      <<: *server-build
+      args:
+        SERVER_ID: 1password
+    environment:
+      <<: *common-env
+      MCP_PORT: "8127"
+      OP_CONNECT_HOST: ${OP_CONNECT_HOST:-}
+      OP_CONNECT_TOKEN: ${OP_CONNECT_TOKEN:-}
+    ports:
+      - "8127:8127"
+
+  snyk:
+    <<: *common
+    build:
+      <<: *server-build
+      args:
+        SERVER_ID: snyk
+    environment:
+      <<: *common-env
+      MCP_PORT: "8132"
+      SNYK_TOKEN: ${SNYK_TOKEN:-}
+      SNYK_ORG: ${SNYK_ORG:-}
+    ports:
+      - "8132:8132"
+
+  auth0:
+    <<: *common
+    build:
+      <<: *server-build
+      args:
+        SERVER_ID: auth0
+    environment:
+      <<: *common-env
+      MCP_PORT: "8131"
+      AUTH0_DOMAIN: ${AUTH0_DOMAIN:-}
+      AUTH0_TOKEN: ${AUTH0_TOKEN:-}
+    ports:
+      - "8131:8131"
+
+  okta:
+    <<: *common
+    build:
+      <<: *server-build
+      args:
+        SERVER_ID: okta
+    environment:
+      <<: *common-env
+      MCP_PORT: "8130"
+      OKTA_URL: ${OKTA_URL:-}
+      OKTA_TOKEN: ${OKTA_TOKEN:-}
+    ports:
+      - "8130:8130"
+
+  gitlab:
+    <<: *common
+    build:
+      <<: *server-build
+      args:
+        SERVER_ID: gitlab
+    environment:
+      <<: *common-env
+      MCP_PORT: "8002"
+      GITLAB_TOKEN: ${GITLAB_TOKEN:-}
+    ports:
+      - "8002:8002"
+
+  asana:
+    <<: *common
+    build:
+      <<: *server-build
+      args:
+        SERVER_ID: asana
+    environment:
+      <<: *common-env
+      MCP_PORT: "8073"
+      ASANA_TOKEN: ${ASANA_TOKEN:-}
+    ports:
+      - "8073:8073"
+
+  jenkins:
+    <<: *common
+    build:
+      <<: *server-build
+      args:
+        SERVER_ID: jenkins
+    environment:
+      <<: *common-env
+      MCP_PORT: "8053"
+      JENKINS_URL: ${JENKINS_URL:-}
+      JENKINS_USER: ${JENKINS_USER:-}
+      JENKINS_TOKEN: ${JENKINS_TOKEN:-}
+    ports:
+      - "8053:8053"
+
+  airtable:
+    <<: *common
+    build:
+      <<: *server-build
+      args:
+        SERVER_ID: airtable
+    environment:
+      <<: *common-env
+      MCP_PORT: "8172"
+      AIRTABLE_TOKEN: ${AIRTABLE_TOKEN:-}
+    ports:
+      - "8172:8172"
+
+  gemini:
+    <<: *common
+    build:
+      <<: *server-build
+      args:
+        SERVER_ID: gemini
+    environment:
+      <<: *common-env
+      MCP_PORT: "8173"
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+    ports:
+      - "8173:8173"
+
+  vercel:
+    <<: *common
+    build:
+      <<: *server-build
+      args:
+        SERVER_ID: vercel
+    environment:
+      <<: *common-env
+      MCP_PORT: "8038"
+      VERCEL_TOKEN: ${VERCEL_TOKEN:-}
+      VERCEL_TEAM_ID: ${VERCEL_TEAM_ID:-}
+    ports:
+      - "8038:8038"
+
+  netlify:
+    <<: *common
+    build:
+      <<: *server-build
+      args:
+        SERVER_ID: netlify
+    environment:
+      <<: *common-env
+      MCP_PORT: "8039"
+      NETLIFY_TOKEN: ${NETLIFY_TOKEN:-}
+    ports:
+      - "8039:8039"
+
+  huggingface:
+    <<: *common
+    build:
+      <<: *server-build
+      args:
+        SERVER_ID: huggingface
+    environment:
+      <<: *common-env
+      MCP_PORT: "8136"
+      HUGGINGFACE_TOKEN: ${HUGGINGFACE_TOKEN:-}
+    ports:
+      - "8136:8136"
+
+  confluence:
+    <<: *common
+    build:
+      <<: *server-build
+      args:
+        SERVER_ID: confluence
+    environment:
+      <<: *common-env
+      MCP_PORT: "8082"
+      CONFLUENCE_URL: ${CONFLUENCE_URL:-}
+      CONFLUENCE_USER: ${CONFLUENCE_USER:-}
+      CONFLUENCE_TOKEN: ${CONFLUENCE_TOKEN:-}
+    ports:
+      - "8082:8082"
+
+  digitalocean:
+    <<: *common
+    build:
+      <<: *server-build
+      args:
+        SERVER_ID: digitalocean
+    environment:
+      <<: *common-env
+      MCP_PORT: "8035"
+      DIGITALOCEAN_TOKEN: ${DIGITALOCEAN_TOKEN:-}
+    ports:
+      - "8035:8035"
+
+  render:
+    <<: *common
+    build:
+      <<: *server-build
+      args:
+        SERVER_ID: render
+    environment:
+      <<: *common-env
+      MCP_PORT: "8040"
+      RENDER_API_KEY: ${RENDER_API_KEY:-}
+    ports:
+      - "8040:8040"
+
+  fly-io:
+    <<: *common
+    build:
+      <<: *server-build
+      args:
+        SERVER_ID: fly-io
+    environment:
+      <<: *common-env
+      MCP_PORT: "8041"
+      FLY_API_TOKEN: ${FLY_API_TOKEN:-}
+    ports:
+      - "8041:8041"
+
+  gitea:
+    <<: *common
+    build:
+      <<: *server-build
+      args:
+        SERVER_ID: gitea
+    environment:
+      <<: *common-env
+      MCP_PORT: "8004"
+      GITEA_URL: ${GITEA_URL:-}
+      GITEA_TOKEN: ${GITEA_TOKEN:-}
+    ports:
+      - "8004:8004"
+
+networks:
+  mcp:
+    driver: bridge
