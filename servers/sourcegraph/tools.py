@@ -5,11 +5,10 @@ from typing import Annotated
 
 import httpx
 from fastmcp import FastMCP
-from pydantic import Field
-
+from mcp_common import local_store
 from mcp_common.errors import AuthError, ConfigError, NotFoundError, RateLimitError, UpstreamError
 from mcp_common.http import is_offline, make_client
-from mcp_common import local_store
+from pydantic import Field
 
 _BASE = "https://sourcegraph.com/.api"
 _TIMEOUT = 30.0
@@ -23,7 +22,11 @@ def _token() -> str:
 
 
 def _headers() -> dict[str, str]:
-    return {"Authorization": f"token {_token()}", "Content-Type": "application/json", "Accept": "application/json"}
+    return {
+        "Authorization": f"token {_token()}",
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+    }
 
 
 def _raise_for(r: httpx.Response) -> None:
@@ -40,7 +43,13 @@ def _raise_for(r: httpx.Response) -> None:
 def register_tools(mcp: FastMCP) -> None:
     @mcp.tool
     async def search(
-        query: Annotated[str, Field(min_length=1, description="Sourcegraph search query, e.g. 'repo:^github.com/foo/bar$ func Foo'")],
+        query: Annotated[
+            str,
+            Field(
+                min_length=1,
+                description="Sourcegraph search query, e.g. 'repo:^github.com/foo/bar$ func Foo'",
+            ),
+        ],
     ) -> dict:
         """Run a Sourcegraph search via GraphQL and return top file hits."""
         gql = {
@@ -55,7 +64,13 @@ def register_tools(mcp: FastMCP) -> None:
         hits = []
         for h in (s.get("results") or [])[:20]:
             if h.get("__typename") == "FileMatch":
-                hits.append({"repo": (h.get("repository") or {}).get("name"), "path": (h.get("file") or {}).get("path"), "url": (h.get("file") or {}).get("url")})
+                hits.append(
+                    {
+                        "repo": (h.get("repository") or {}).get("name"),
+                        "path": (h.get("file") or {}).get("path"),
+                        "url": (h.get("file") or {}).get("url"),
+                    }
+                )
         return {"match_count": s.get("matchCount"), "hits": hits}
 
     @mcp.tool
@@ -72,13 +87,27 @@ def register_tools(mcp: FastMCP) -> None:
             r = await c.post(f"{_BASE}/graphql", headers=_headers(), json=gql)
             _raise_for(r)
             data = r.json()
-        content = (((((data.get("data") or {}).get("repository") or {}).get("defaultBranch") or {}).get("target") or {}).get("commit") or {}).get("blob") or {}
+        content = (
+            (
+                (((data.get("data") or {}).get("repository") or {}).get("defaultBranch") or {}).get(
+                    "target"
+                )
+                or {}
+            ).get("commit")
+            or {}
+        ).get("blob") or {}
         text = content.get("content") or ""
         return {"repo": repo, "path": path, "size": len(text), "content_preview": text[:400]}
 
     @mcp.tool
     async def search_symbols(
-        query: Annotated[str, Field(min_length=1, description="symbol query, prefixed by type:symbol in Sourcegraph")],
+        query: Annotated[
+            str,
+            Field(min_length=1, description="symbol query, prefixed by type:symbol in Sourcegraph"),
+        ],
     ) -> dict:
         """Search for symbols with type:symbol filter."""
-        return {"query": query, "note": "use search() with query 'type:symbol <name>' — Sourcegraph merges symbol results into search()"}
+        return {
+            "query": query,
+            "note": "use search() with query 'type:symbol <name>' — Sourcegraph merges symbol results into search()",
+        }

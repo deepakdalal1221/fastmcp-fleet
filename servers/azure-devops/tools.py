@@ -5,11 +5,10 @@ from typing import Annotated
 
 import httpx
 from fastmcp import FastMCP
-from pydantic import Field
-
+from mcp_common import local_store
 from mcp_common.errors import AuthError, ConfigError, NotFoundError, RateLimitError, UpstreamError
 from mcp_common.http import is_offline, make_client
-from mcp_common import local_store
+from pydantic import Field
 
 _TIMEOUT = 30.0  # noqa
 _TIMEOUT = 30.0
@@ -58,10 +57,25 @@ def register_tools(mcp: FastMCP) -> None:
     async def list_projects() -> dict:
         """List Azure DevOps projects in the configured organization."""
         async with make_client("azure-devops", timeout=_TIMEOUT) as c:
-            r = await c.get(f"{_base()}/_apis/projects", auth=_auth(), headers=_headers(), params={"api-version": "7.1"})
+            r = await c.get(
+                f"{_base()}/_apis/projects",
+                auth=_auth(),
+                headers=_headers(),
+                params={"api-version": "7.1"},
+            )
             _raise_for(r)
             data = r.json()
-        return {"projects": [{"id": p["id"], "name": p["name"], "state": p.get("state"), "visibility": p.get("visibility")} for p in data.get("value", [])]}
+        return {
+            "projects": [
+                {
+                    "id": p["id"],
+                    "name": p["name"],
+                    "state": p.get("state"),
+                    "visibility": p.get("visibility"),
+                }
+                for p in data.get("value", [])
+            ]
+        }
 
     @mcp.tool
     async def list_repos(
@@ -69,10 +83,26 @@ def register_tools(mcp: FastMCP) -> None:
     ) -> dict:
         """List Azure DevOps repositories in a project."""
         async with make_client("azure-devops", timeout=_TIMEOUT) as c:
-            r = await c.get(f"{_base()}/{project}/_apis/git/repositories", auth=_auth(), headers=_headers(), params={"api-version": "7.1"})
+            r = await c.get(
+                f"{_base()}/{project}/_apis/git/repositories",
+                auth=_auth(),
+                headers=_headers(),
+                params={"api-version": "7.1"},
+            )
             _raise_for(r)
             data = r.json()
-        return {"repos": [{"id": p["id"], "name": p["name"], "default_branch": p.get("defaultBranch"), "size": p.get("size"), "url": p.get("webUrl")} for p in data.get("value", [])]}
+        return {
+            "repos": [
+                {
+                    "id": p["id"],
+                    "name": p["name"],
+                    "default_branch": p.get("defaultBranch"),
+                    "size": p.get("size"),
+                    "url": p.get("webUrl"),
+                }
+                for p in data.get("value", [])
+            ]
+        }
 
     @mcp.tool
     async def list_pipelines(
@@ -80,7 +110,22 @@ def register_tools(mcp: FastMCP) -> None:
     ) -> dict:
         """List Azure DevOps pipelines in a project."""
         async with make_client("azure-devops", timeout=_TIMEOUT) as c:
-            r = await c.get(f"{_base()}/{project}/_apis/pipelines", auth=_auth(), headers=_headers(), params={"api-version": "7.1"})
+            r = await c.get(
+                f"{_base()}/{project}/_apis/pipelines",
+                auth=_auth(),
+                headers=_headers(),
+                params={"api-version": "7.1"},
+            )
             _raise_for(r)
             data = r.json()
-        return {"pipelines": [{"id": p["id"], "name": p["name"], "folder": p.get("folder"), "revision": p.get("revision")} for p in data.get("value", [])]}
+        return {
+            "pipelines": [
+                {
+                    "id": p["id"],
+                    "name": p["name"],
+                    "folder": p.get("folder"),
+                    "revision": p.get("revision"),
+                }
+                for p in data.get("value", [])
+            ]
+        }

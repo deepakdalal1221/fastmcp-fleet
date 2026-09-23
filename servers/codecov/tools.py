@@ -5,11 +5,10 @@ from typing import Annotated
 
 import httpx
 from fastmcp import FastMCP
-from pydantic import Field
-
+from mcp_common import local_store
 from mcp_common.errors import AuthError, ConfigError, NotFoundError, RateLimitError, UpstreamError
 from mcp_common.http import is_offline, make_client
-from mcp_common import local_store
+from pydantic import Field
 
 _BASE = "https://api.codecov.io/api/v2"
 _TIMEOUT = 30.0
@@ -40,7 +39,9 @@ def _raise_for(r: httpx.Response) -> None:
 def register_tools(mcp: FastMCP) -> None:
     @mcp.tool
     async def list_repos(
-        service: Annotated[str, Field(description="git service: github | gitlab | bitbucket")] = "github",
+        service: Annotated[
+            str, Field(description="git service: github | gitlab | bitbucket")
+        ] = "github",
         owner: Annotated[str, Field(min_length=1, description="account owner (user or org)")] = "",
     ) -> dict:
         """List Codecov repositories for an owner."""
@@ -48,7 +49,17 @@ def register_tools(mcp: FastMCP) -> None:
             r = await c.get(f"{_BASE}/{service}/{owner}/repos", headers=_headers())
             _raise_for(r)
             data = r.json()
-        return {"repos": [{"name": p["name"], "active": p.get("active"), "coverage": p.get("coverage"), "language": p.get("language")} for p in data.get("results", [])]}
+        return {
+            "repos": [
+                {
+                    "name": p["name"],
+                    "active": p.get("active"),
+                    "coverage": p.get("coverage"),
+                    "language": p.get("language"),
+                }
+                for p in data.get("results", [])
+            ]
+        }
 
     @mcp.tool
     async def get_repo_coverage(
@@ -61,7 +72,13 @@ def register_tools(mcp: FastMCP) -> None:
             r = await c.get(f"{_BASE}/{service}/{owner}/repos/{repo}", headers=_headers())
             _raise_for(r)
             p = r.json()
-        return {"name": p.get("name"), "active": p.get("active"), "coverage": p.get("coverage"), "branch": p.get("branch"), "updatestamp": p.get("updatestamp")}
+        return {
+            "name": p.get("name"),
+            "active": p.get("active"),
+            "coverage": p.get("coverage"),
+            "branch": p.get("branch"),
+            "updatestamp": p.get("updatestamp"),
+        }
 
     @mcp.tool
     async def list_reports(
@@ -74,4 +91,13 @@ def register_tools(mcp: FastMCP) -> None:
             r = await c.get(f"{_BASE}/{service}/{owner}/repos/{repo}/reports", headers=_headers())
             _raise_for(r)
             data = r.json()
-        return {"reports": [{"commit": p.get("commitid", "")[:8], "totals_coverage": (p.get("totals") or {}).get("coverage"), "updatestamp": p.get("updatestamp")} for p in data.get("results", [])]}
+        return {
+            "reports": [
+                {
+                    "commit": p.get("commitid", "")[:8],
+                    "totals_coverage": (p.get("totals") or {}).get("coverage"),
+                    "updatestamp": p.get("updatestamp"),
+                }
+                for p in data.get("results", [])
+            ]
+        }

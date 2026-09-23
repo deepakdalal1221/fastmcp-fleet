@@ -5,11 +5,10 @@ from typing import Annotated
 
 import httpx
 from fastmcp import FastMCP
-from pydantic import Field
-
+from mcp_common import local_store
 from mcp_common.errors import AuthError, ConfigError, NotFoundError, RateLimitError, UpstreamError
 from mcp_common.http import is_offline, make_client
-from mcp_common import local_store
+from pydantic import Field
 
 _BASE = "https://api.buildkite.com/v2"
 _TIMEOUT = 30.0
@@ -40,15 +39,32 @@ def _raise_for(r: httpx.Response) -> None:
 def register_tools(mcp: FastMCP) -> None:
     @mcp.tool
     async def list_pipelines(
-        organization: Annotated[str, Field(min_length=1, description="Buildkite organization slug")],
+        organization: Annotated[
+            str, Field(min_length=1, description="Buildkite organization slug")
+        ],
         per_page: Annotated[int, Field(ge=1, le=100)] = 20,
     ) -> dict:
         """List Buildkite pipelines in an organization."""
         async with make_client("buildkite", timeout=_TIMEOUT) as c:
-            r = await c.get(f"{_BASE}/organizations/{organization}/pipelines", headers=_headers(), params={"per_page": per_page})
+            r = await c.get(
+                f"{_BASE}/organizations/{organization}/pipelines",
+                headers=_headers(),
+                params={"per_page": per_page},
+            )
             _raise_for(r)
             data = r.json()
-        return {"pipelines": [{"slug": p["slug"], "name": p["name"], "repository": p.get("repository"), "default_branch": p.get("default_branch"), "builds_url": p.get("builds_url")} for p in data]}
+        return {
+            "pipelines": [
+                {
+                    "slug": p["slug"],
+                    "name": p["name"],
+                    "repository": p.get("repository"),
+                    "default_branch": p.get("default_branch"),
+                    "builds_url": p.get("builds_url"),
+                }
+                for p in data
+            ]
+        }
 
     @mcp.tool
     async def list_builds(
@@ -58,10 +74,25 @@ def register_tools(mcp: FastMCP) -> None:
     ) -> dict:
         """List builds for a Buildkite pipeline."""
         async with make_client("buildkite", timeout=_TIMEOUT) as c:
-            r = await c.get(f"{_BASE}/organizations/{organization}/pipelines/{pipeline}/builds", headers=_headers(), params={"per_page": per_page})
+            r = await c.get(
+                f"{_BASE}/organizations/{organization}/pipelines/{pipeline}/builds",
+                headers=_headers(),
+                params={"per_page": per_page},
+            )
             _raise_for(r)
             data = r.json()
-        return {"builds": [{"number": p["number"], "state": p.get("state"), "commit": (p.get("commit") or "")[:8], "branch": p.get("branch"), "web_url": p.get("web_url")} for p in data]}
+        return {
+            "builds": [
+                {
+                    "number": p["number"],
+                    "state": p.get("state"),
+                    "commit": (p.get("commit") or "")[:8],
+                    "branch": p.get("branch"),
+                    "web_url": p.get("web_url"),
+                }
+                for p in data
+            ]
+        }
 
     @mcp.tool
     async def get_build(
@@ -71,7 +102,19 @@ def register_tools(mcp: FastMCP) -> None:
     ) -> dict:
         """Get a single Buildkite build by number."""
         async with make_client("buildkite", timeout=_TIMEOUT) as c:
-            r = await c.get(f"{_BASE}/organizations/{organization}/pipelines/{pipeline}/builds/{build_number}", headers=_headers())
+            r = await c.get(
+                f"{_BASE}/organizations/{organization}/pipelines/{pipeline}/builds/{build_number}",
+                headers=_headers(),
+            )
             _raise_for(r)
             p = r.json()
-        return {"number": p.get("number"), "state": p.get("state"), "commit": p.get("commit", "")[:8], "branch": p.get("branch"), "duration_s": (int((p.get("finished_at") or 0)) - int((p.get("started_at") or 0))) if p.get("finished_at") and p.get("started_at") else None, "web_url": p.get("web_url")}
+        return {
+            "number": p.get("number"),
+            "state": p.get("state"),
+            "commit": p.get("commit", "")[:8],
+            "branch": p.get("branch"),
+            "duration_s": (int((p.get("finished_at") or 0)) - int((p.get("started_at") or 0)))
+            if p.get("finished_at") and p.get("started_at")
+            else None,
+            "web_url": p.get("web_url"),
+        }

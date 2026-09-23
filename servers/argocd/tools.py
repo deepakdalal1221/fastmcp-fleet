@@ -5,11 +5,10 @@ from typing import Annotated
 
 import httpx
 from fastmcp import FastMCP
-from pydantic import Field
-
+from mcp_common import local_store
 from mcp_common.errors import AuthError, ConfigError, NotFoundError, RateLimitError, UpstreamError
 from mcp_common.http import is_offline, make_client
-from mcp_common import local_store
+from pydantic import Field
 
 _TIMEOUT = 30.0  # noqa
 _TIMEOUT = 30.0
@@ -52,7 +51,17 @@ def register_tools(mcp: FastMCP) -> None:
             r = await c.get(f"{_base()}/applications", headers=_headers())
             _raise_for(r)
             data = r.json()
-        return {"applications": [{"name": (p.get("metadata") or {}).get("name"), "namespace": (p.get("spec") or {}).get("destination", {}).get("namespace"), "sync_status": ((p.get("status") or {}).get("sync") or {}).get("status"), "health": ((p.get("status") or {}).get("health") or {}).get("status")} for p in data.get("items", [])]}
+        return {
+            "applications": [
+                {
+                    "name": (p.get("metadata") or {}).get("name"),
+                    "namespace": (p.get("spec") or {}).get("destination", {}).get("namespace"),
+                    "sync_status": ((p.get("status") or {}).get("sync") or {}).get("status"),
+                    "health": ((p.get("status") or {}).get("health") or {}).get("status"),
+                }
+                for p in data.get("items", [])
+            ]
+        }
 
     @mcp.tool
     async def get_application(
@@ -63,7 +72,14 @@ def register_tools(mcp: FastMCP) -> None:
             r = await c.get(f"{_base()}/applications/{name}", headers=_headers())
             _raise_for(r)
             p = r.json()
-        return {"name": (p.get("metadata") or {}).get("name"), "repo": (p.get("spec") or {}).get("source", {}).get("repoURL"), "path": (p.get("spec") or {}).get("source", {}).get("path"), "target_revision": (p.get("spec") or {}).get("source", {}).get("targetRevision"), "sync_status": ((p.get("status") or {}).get("sync") or {}).get("status"), "health": ((p.get("status") or {}).get("health") or {}).get("status")}
+        return {
+            "name": (p.get("metadata") or {}).get("name"),
+            "repo": (p.get("spec") or {}).get("source", {}).get("repoURL"),
+            "path": (p.get("spec") or {}).get("source", {}).get("path"),
+            "target_revision": (p.get("spec") or {}).get("source", {}).get("targetRevision"),
+            "sync_status": ((p.get("status") or {}).get("sync") or {}).get("status"),
+            "health": ((p.get("status") or {}).get("health") or {}).get("status"),
+        }
 
     @mcp.tool
     async def sync_application(
@@ -76,4 +92,8 @@ def register_tools(mcp: FastMCP) -> None:
             r = await c.post(f"{_base()}/applications/{name}/sync", headers=_headers(), json=body)
             _raise_for(r)
             p = r.json()
-        return {"name": (p.get("metadata") or {}).get("name"), "sync_started": True, "operation": ((p.get("status") or {}).get("operationState") or {}).get("phase")}
+        return {
+            "name": (p.get("metadata") or {}).get("name"),
+            "sync_started": True,
+            "operation": ((p.get("status") or {}).get("operationState") or {}).get("phase"),
+        }
