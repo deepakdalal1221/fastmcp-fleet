@@ -1,0 +1,20 @@
+id: modal
+name: Modal
+category: ai-ml
+description: Modal serverless compute
+auth:
+  type: custom
+  env:
+  - MODAL_TOKEN_ID
+  - MODAL_TOKEN_SECRET
+transport: streamable-http
+port: 8143
+image: yourorg/mcp-modal
+version: 0.1.0
+tools:
+- list_apps
+- invoke_function
+docs: https://modal.com/docs/reference
+maintainers:
+- platform-team
+status: planned

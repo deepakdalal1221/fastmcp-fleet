@@ -1,0 +1,20 @@
+id: vercel
+name: Vercel
+category: cloud
+description: Vercel deployments + projects
+auth:
+  type: bearer_token
+  env:
+  - VERCEL_TOKEN
+transport: streamable-http
+port: 8038
+image: yourorg/mcp-vercel
+version: 0.1.0
+tools:
+- list_deployments
+- list_projects
+- get_deployment
+docs: https://vercel.com/docs/rest-api
+maintainers:
+- platform-team
+status: active

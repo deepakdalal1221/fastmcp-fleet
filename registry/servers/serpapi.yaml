@@ -1,0 +1,18 @@
+id: serpapi
+name: SerpAPI
+category: search
+description: SerpAPI SERP scraping
+auth:
+  type: api_key
+  env:
+  - SERPAPI_KEY
+transport: streamable-http
+port: 8108
+image: yourorg/mcp-serpapi
+version: 0.1.0
+tools:
+- search
+docs: https://serpapi.com/search-api
+maintainers:
+- platform-team
+status: planned

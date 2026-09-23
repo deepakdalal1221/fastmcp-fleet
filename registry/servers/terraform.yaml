@@ -1,0 +1,20 @@
+id: terraform
+name: Terraform
+category: devops
+description: Terraform Cloud/Enterprise API
+auth:
+  type: bearer_token
+  env:
+  - TFC_TOKEN
+transport: streamable-http
+port: 8048
+image: yourorg/mcp-terraform
+version: 0.1.0
+tools:
+- list_workspaces
+- list_runs
+- trigger_run
+docs: https://developer.hashicorp.com/terraform/cloud-docs/api-docs
+maintainers:
+- platform-team
+status: planned

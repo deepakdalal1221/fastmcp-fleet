@@ -1,0 +1,20 @@
+id: pagerduty
+name: PagerDuty
+category: monitoring
+description: PagerDuty incidents + services
+auth:
+  type: bearer_token
+  env:
+  - PAGERDUTY_TOKEN
+transport: streamable-http
+port: 8125
+image: yourorg/mcp-pagerduty
+version: 0.1.0
+tools:
+- list_incidents
+- create_incident
+- list_services
+docs: https://developer.pagerduty.com/api-reference/
+maintainers:
+- platform-team
+status: active

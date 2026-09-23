@@ -1,0 +1,21 @@
+id: cloudflare
+name: Cloudflare
+category: cloud
+description: Cloudflare API (DNS, Workers, R2)
+auth:
+  type: bearer_token
+  env:
+  - CLOUDFLARE_API_TOKEN
+  - CLOUDFLARE_ACCOUNT_ID
+transport: streamable-http
+port: 8034
+image: yourorg/mcp-cloudflare
+version: 0.1.0
+tools:
+- list_zones
+- list_dns_records
+- list_workers
+docs: https://developers.cloudflare.com/api/
+maintainers:
+- platform-team
+status: active

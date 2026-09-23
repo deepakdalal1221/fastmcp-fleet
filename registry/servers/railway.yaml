@@ -1,0 +1,19 @@
+id: railway
+name: Railway
+category: cloud
+description: Railway projects + services
+auth:
+  type: bearer_token
+  env:
+  - RAILWAY_TOKEN
+transport: streamable-http
+port: 8042
+image: yourorg/mcp-railway
+version: 0.1.0
+tools:
+- list_projects
+- list_services
+docs: https://docs.railway.app/reference/public-api
+maintainers:
+- platform-team
+status: planned

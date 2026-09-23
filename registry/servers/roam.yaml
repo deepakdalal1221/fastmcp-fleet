@@ -1,0 +1,20 @@
+id: roam
+name: Roam Research
+category: productivity
+description: Roam Research API
+auth:
+  type: bearer_token
+  env:
+  - ROAM_TOKEN
+  - ROAM_GRAPH
+transport: streamable-http
+port: 8087
+image: yourorg/mcp-roam
+version: 0.1.0
+tools:
+- list_pages
+- query_block
+docs: https://roamresearch.com/#/app/developer-documentation
+maintainers:
+- platform-team
+status: planned

@@ -1,0 +1,19 @@
+id: evernote
+name: Evernote
+category: productivity
+description: Evernote notes
+auth:
+  type: bearer_token
+  env:
+  - EVERNOTE_TOKEN
+transport: streamable-http
+port: 8084
+image: yourorg/mcp-evernote
+version: 0.1.0
+tools:
+- list_notebooks
+- list_notes
+docs: https://dev.evernote.com/
+maintainers:
+- platform-team
+status: planned

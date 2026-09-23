@@ -1,0 +1,20 @@
+id: sourcegraph
+name: Sourcegraph
+category: development
+description: Code search via Sourcegraph
+auth:
+  type: bearer_token
+  env:
+  - SOURCEGRAPH_TOKEN
+  - SOURCEGRAPH_URL
+transport: streamable-http
+port: 8009
+image: yourorg/mcp-sourcegraph
+version: 0.1.0
+tools:
+- search_code
+- get_file
+docs: https://sourcegraph.com/docs/api/graphql
+maintainers:
+- platform-team
+status: planned

@@ -1,0 +1,19 @@
+id: mistral
+name: Mistral
+category: ai-ml
+description: Mistral La Plateforme
+auth:
+  type: bearer_token
+  env:
+  - MISTRAL_API_KEY
+transport: streamable-http
+port: 8139
+image: yourorg/mcp-mistral
+version: 0.1.0
+tools:
+- chat_completion
+- embed
+docs: https://docs.mistral.ai/
+maintainers:
+- platform-team
+status: planned

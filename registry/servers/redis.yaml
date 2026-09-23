@@ -1,0 +1,23 @@
+id: redis
+name: Redis
+category: database
+description: Redis key-value + pub/sub
+auth:
+  type: custom
+  env:
+  - REDIS_URL
+transport: streamable-http
+port: 8016
+image: yourorg/mcp-redis
+version: 0.1.0
+tools:
+- get
+- set
+- delete
+- keys
+- hget
+- hset
+docs: https://redis.io/docs/
+maintainers:
+- platform-team
+status: active

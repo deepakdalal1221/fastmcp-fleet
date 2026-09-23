@@ -1,0 +1,21 @@
+id: obsidian
+name: Obsidian (local)
+category: productivity
+description: Local Obsidian vault access
+auth:
+  type: none
+  env:
+  - OBSIDIAN_VAULT_PATH
+transport: streamable-http
+port: 8083
+image: yourorg/mcp-obsidian
+version: 0.1.0
+tools:
+- list_notes
+- read_note
+- write_note
+- search
+docs: https://help.obsidian.md/
+maintainers:
+- platform-team
+status: planned

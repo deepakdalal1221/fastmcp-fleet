@@ -1,0 +1,19 @@
+id: selenium
+name: Selenium
+category: browser
+description: Selenium WebDriver
+auth:
+  type: none
+  env: []
+transport: streamable-http
+port: 8113
+image: yourorg/mcp-selenium
+version: 0.1.0
+tools:
+- navigate
+- click
+- screenshot
+docs: https://www.selenium.dev/documentation/
+maintainers:
+- platform-team
+status: planned

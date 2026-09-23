@@ -1,0 +1,19 @@
+id: honeycomb
+name: Honeycomb
+category: monitoring
+description: Honeycomb queries + boards
+auth:
+  type: custom
+  env:
+  - HONEYCOMB_API_KEY
+transport: streamable-http
+port: 8124
+image: yourorg/mcp-honeycomb
+version: 0.1.0
+tools:
+- query_dataset
+- list_boards
+docs: https://docs.honeycomb.io/api/
+maintainers:
+- platform-team
+status: planned

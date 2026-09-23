@@ -1,0 +1,22 @@
+id: confluence
+name: Confluence
+category: productivity
+description: Atlassian Confluence Cloud
+auth:
+  type: basic
+  env:
+  - CONFLUENCE_URL
+  - CONFLUENCE_USER
+  - CONFLUENCE_TOKEN
+transport: streamable-http
+port: 8082
+image: yourorg/mcp-confluence
+version: 0.1.0
+tools:
+- list_spaces
+- get_page
+- search_content
+docs: https://developer.atlassian.com/cloud/confluence/rest/v2/
+maintainers:
+- platform-team
+status: active

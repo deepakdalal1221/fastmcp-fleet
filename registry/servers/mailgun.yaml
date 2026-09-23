@@ -1,0 +1,20 @@
+id: mailgun
+name: Mailgun
+category: communication
+description: Mailgun email
+auth:
+  type: basic
+  env:
+  - MAILGUN_API_KEY
+  - MAILGUN_DOMAIN
+transport: streamable-http
+port: 8070
+image: yourorg/mcp-mailgun
+version: 0.1.0
+tools:
+- send_email
+- list_events
+docs: https://documentation.mailgun.com/en/latest/api_reference.html
+maintainers:
+- platform-team
+status: planned

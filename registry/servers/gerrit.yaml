@@ -1,0 +1,22 @@
+id: gerrit
+name: Gerrit
+category: development
+description: Gerrit code review API
+auth:
+  type: basic
+  env:
+  - GERRIT_USER
+  - GERRIT_PASSWORD
+  - GERRIT_URL
+transport: streamable-http
+port: 8006
+image: yourorg/mcp-gerrit
+version: 0.1.0
+tools:
+- list_changes
+- get_change
+- list_reviewers
+docs: https://gerrit-review.googlesource.com/Documentation/rest-api.html
+maintainers:
+- platform-team
+status: planned

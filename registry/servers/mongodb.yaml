@@ -1,0 +1,22 @@
+id: mongodb
+name: MongoDB
+category: database
+description: MongoDB document operations
+auth:
+  type: custom
+  env:
+  - MONGODB_URI
+transport: streamable-http
+port: 8015
+image: yourorg/mcp-mongodb
+version: 0.1.0
+tools:
+- find
+- insert
+- update
+- delete
+- list_collections
+docs: https://www.mongodb.com/docs/manual/
+maintainers:
+- platform-team
+status: active

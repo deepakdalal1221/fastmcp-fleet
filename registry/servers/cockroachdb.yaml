@@ -1,0 +1,19 @@
+id: cockroachdb
+name: CockroachDB
+category: database
+description: CockroachDB distributed SQL
+auth:
+  type: custom
+  env:
+  - COCKROACH_DSN
+transport: streamable-http
+port: 8022
+image: yourorg/mcp-cockroachdb
+version: 0.1.0
+tools:
+- query
+- list_tables
+docs: https://www.cockroachlabs.com/docs/
+maintainers:
+- platform-team
+status: planned

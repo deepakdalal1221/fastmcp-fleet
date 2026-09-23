@@ -1,0 +1,19 @@
+id: together-ai
+name: Together AI
+category: ai-ml
+description: Together inference
+auth:
+  type: bearer_token
+  env:
+  - TOGETHER_API_KEY
+transport: streamable-http
+port: 8142
+image: yourorg/mcp-together-ai
+version: 0.1.0
+tools:
+- chat_completion
+- embed
+docs: https://docs.together.ai/
+maintainers:
+- platform-team
+status: planned

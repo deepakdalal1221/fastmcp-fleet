@@ -1,0 +1,21 @@
+id: notion
+name: Notion
+category: productivity
+description: Notion pages + databases
+auth:
+  type: bearer_token
+  env:
+  - NOTION_TOKEN
+transport: streamable-http
+port: 8081
+image: yourorg/mcp-notion
+version: 0.1.0
+tools:
+- search
+- get_page
+- create_page
+- query_database
+docs: https://developers.notion.com/reference/intro
+maintainers:
+- platform-team
+status: active

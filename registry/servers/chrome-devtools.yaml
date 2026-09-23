@@ -1,0 +1,20 @@
+id: chrome-devtools
+name: Chrome DevTools
+category: browser
+description: CDP protocol operations
+auth:
+  type: none
+  env:
+  - CHROME_DEBUG_URL
+transport: streamable-http
+port: 8115
+image: yourorg/mcp-chrome-devtools
+version: 0.1.0
+tools:
+- navigate
+- evaluate
+- screenshot
+docs: https://chromedevtools.github.io/devtools-protocol/
+maintainers:
+- platform-team
+status: planned

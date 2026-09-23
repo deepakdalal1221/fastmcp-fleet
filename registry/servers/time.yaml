@@ -1,0 +1,20 @@
+id: time
+name: Time
+category: utility
+description: Time zone conversions + current time
+auth:
+  type: none
+  env: []
+transport: streamable-http
+port: 8163
+image: yourorg/mcp-time
+version: 0.1.0
+tools:
+- now
+- convert_timezone
+- format
+- parse
+docs: https://docs.python.org/3/library/zoneinfo.html
+maintainers:
+- platform-team
+status: pilot

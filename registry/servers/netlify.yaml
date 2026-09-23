@@ -1,0 +1,19 @@
+id: netlify
+name: Netlify
+category: cloud
+description: Netlify sites + deploys
+auth:
+  type: bearer_token
+  env:
+  - NETLIFY_TOKEN
+transport: streamable-http
+port: 8039
+image: yourorg/mcp-netlify
+version: 0.1.0
+tools:
+- list_sites
+- list_deploys
+docs: https://docs.netlify.com/api/get-started/
+maintainers:
+- platform-team
+status: active

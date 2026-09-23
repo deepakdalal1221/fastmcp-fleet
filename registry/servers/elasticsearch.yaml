@@ -1,0 +1,21 @@
+id: elasticsearch
+name: Elasticsearch
+category: database
+description: Elasticsearch search + index
+auth:
+  type: custom
+  env:
+  - ELASTICSEARCH_URL
+  - ELASTICSEARCH_API_KEY
+transport: streamable-http
+port: 8017
+image: yourorg/mcp-elasticsearch
+version: 0.1.0
+tools:
+- search
+- index_doc
+- list_indices
+docs: https://www.elastic.co/guide/en/elasticsearch/reference/current/
+maintainers:
+- platform-team
+status: planned

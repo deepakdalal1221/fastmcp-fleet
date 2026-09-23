@@ -1,0 +1,19 @@
+id: codeberg
+name: Codeberg
+category: development
+description: Codeberg (Gitea-based) API
+auth:
+  type: bearer_token
+  env:
+  - CODEBERG_TOKEN
+transport: streamable-http
+port: 8007
+image: yourorg/mcp-codeberg
+version: 0.1.0
+tools:
+- list_repos
+- list_issues
+docs: https://codeberg.org/api/swagger
+maintainers:
+- platform-team
+status: planned

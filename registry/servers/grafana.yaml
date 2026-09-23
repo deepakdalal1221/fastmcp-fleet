@@ -1,0 +1,20 @@
+id: grafana
+name: Grafana
+category: monitoring
+description: Grafana dashboards + queries
+auth:
+  type: bearer_token
+  env:
+  - GRAFANA_URL
+  - GRAFANA_TOKEN
+transport: streamable-http
+port: 8119
+image: yourorg/mcp-grafana
+version: 0.1.0
+tools:
+- list_dashboards
+- query_datasource
+docs: https://grafana.com/docs/grafana/latest/developers/http_api/
+maintainers:
+- platform-team
+status: active

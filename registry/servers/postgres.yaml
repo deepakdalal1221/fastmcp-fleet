@@ -1,0 +1,21 @@
+id: postgres
+name: PostgreSQL
+category: database
+description: PostgreSQL query + schema access
+auth:
+  type: custom
+  env:
+  - POSTGRES_DSN
+transport: streamable-http
+port: 8011
+image: yourorg/mcp-postgres
+version: 0.1.0
+tools:
+- query
+- list_tables
+- describe_table
+- list_schemas
+docs: https://www.postgresql.org/docs/current/
+maintainers:
+- platform-team
+status: pilot

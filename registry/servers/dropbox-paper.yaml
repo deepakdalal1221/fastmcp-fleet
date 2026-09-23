@@ -1,0 +1,19 @@
+id: dropbox-paper
+name: Dropbox Paper
+category: productivity
+description: Dropbox Paper docs
+auth:
+  type: bearer_token
+  env:
+  - DROPBOX_TOKEN
+transport: streamable-http
+port: 8090
+image: yourorg/mcp-dropbox-paper
+version: 0.1.0
+tools:
+- list_docs
+- get_doc
+docs: https://www.dropbox.com/developers/documentation/http/documentation
+maintainers:
+- platform-team
+status: planned

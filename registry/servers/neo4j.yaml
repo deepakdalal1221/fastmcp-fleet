@@ -1,0 +1,22 @@
+id: neo4j
+name: Neo4j
+category: database
+description: Neo4j graph queries via Cypher
+auth:
+  type: custom
+  env:
+  - NEO4J_URI
+  - NEO4J_USER
+  - NEO4J_PASSWORD
+transport: streamable-http
+port: 8023
+image: yourorg/mcp-neo4j
+version: 0.1.0
+tools:
+- cypher
+- list_labels
+- list_relationships
+docs: https://neo4j.com/docs/
+maintainers:
+- platform-team
+status: planned

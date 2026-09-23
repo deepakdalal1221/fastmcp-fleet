@@ -1,0 +1,20 @@
+id: airbyte
+name: Airbyte
+category: data-platform
+description: Airbyte connections + jobs
+auth:
+  type: bearer_token
+  env:
+  - AIRBYTE_URL
+  - AIRBYTE_TOKEN
+transport: streamable-http
+port: 8149
+image: yourorg/mcp-airbyte
+version: 0.1.0
+tools:
+- list_connections
+- trigger_sync
+docs: https://docs.airbyte.com/api-documentation
+maintainers:
+- platform-team
+status: planned

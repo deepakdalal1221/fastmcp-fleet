@@ -1,0 +1,19 @@
+id: intercom
+name: Intercom
+category: business
+description: Intercom conversations + contacts
+auth:
+  type: bearer_token
+  env:
+  - INTERCOM_TOKEN
+transport: streamable-http
+port: 8159
+image: yourorg/mcp-intercom
+version: 0.1.0
+tools:
+- list_conversations
+- list_contacts
+docs: https://developers.intercom.com/docs/references/rest-api
+maintainers:
+- platform-team
+status: planned

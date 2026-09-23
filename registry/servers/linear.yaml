@@ -1,0 +1,21 @@
+id: linear
+name: Linear
+category: project-management
+description: Linear GraphQL API
+auth:
+  type: bearer_token
+  env:
+  - LINEAR_API_KEY
+transport: streamable-http
+port: 8072
+image: yourorg/mcp-linear
+version: 0.1.0
+tools:
+- list_issues
+- create_issue
+- list_teams
+- list_projects
+docs: https://developers.linear.app/docs
+maintainers:
+- platform-team
+status: active

@@ -1,0 +1,21 @@
+id: slack
+name: Slack
+category: communication
+description: Slack Web API (channels, messages, users)
+auth:
+  type: bearer_token
+  env:
+  - SLACK_BOT_TOKEN
+transport: streamable-http
+port: 8061
+image: yourorg/mcp-slack
+version: 0.1.0
+tools:
+- list_channels
+- post_message
+- list_users
+- get_conversation
+docs: https://api.slack.com/
+maintainers:
+- platform-team
+status: active

@@ -1,0 +1,19 @@
+id: brave-search
+name: Brave Search
+category: search
+description: Brave Search API
+auth:
+  type: api_key
+  env:
+  - BRAVE_API_KEY
+transport: streamable-http
+port: 8101
+image: yourorg/mcp-brave-search
+version: 0.1.0
+tools:
+- web_search
+- news_search
+docs: https://brave.com/search/api/
+maintainers:
+- platform-team
+status: active

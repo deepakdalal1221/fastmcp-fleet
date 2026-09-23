@@ -1,0 +1,21 @@
+id: playwright
+name: Playwright
+category: browser
+description: Playwright browser automation
+auth:
+  type: none
+  env: []
+transport: streamable-http
+port: 8111
+image: yourorg/mcp-playwright
+version: 0.1.0
+tools:
+- navigate
+- click
+- fill
+- screenshot
+- extract_text
+docs: https://playwright.dev/python/
+maintainers:
+- platform-team
+status: planned

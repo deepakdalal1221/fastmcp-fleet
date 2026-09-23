@@ -1,0 +1,21 @@
+id: cosmosdb
+name: Azure Cosmos DB
+category: database
+description: Cosmos DB SQL API
+auth:
+  type: custom
+  env:
+  - COSMOS_ENDPOINT
+  - COSMOS_KEY
+transport: streamable-http
+port: 8025
+image: yourorg/mcp-cosmosdb
+version: 0.1.0
+tools:
+- query
+- read_item
+- upsert_item
+docs: https://learn.microsoft.com/en-us/azure/cosmos-db/
+maintainers:
+- platform-team
+status: planned

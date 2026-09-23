@@ -1,0 +1,20 @@
+id: firecrawl
+name: Firecrawl
+category: search
+description: Firecrawl web scraping
+auth:
+  type: bearer_token
+  env:
+  - FIRECRAWL_API_KEY
+transport: streamable-http
+port: 8109
+image: yourorg/mcp-firecrawl
+version: 0.1.0
+tools:
+- crawl
+- scrape
+- map
+docs: https://docs.firecrawl.dev/
+maintainers:
+- platform-team
+status: planned

@@ -1,0 +1,22 @@
+id: azure-devops
+name: Azure DevOps
+category: development
+description: Azure DevOps REST API
+auth:
+  type: bearer_token
+  env:
+  - AZURE_DEVOPS_PAT
+  - AZURE_DEVOPS_ORG
+transport: streamable-http
+port: 8008
+image: yourorg/mcp-azure-devops
+version: 0.1.0
+tools:
+- list_projects
+- list_repos
+- list_work_items
+- create_work_item
+docs: https://learn.microsoft.com/en-us/rest/api/azure/devops/
+maintainers:
+- platform-team
+status: planned

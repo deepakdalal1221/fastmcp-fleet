@@ -1,0 +1,19 @@
+id: spinnaker
+name: Spinnaker
+category: devops
+description: Spinnaker pipelines
+auth:
+  type: custom
+  env:
+  - SPINNAKER_URL
+transport: streamable-http
+port: 8060
+image: yourorg/mcp-spinnaker
+version: 0.1.0
+tools:
+- list_pipelines
+- trigger_pipeline
+docs: https://spinnaker.io/docs/reference/api/
+maintainers:
+- platform-team
+status: planned

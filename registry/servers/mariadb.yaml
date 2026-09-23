@@ -1,0 +1,19 @@
+id: mariadb
+name: MariaDB
+category: database
+description: MariaDB query access
+auth:
+  type: custom
+  env:
+  - MARIADB_DSN
+transport: streamable-http
+port: 8013
+image: yourorg/mcp-mariadb
+version: 0.1.0
+tools:
+- query
+- list_tables
+docs: https://mariadb.com/kb/en/documentation/
+maintainers:
+- platform-team
+status: planned

@@ -1,0 +1,21 @@
+id: sentry
+name: Sentry
+category: monitoring
+description: Sentry issues + events
+auth:
+  type: bearer_token
+  env:
+  - SENTRY_TOKEN
+  - SENTRY_ORG
+transport: streamable-http
+port: 8118
+image: yourorg/mcp-sentry
+version: 0.1.0
+tools:
+- list_issues
+- get_issue
+- list_events
+docs: https://docs.sentry.io/api/
+maintainers:
+- platform-team
+status: active

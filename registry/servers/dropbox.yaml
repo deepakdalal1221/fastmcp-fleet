@@ -1,0 +1,20 @@
+id: dropbox
+name: Dropbox
+category: storage
+description: Dropbox file operations
+auth:
+  type: bearer_token
+  env:
+  - DROPBOX_TOKEN
+transport: streamable-http
+port: 8093
+image: yourorg/mcp-dropbox
+version: 0.1.0
+tools:
+- list_folder
+- upload
+- download
+docs: https://www.dropbox.com/developers/documentation
+maintainers:
+- platform-team
+status: planned

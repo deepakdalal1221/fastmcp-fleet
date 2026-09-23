@@ -1,0 +1,21 @@
+id: gcs
+name: Google Cloud Storage
+category: storage
+description: GCS bucket operations
+auth:
+  type: gcp_sa
+  env:
+  - GOOGLE_APPLICATION_CREDENTIALS
+transport: streamable-http
+port: 8096
+image: yourorg/mcp-gcs
+version: 0.1.0
+tools:
+- list_buckets
+- list_objects
+- get_object
+- upload_object
+docs: https://cloud.google.com/storage/docs
+maintainers:
+- platform-team
+status: planned

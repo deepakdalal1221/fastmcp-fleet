@@ -1,0 +1,24 @@
+id: jira
+name: Jira
+category: project-management
+description: Atlassian Jira Cloud
+auth:
+  type: basic
+  env:
+  - JIRA_URL
+  - JIRA_USER
+  - JIRA_TOKEN
+transport: streamable-http
+port: 8071
+image: yourorg/mcp-jira
+version: 0.1.0
+tools:
+- search_issues
+- get_issue
+- create_issue
+- update_issue
+- list_projects
+docs: https://developer.atlassian.com/cloud/jira/platform/rest/v3/
+maintainers:
+- platform-team
+status: active

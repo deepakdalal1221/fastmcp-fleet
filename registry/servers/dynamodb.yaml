@@ -1,0 +1,24 @@
+id: dynamodb
+name: DynamoDB
+category: database
+description: AWS DynamoDB item operations
+auth:
+  type: aws_sig
+  env:
+  - AWS_ACCESS_KEY_ID
+  - AWS_SECRET_ACCESS_KEY
+  - AWS_REGION
+transport: streamable-http
+port: 8024
+image: yourorg/mcp-dynamodb
+version: 0.1.0
+tools:
+- get_item
+- put_item
+- query
+- scan
+- list_tables
+docs: https://docs.aws.amazon.com/amazondynamodb/
+maintainers:
+- platform-team
+status: planned

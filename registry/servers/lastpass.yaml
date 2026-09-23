@@ -1,0 +1,19 @@
+id: lastpass
+name: LastPass
+category: security
+description: LastPass Enterprise API
+auth:
+  type: custom
+  env:
+  - LASTPASS_CID
+  - LASTPASS_API_HASH
+transport: streamable-http
+port: 8129
+image: yourorg/mcp-lastpass
+version: 0.1.0
+tools:
+- list_users
+docs: https://support.lastpass.com/help/use-the-lastpass-provisioning-api
+maintainers:
+- platform-team
+status: planned

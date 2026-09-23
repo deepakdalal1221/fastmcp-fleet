@@ -1,0 +1,20 @@
+id: quickbooks
+name: QuickBooks
+category: business
+description: QuickBooks Online
+auth:
+  type: bearer_token
+  env:
+  - QB_TOKEN
+  - QB_REALM_ID
+transport: streamable-http
+port: 8157
+image: yourorg/mcp-quickbooks
+version: 0.1.0
+tools:
+- list_invoices
+- list_customers
+docs: https://developer.intuit.com/app/developer/qbo/docs/api/accounting/all-entities/account
+maintainers:
+- platform-team
+status: planned

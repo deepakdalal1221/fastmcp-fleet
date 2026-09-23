@@ -1,0 +1,19 @@
+id: shortcut
+name: Shortcut
+category: project-management
+description: Shortcut REST API
+auth:
+  type: bearer_token
+  env:
+  - SHORTCUT_TOKEN
+transport: streamable-http
+port: 8078
+image: yourorg/mcp-shortcut
+version: 0.1.0
+tools:
+- list_stories
+- create_story
+docs: https://developer.shortcut.com/api/rest/v3
+maintainers:
+- platform-team
+status: planned

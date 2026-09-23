@@ -1,0 +1,18 @@
+id: ibm-cloud
+name: IBM Cloud
+category: cloud
+description: IBM Cloud resources
+auth:
+  type: bearer_token
+  env:
+  - IBM_CLOUD_API_KEY
+transport: streamable-http
+port: 8045
+image: yourorg/mcp-ibm-cloud
+version: 0.1.0
+tools:
+- list_resources
+docs: https://cloud.ibm.com/apidocs
+maintainers:
+- platform-team
+status: planned

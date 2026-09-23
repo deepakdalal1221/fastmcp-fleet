@@ -1,0 +1,19 @@
+id: openrouter
+name: OpenRouter
+category: ai-ml
+description: OpenRouter LLM gateway
+auth:
+  type: bearer_token
+  env:
+  - OPENROUTER_API_KEY
+transport: streamable-http
+port: 8138
+image: yourorg/mcp-openrouter
+version: 0.1.0
+tools:
+- chat_completion
+- list_models
+docs: https://openrouter.ai/docs
+maintainers:
+- platform-team
+status: planned

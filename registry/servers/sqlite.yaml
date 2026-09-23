@@ -1,0 +1,20 @@
+id: sqlite
+name: SQLite
+category: database
+description: SQLite file query access
+auth:
+  type: none
+  env:
+  - SQLITE_PATH
+transport: streamable-http
+port: 8014
+image: yourorg/mcp-sqlite
+version: 0.1.0
+tools:
+- query
+- list_tables
+- describe_table
+docs: https://www.sqlite.org/docs.html
+maintainers:
+- platform-team
+status: active

@@ -1,0 +1,21 @@
+id: docker
+name: Docker
+category: devops
+description: Local Docker daemon operations
+auth:
+  type: custom
+  env:
+  - DOCKER_HOST
+transport: streamable-http
+port: 8047
+image: yourorg/mcp-docker
+version: 0.1.0
+tools:
+- list_containers
+- list_images
+- inspect_container
+- logs
+docs: https://docs.docker.com/engine/api/
+maintainers:
+- platform-team
+status: planned

@@ -1,0 +1,19 @@
+id: clickhouse
+name: ClickHouse
+category: database
+description: ClickHouse analytical queries
+auth:
+  type: custom
+  env:
+  - CLICKHOUSE_URL
+transport: streamable-http
+port: 8020
+image: yourorg/mcp-clickhouse
+version: 0.1.0
+tools:
+- query
+- list_tables
+docs: https://clickhouse.com/docs
+maintainers:
+- platform-team
+status: planned

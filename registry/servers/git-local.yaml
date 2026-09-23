@@ -1,0 +1,22 @@
+id: git-local
+name: Git (local)
+category: development
+description: Local git repository operations
+auth:
+  type: none
+  env: []
+transport: streamable-http
+port: 8005
+image: yourorg/mcp-git-local
+version: 0.1.0
+tools:
+- status
+- log
+- diff
+- blame
+- show
+- branches
+docs: https://git-scm.com/docs
+maintainers:
+- platform-team
+status: planned

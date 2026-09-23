@@ -1,0 +1,19 @@
+id: wrike
+name: Wrike
+category: project-management
+description: Wrike REST API
+auth:
+  type: bearer_token
+  env:
+  - WRIKE_TOKEN
+transport: streamable-http
+port: 8079
+image: yourorg/mcp-wrike
+version: 0.1.0
+tools:
+- list_tasks
+- create_task
+docs: https://developers.wrike.com/
+maintainers:
+- platform-team
+status: planned

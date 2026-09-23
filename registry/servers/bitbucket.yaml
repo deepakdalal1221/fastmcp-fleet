@@ -1,0 +1,21 @@
+id: bitbucket
+name: Bitbucket
+category: development
+description: Bitbucket Cloud API
+auth:
+  type: basic
+  env:
+  - BITBUCKET_USERNAME
+  - BITBUCKET_APP_PASSWORD
+transport: streamable-http
+port: 8003
+image: yourorg/mcp-bitbucket
+version: 0.1.0
+tools:
+- list_repos
+- get_repo
+- list_pull_requests
+docs: https://developer.atlassian.com/cloud/bitbucket/rest/
+maintainers:
+- platform-team
+status: planned

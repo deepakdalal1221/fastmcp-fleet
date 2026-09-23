@@ -1,0 +1,20 @@
+id: gemini
+name: Google Gemini
+category: ai-ml
+description: Google Gemini generative model API
+auth:
+  type: api_key
+  env:
+  - GEMINI_API_KEY
+transport: streamable-http
+port: 8173
+image: yourorg/mcp-gemini
+version: 0.1.0
+tools:
+- generate_content
+- embed_content
+- list_models
+docs: https://ai.google.dev/api/rest
+maintainers:
+- platform-team
+status: active

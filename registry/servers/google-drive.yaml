@@ -1,0 +1,21 @@
+id: google-drive
+name: Google Drive
+category: storage
+description: Google Drive files
+auth:
+  type: gcp_sa
+  env:
+  - GOOGLE_APPLICATION_CREDENTIALS
+transport: streamable-http
+port: 8091
+image: yourorg/mcp-google-drive
+version: 0.1.0
+tools:
+- list_files
+- get_file
+- upload_file
+- download_file
+docs: https://developers.google.com/drive/api
+maintainers:
+- platform-team
+status: planned

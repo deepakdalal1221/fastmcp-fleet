@@ -1,0 +1,20 @@
+id: exa
+name: Exa
+category: search
+description: Exa neural search
+auth:
+  type: api_key
+  env:
+  - EXA_API_KEY
+transport: streamable-http
+port: 8107
+image: yourorg/mcp-exa
+version: 0.1.0
+tools:
+- search
+- find_similar
+- contents
+docs: https://docs.exa.ai/
+maintainers:
+- platform-team
+status: planned

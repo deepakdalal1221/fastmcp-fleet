@@ -1,0 +1,23 @@
+id: aws
+name: AWS
+category: cloud
+description: AWS multi-service (S3, EC2, Lambda, IAM)
+auth:
+  type: aws_sig
+  env:
+  - AWS_ACCESS_KEY_ID
+  - AWS_SECRET_ACCESS_KEY
+  - AWS_REGION
+transport: streamable-http
+port: 8031
+image: yourorg/mcp-aws
+version: 0.1.0
+tools:
+- list_s3_buckets
+- list_ec2_instances
+- invoke_lambda
+- list_iam_users
+docs: https://docs.aws.amazon.com/
+maintainers:
+- platform-team
+status: planned

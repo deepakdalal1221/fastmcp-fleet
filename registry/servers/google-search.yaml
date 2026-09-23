@@ -1,0 +1,19 @@
+id: google-search
+name: Google Custom Search
+category: search
+description: Google Programmable Search
+auth:
+  type: api_key
+  env:
+  - GOOGLE_CSE_KEY
+  - GOOGLE_CSE_ID
+transport: streamable-http
+port: 8102
+image: yourorg/mcp-google-search
+version: 0.1.0
+tools:
+- search
+docs: https://developers.google.com/custom-search/v1/introduction
+maintainers:
+- platform-team
+status: planned

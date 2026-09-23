@@ -1,0 +1,21 @@
+id: azure-blob
+name: Azure Blob Storage
+category: storage
+description: Azure Blob operations
+auth:
+  type: custom
+  env:
+  - AZURE_STORAGE_CONNECTION_STRING
+transport: streamable-http
+port: 8097
+image: yourorg/mcp-azure-blob
+version: 0.1.0
+tools:
+- list_containers
+- list_blobs
+- get_blob
+- upload_blob
+docs: https://learn.microsoft.com/en-us/azure/storage/blobs/
+maintainers:
+- platform-team
+status: planned

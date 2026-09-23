@@ -1,0 +1,22 @@
+id: airflow
+name: Airflow
+category: data-platform
+description: Airflow DAGs + runs
+auth:
+  type: basic
+  env:
+  - AIRFLOW_URL
+  - AIRFLOW_USER
+  - AIRFLOW_PASSWORD
+transport: streamable-http
+port: 8151
+image: yourorg/mcp-airflow
+version: 0.1.0
+tools:
+- list_dags
+- trigger_dag
+- list_runs
+docs: https://airflow.apache.org/docs/apache-airflow/stable/stable-rest-api-ref.html
+maintainers:
+- platform-team
+status: planned

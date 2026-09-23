@@ -1,0 +1,19 @@
+id: redshift
+name: Redshift
+category: data-platform
+description: AWS Redshift
+auth:
+  type: custom
+  env:
+  - REDSHIFT_DSN
+transport: streamable-http
+port: 8147
+image: yourorg/mcp-redshift
+version: 0.1.0
+tools:
+- query
+- list_tables
+docs: https://docs.aws.amazon.com/redshift/
+maintainers:
+- platform-team
+status: planned

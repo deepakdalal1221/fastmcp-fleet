@@ -1,0 +1,18 @@
+id: calculator
+name: Calculator
+category: utility
+description: Safe arithmetic evaluator
+auth:
+  type: none
+  env: []
+transport: streamable-http
+port: 8165
+image: yourorg/mcp-calculator
+version: 0.1.0
+tools:
+- eval
+- solve
+docs: https://docs.python.org/3/library/math.html
+maintainers:
+- platform-team
+status: planned

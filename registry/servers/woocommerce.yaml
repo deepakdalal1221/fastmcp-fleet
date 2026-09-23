@@ -1,0 +1,21 @@
+id: woocommerce
+name: WooCommerce
+category: business
+description: WooCommerce REST
+auth:
+  type: basic
+  env:
+  - WOO_URL
+  - WOO_KEY
+  - WOO_SECRET
+transport: streamable-http
+port: 8156
+image: yourorg/mcp-woocommerce
+version: 0.1.0
+tools:
+- list_products
+- list_orders
+docs: https://woocommerce.github.io/woocommerce-rest-api-docs/
+maintainers:
+- platform-team
+status: planned

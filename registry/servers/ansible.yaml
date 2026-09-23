@@ -1,0 +1,20 @@
+id: ansible
+name: Ansible
+category: devops
+description: Ansible AWX/Automation Platform
+auth:
+  type: bearer_token
+  env:
+  - AWX_TOKEN
+  - AWX_URL
+transport: streamable-http
+port: 8049
+image: yourorg/mcp-ansible
+version: 0.1.0
+tools:
+- list_jobs
+- launch_job
+docs: https://docs.ansible.com/automation-controller/latest/html/controllerapi/
+maintainers:
+- platform-team
+status: planned

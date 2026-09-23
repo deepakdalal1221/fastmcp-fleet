@@ -1,0 +1,20 @@
+id: cohere
+name: Cohere
+category: ai-ml
+description: Cohere chat + embed + rerank
+auth:
+  type: bearer_token
+  env:
+  - COHERE_API_KEY
+transport: streamable-http
+port: 8140
+image: yourorg/mcp-cohere
+version: 0.1.0
+tools:
+- chat
+- embed
+- rerank
+docs: https://docs.cohere.com/reference/about
+maintainers:
+- platform-team
+status: planned

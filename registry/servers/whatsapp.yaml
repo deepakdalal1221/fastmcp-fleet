@@ -1,0 +1,20 @@
+id: whatsapp
+name: WhatsApp Business
+category: communication
+description: WhatsApp Cloud API
+auth:
+  type: bearer_token
+  env:
+  - WHATSAPP_TOKEN
+  - WHATSAPP_PHONE_ID
+transport: streamable-http
+port: 8067
+image: yourorg/mcp-whatsapp
+version: 0.1.0
+tools:
+- send_message
+- send_template
+docs: https://developers.facebook.com/docs/whatsapp/cloud-api
+maintainers:
+- platform-team
+status: planned

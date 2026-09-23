@@ -1,0 +1,20 @@
+id: gcp
+name: Google Cloud
+category: cloud
+description: GCP multi-service
+auth:
+  type: gcp_sa
+  env:
+  - GOOGLE_APPLICATION_CREDENTIALS
+  - GCP_PROJECT
+transport: streamable-http
+port: 8032
+image: yourorg/mcp-gcp
+version: 0.1.0
+tools:
+- list_gcs_buckets
+- list_compute_instances
+docs: https://cloud.google.com/docs
+maintainers:
+- platform-team
+status: planned

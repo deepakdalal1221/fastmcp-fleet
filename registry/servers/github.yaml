@@ -1,0 +1,24 @@
+id: github
+name: GitHub
+category: development
+description: GitHub REST + GraphQL API
+auth:
+  type: bearer_token
+  env:
+  - GITHUB_TOKEN
+transport: streamable-http
+port: 8001
+image: yourorg/mcp-github
+version: 0.1.0
+tools:
+- list_repos
+- get_repo
+- list_issues
+- create_issue
+- list_pulls
+- get_pr
+- list_commits
+docs: https://docs.github.com/en/rest
+maintainers:
+- platform-team
+status: pilot

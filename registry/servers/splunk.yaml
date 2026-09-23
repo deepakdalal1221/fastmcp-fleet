@@ -1,0 +1,20 @@
+id: splunk
+name: Splunk
+category: monitoring
+description: Splunk search + reports
+auth:
+  type: bearer_token
+  env:
+  - SPLUNK_URL
+  - SPLUNK_TOKEN
+transport: streamable-http
+port: 8121
+image: yourorg/mcp-splunk
+version: 0.1.0
+tools:
+- search
+- list_saved_searches
+docs: https://docs.splunk.com/Documentation/Splunk/latest/RESTREF/RESTprolog
+maintainers:
+- platform-team
+status: planned

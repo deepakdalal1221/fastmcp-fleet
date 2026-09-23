@@ -1,0 +1,21 @@
+id: databricks
+name: Databricks
+category: data-platform
+description: Databricks SQL + jobs
+auth:
+  type: bearer_token
+  env:
+  - DATABRICKS_HOST
+  - DATABRICKS_TOKEN
+transport: streamable-http
+port: 8145
+image: yourorg/mcp-databricks
+version: 0.1.0
+tools:
+- run_sql
+- list_jobs
+- trigger_job
+docs: https://docs.databricks.com/api/
+maintainers:
+- platform-team
+status: planned

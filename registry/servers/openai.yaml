@@ -1,0 +1,20 @@
+id: openai
+name: OpenAI
+category: ai-ml
+description: OpenAI chat + embeddings + images
+auth:
+  type: bearer_token
+  env:
+  - OPENAI_API_KEY
+transport: streamable-http
+port: 8134
+image: yourorg/mcp-openai
+version: 0.1.0
+tools:
+- chat_completion
+- embed
+- generate_image
+docs: https://platform.openai.com/docs/api-reference
+maintainers:
+- platform-team
+status: active

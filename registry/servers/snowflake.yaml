@@ -1,0 +1,22 @@
+id: snowflake
+name: Snowflake
+category: data-platform
+description: Snowflake queries + warehouse
+auth:
+  type: custom
+  env:
+  - SNOWFLAKE_ACCOUNT
+  - SNOWFLAKE_USER
+  - SNOWFLAKE_PASSWORD
+transport: streamable-http
+port: 8144
+image: yourorg/mcp-snowflake
+version: 0.1.0
+tools:
+- query
+- list_databases
+- list_warehouses
+docs: https://docs.snowflake.com/
+maintainers:
+- platform-team
+status: planned

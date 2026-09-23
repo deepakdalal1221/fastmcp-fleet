@@ -1,0 +1,22 @@
+id: filesystem
+name: Filesystem (local)
+category: storage
+description: Sandboxed local filesystem
+auth:
+  type: none
+  env:
+  - FS_ROOT
+transport: streamable-http
+port: 8100
+image: yourorg/mcp-filesystem
+version: 0.1.0
+tools:
+- read_file
+- write_file
+- list_dir
+- stat
+- search
+docs: https://modelcontextprotocol.io/
+maintainers:
+- platform-team
+status: pilot

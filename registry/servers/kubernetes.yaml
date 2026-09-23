@@ -1,0 +1,22 @@
+id: kubernetes
+name: Kubernetes
+category: devops
+description: kubectl-equivalent operations
+auth:
+  type: custom
+  env:
+  - KUBECONFIG
+transport: streamable-http
+port: 8046
+image: yourorg/mcp-kubernetes
+version: 0.1.0
+tools:
+- get_pods
+- get_services
+- get_deployments
+- describe_pod
+- logs
+docs: https://kubernetes.io/docs/reference/kubernetes-api/
+maintainers:
+- platform-team
+status: planned

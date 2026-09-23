@@ -1,0 +1,20 @@
+id: digitalocean
+name: DigitalOcean
+category: cloud
+description: DigitalOcean API
+auth:
+  type: bearer_token
+  env:
+  - DIGITALOCEAN_TOKEN
+transport: streamable-http
+port: 8035
+image: yourorg/mcp-digitalocean
+version: 0.1.0
+tools:
+- list_droplets
+- list_volumes
+- list_load_balancers
+docs: https://docs.digitalocean.com/reference/api/
+maintainers:
+- platform-team
+status: active

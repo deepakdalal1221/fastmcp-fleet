@@ -1,0 +1,20 @@
+id: box
+name: Box
+category: storage
+description: Box file operations
+auth:
+  type: bearer_token
+  env:
+  - BOX_TOKEN
+transport: streamable-http
+port: 8094
+image: yourorg/mcp-box
+version: 0.1.0
+tools:
+- list_folder
+- upload
+- download
+docs: https://developer.box.com/reference/
+maintainers:
+- platform-team
+status: planned

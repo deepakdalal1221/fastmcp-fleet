@@ -1,0 +1,21 @@
+id: bigquery
+name: BigQuery
+category: data-platform
+description: BigQuery SQL
+auth:
+  type: gcp_sa
+  env:
+  - GOOGLE_APPLICATION_CREDENTIALS
+  - GCP_PROJECT
+transport: streamable-http
+port: 8146
+image: yourorg/mcp-bigquery
+version: 0.1.0
+tools:
+- query
+- list_datasets
+- list_tables
+docs: https://cloud.google.com/bigquery/docs
+maintainers:
+- platform-team
+status: planned

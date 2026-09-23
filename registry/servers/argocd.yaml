@@ -1,0 +1,20 @@
+id: argocd
+name: ArgoCD
+category: devops
+description: ArgoCD applications
+auth:
+  type: bearer_token
+  env:
+  - ARGOCD_TOKEN
+  - ARGOCD_URL
+transport: streamable-http
+port: 8052
+image: yourorg/mcp-argocd
+version: 0.1.0
+tools:
+- list_applications
+- sync_application
+docs: https://argo-cd.readthedocs.io/en/stable/developer-guide/api-docs/
+maintainers:
+- platform-team
+status: planned

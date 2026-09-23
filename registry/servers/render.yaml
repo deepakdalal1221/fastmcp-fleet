@@ -1,0 +1,19 @@
+id: render
+name: Render
+category: cloud
+description: Render services + deploys
+auth:
+  type: bearer_token
+  env:
+  - RENDER_TOKEN
+transport: streamable-http
+port: 8040
+image: yourorg/mcp-render
+version: 0.1.0
+tools:
+- list_services
+- list_deploys
+docs: https://api-docs.render.com/
+maintainers:
+- platform-team
+status: active

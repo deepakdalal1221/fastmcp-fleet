@@ -1,0 +1,20 @@
+id: logseq
+name: Logseq
+category: productivity
+description: Local Logseq graph
+auth:
+  type: none
+  env:
+  - LOGSEQ_GRAPH_PATH
+transport: streamable-http
+port: 8086
+image: yourorg/mcp-logseq
+version: 0.1.0
+tools:
+- list_pages
+- read_page
+- search
+docs: https://docs.logseq.com/
+maintainers:
+- platform-team
+status: planned

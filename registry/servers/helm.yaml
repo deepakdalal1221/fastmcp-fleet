@@ -1,0 +1,21 @@
+id: helm
+name: Helm
+category: devops
+description: Helm chart + release operations
+auth:
+  type: custom
+  env:
+  - KUBECONFIG
+transport: streamable-http
+port: 8051
+image: yourorg/mcp-helm
+version: 0.1.0
+tools:
+- list_releases
+- get_release
+- install
+- upgrade
+docs: https://helm.sh/docs/
+maintainers:
+- platform-team
+status: planned

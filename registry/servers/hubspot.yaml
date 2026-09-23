@@ -1,0 +1,20 @@
+id: hubspot
+name: HubSpot
+category: business
+description: HubSpot CRM
+auth:
+  type: bearer_token
+  env:
+  - HUBSPOT_TOKEN
+transport: streamable-http
+port: 8153
+image: yourorg/mcp-hubspot
+version: 0.1.0
+tools:
+- list_contacts
+- list_deals
+- list_companies
+docs: https://developers.hubspot.com/docs/api/overview
+maintainers:
+- platform-team
+status: active

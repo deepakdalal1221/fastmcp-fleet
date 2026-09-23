@@ -1,0 +1,20 @@
+id: huggingface
+name: Hugging Face
+category: ai-ml
+description: HF Hub + Inference
+auth:
+  type: bearer_token
+  env:
+  - HF_TOKEN
+transport: streamable-http
+port: 8136
+image: yourorg/mcp-huggingface
+version: 0.1.0
+tools:
+- list_models
+- inference
+- list_datasets
+docs: https://huggingface.co/docs/api-inference/
+maintainers:
+- platform-team
+status: active

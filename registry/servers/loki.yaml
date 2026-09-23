@@ -1,0 +1,20 @@
+id: loki
+name: Grafana Loki
+category: monitoring
+description: Loki log queries
+auth:
+  type: custom
+  env:
+  - LOKI_URL
+transport: streamable-http
+port: 8122
+image: yourorg/mcp-loki
+version: 0.1.0
+tools:
+- query
+- query_range
+- list_labels
+docs: https://grafana.com/docs/loki/latest/reference/api/
+maintainers:
+- platform-team
+status: planned

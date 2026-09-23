@@ -1,0 +1,21 @@
+id: auth0
+name: Auth0
+category: security
+description: Auth0 management API
+auth:
+  type: bearer_token
+  env:
+  - AUTH0_DOMAIN
+  - AUTH0_TOKEN
+transport: streamable-http
+port: 8131
+image: yourorg/mcp-auth0
+version: 0.1.0
+tools:
+- list_users
+- list_clients
+- list_rules
+docs: https://auth0.com/docs/api/management/v2
+maintainers:
+- platform-team
+status: active

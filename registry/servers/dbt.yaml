@@ -1,0 +1,21 @@
+id: dbt
+name: dbt Cloud
+category: data-platform
+description: dbt Cloud jobs + runs
+auth:
+  type: bearer_token
+  env:
+  - DBT_TOKEN
+  - DBT_ACCOUNT_ID
+transport: streamable-http
+port: 8148
+image: yourorg/mcp-dbt
+version: 0.1.0
+tools:
+- list_jobs
+- trigger_job
+- list_runs
+docs: https://docs.getdbt.com/dbt-cloud/api-v2-legacy
+maintainers:
+- platform-team
+status: planned

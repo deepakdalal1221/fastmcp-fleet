@@ -1,0 +1,19 @@
+id: codecov
+name: Codecov
+category: development
+description: Codecov coverage reports
+auth:
+  type: bearer_token
+  env:
+  - CODECOV_TOKEN
+transport: streamable-http
+port: 8010
+image: yourorg/mcp-codecov
+version: 0.1.0
+tools:
+- get_coverage
+- list_reports
+docs: https://docs.codecov.com/reference
+maintainers:
+- platform-team
+status: planned

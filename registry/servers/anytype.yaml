@@ -1,0 +1,18 @@
+id: anytype
+name: Anytype
+category: productivity
+description: Anytype local API
+auth:
+  type: custom
+  env:
+  - ANYTYPE_URL
+transport: streamable-http
+port: 8088
+image: yourorg/mcp-anytype
+version: 0.1.0
+tools:
+- list_objects
+docs: https://developers.anytype.io/
+maintainers:
+- platform-team
+status: planned

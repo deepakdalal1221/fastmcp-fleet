@@ -1,0 +1,19 @@
+id: onedrive
+name: OneDrive
+category: storage
+description: OneDrive via MS Graph
+auth:
+  type: bearer_token
+  env:
+  - MS_GRAPH_TOKEN
+transport: streamable-http
+port: 8092
+image: yourorg/mcp-onedrive
+version: 0.1.0
+tools:
+- list_files
+- download_file
+docs: https://learn.microsoft.com/en-us/onedrive/developer/rest-api/
+maintainers:
+- platform-team
+status: planned

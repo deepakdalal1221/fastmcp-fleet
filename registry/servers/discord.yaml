@@ -1,0 +1,20 @@
+id: discord
+name: Discord
+category: communication
+description: Discord bot API
+auth:
+  type: bearer_token
+  env:
+  - DISCORD_BOT_TOKEN
+transport: streamable-http
+port: 8062
+image: yourorg/mcp-discord
+version: 0.1.0
+tools:
+- list_guilds
+- list_channels
+- post_message
+docs: https://discord.com/developers/docs/intro
+maintainers:
+- platform-team
+status: active

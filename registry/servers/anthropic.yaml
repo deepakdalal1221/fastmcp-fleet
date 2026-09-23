@@ -1,0 +1,18 @@
+id: anthropic
+name: Anthropic
+category: ai-ml
+description: Anthropic Messages API
+auth:
+  type: api_key
+  env:
+  - ANTHROPIC_API_KEY
+transport: streamable-http
+port: 8135
+image: yourorg/mcp-anthropic
+version: 0.1.0
+tools:
+- messages
+docs: https://docs.anthropic.com/en/api
+maintainers:
+- platform-team
+status: active

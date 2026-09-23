@@ -1,0 +1,20 @@
+id: backblaze
+name: Backblaze B2
+category: storage
+description: Backblaze B2 (S3-compatible)
+auth:
+  type: custom
+  env:
+  - B2_KEY_ID
+  - B2_APPLICATION_KEY
+transport: streamable-http
+port: 8098
+image: yourorg/mcp-backblaze
+version: 0.1.0
+tools:
+- list_buckets
+- list_files
+docs: https://www.backblaze.com/apidocs
+maintainers:
+- platform-team
+status: planned

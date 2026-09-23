@@ -1,0 +1,21 @@
+id: browserbase
+name: Browserbase
+category: browser
+description: Browserbase cloud browsers
+auth:
+  type: bearer_token
+  env:
+  - BROWSERBASE_API_KEY
+  - BROWSERBASE_PROJECT_ID
+transport: streamable-http
+port: 8114
+image: yourorg/mcp-browserbase
+version: 0.1.0
+tools:
+- create_session
+- navigate
+- screenshot
+docs: https://docs.browserbase.com/
+maintainers:
+- platform-team
+status: planned

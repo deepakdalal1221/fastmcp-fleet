@@ -1,0 +1,19 @@
+id: bear
+name: Bear (local)
+category: productivity
+description: Bear notes via SQLite
+auth:
+  type: none
+  env:
+  - BEAR_DB_PATH
+transport: streamable-http
+port: 8089
+image: yourorg/mcp-bear
+version: 0.1.0
+tools:
+- search
+- read_note
+docs: https://bear.app/faq/
+maintainers:
+- platform-team
+status: planned

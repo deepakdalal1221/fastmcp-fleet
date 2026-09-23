@@ -1,0 +1,21 @@
+id: trello
+name: Trello
+category: project-management
+description: Trello REST API
+auth:
+  type: custom
+  env:
+  - TRELLO_KEY
+  - TRELLO_TOKEN
+transport: streamable-http
+port: 8074
+image: yourorg/mcp-trello
+version: 0.1.0
+tools:
+- list_boards
+- list_cards
+- create_card
+docs: https://developer.atlassian.com/cloud/trello/rest/
+maintainers:
+- platform-team
+status: planned

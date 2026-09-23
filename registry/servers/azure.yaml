@@ -1,0 +1,22 @@
+id: azure
+name: Azure
+category: cloud
+description: Azure multi-service
+auth:
+  type: custom
+  env:
+  - AZURE_SUBSCRIPTION_ID
+  - AZURE_CLIENT_ID
+  - AZURE_CLIENT_SECRET
+  - AZURE_TENANT_ID
+transport: streamable-http
+port: 8033
+image: yourorg/mcp-azure
+version: 0.1.0
+tools:
+- list_resource_groups
+- list_vms
+docs: https://learn.microsoft.com/en-us/azure/
+maintainers:
+- platform-team
+status: planned

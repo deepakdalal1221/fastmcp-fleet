@@ -1,0 +1,20 @@
+id: clickup
+name: ClickUp
+category: project-management
+description: ClickUp API v2
+auth:
+  type: bearer_token
+  env:
+  - CLICKUP_TOKEN
+transport: streamable-http
+port: 8075
+image: yourorg/mcp-clickup
+version: 0.1.0
+tools:
+- list_teams
+- list_tasks
+- create_task
+docs: https://clickup.com/api
+maintainers:
+- platform-team
+status: planned

@@ -1,0 +1,23 @@
+id: minio
+name: MinIO
+category: storage
+description: Self-hosted S3-compatible MinIO
+auth:
+  type: custom
+  env:
+  - MINIO_ENDPOINT
+  - MINIO_ACCESS_KEY
+  - MINIO_SECRET_KEY
+transport: streamable-http
+port: 8099
+image: yourorg/mcp-minio
+version: 0.1.0
+tools:
+- list_buckets
+- list_objects
+- get_object
+- put_object
+docs: https://min.io/docs/
+maintainers:
+- platform-team
+status: planned

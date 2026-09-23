@@ -1,0 +1,21 @@
+id: okta
+name: Okta
+category: security
+description: Okta users, groups, apps
+auth:
+  type: bearer_token
+  env:
+  - OKTA_URL
+  - OKTA_TOKEN
+transport: streamable-http
+port: 8130
+image: yourorg/mcp-okta
+version: 0.1.0
+tools:
+- list_users
+- list_groups
+- list_apps
+docs: https://developer.okta.com/docs/reference/
+maintainers:
+- platform-team
+status: active

@@ -1,0 +1,22 @@
+id: gitlab
+name: GitLab
+category: development
+description: GitLab REST API
+auth:
+  type: bearer_token
+  env:
+  - GITLAB_TOKEN
+transport: streamable-http
+port: 8002
+image: yourorg/mcp-gitlab
+version: 0.1.0
+tools:
+- list_projects
+- get_project
+- list_issues
+- create_issue
+- list_merge_requests
+docs: https://docs.gitlab.com/ee/api/
+maintainers:
+- platform-team
+status: active

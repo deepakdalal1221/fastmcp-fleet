@@ -1,0 +1,21 @@
+id: influxdb
+name: InfluxDB
+category: database
+description: InfluxDB time-series
+auth:
+  type: bearer_token
+  env:
+  - INFLUX_URL
+  - INFLUX_TOKEN
+  - INFLUX_ORG
+transport: streamable-http
+port: 8030
+image: yourorg/mcp-influxdb
+version: 0.1.0
+tools:
+- query_flux
+- write_points
+docs: https://docs.influxdata.com/
+maintainers:
+- platform-team
+status: planned

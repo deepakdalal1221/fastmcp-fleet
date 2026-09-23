@@ -1,0 +1,21 @@
+id: rocket-chat
+name: Rocket.Chat
+category: communication
+description: Rocket.Chat REST API
+auth:
+  type: custom
+  env:
+  - ROCKETCHAT_URL
+  - ROCKETCHAT_TOKEN
+  - ROCKETCHAT_USER_ID
+transport: streamable-http
+port: 8065
+image: yourorg/mcp-rocket-chat
+version: 0.1.0
+tools:
+- list_channels
+- post_message
+docs: https://developer.rocket.chat/reference/api
+maintainers:
+- platform-team
+status: planned

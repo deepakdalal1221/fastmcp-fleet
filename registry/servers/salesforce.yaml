@@ -1,0 +1,22 @@
+id: salesforce
+name: Salesforce
+category: business
+description: Salesforce SOQL + REST
+auth:
+  type: bearer_token
+  env:
+  - SALESFORCE_URL
+  - SALESFORCE_TOKEN
+transport: streamable-http
+port: 8152
+image: yourorg/mcp-salesforce
+version: 0.1.0
+tools:
+- soql
+- get_record
+- create_record
+- update_record
+docs: https://developer.salesforce.com/docs/apis
+maintainers:
+- platform-team
+status: planned

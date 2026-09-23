@@ -1,0 +1,18 @@
+id: groq
+name: Groq
+category: ai-ml
+description: Groq inference
+auth:
+  type: bearer_token
+  env:
+  - GROQ_API_KEY
+transport: streamable-http
+port: 8141
+image: yourorg/mcp-groq
+version: 0.1.0
+tools:
+- chat_completion
+docs: https://console.groq.com/docs/quickstart
+maintainers:
+- platform-team
+status: planned

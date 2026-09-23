@@ -1,0 +1,22 @@
+id: cassandra
+name: Cassandra
+category: database
+description: Cassandra CQL access
+auth:
+  type: custom
+  env:
+  - CASSANDRA_CONTACT_POINTS
+  - CASSANDRA_USER
+  - CASSANDRA_PASSWORD
+transport: streamable-http
+port: 8019
+image: yourorg/mcp-cassandra
+version: 0.1.0
+tools:
+- query
+- list_keyspaces
+- list_tables
+docs: https://cassandra.apache.org/doc/
+maintainers:
+- platform-team
+status: planned

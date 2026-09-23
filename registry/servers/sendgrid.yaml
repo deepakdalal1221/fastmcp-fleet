@@ -1,0 +1,19 @@
+id: sendgrid
+name: SendGrid
+category: communication
+description: SendGrid email
+auth:
+  type: bearer_token
+  env:
+  - SENDGRID_API_KEY
+transport: streamable-http
+port: 8069
+image: yourorg/mcp-sendgrid
+version: 0.1.0
+tools:
+- send_email
+- list_templates
+docs: https://docs.sendgrid.com/api-reference
+maintainers:
+- platform-team
+status: active

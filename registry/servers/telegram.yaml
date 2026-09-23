@@ -1,0 +1,19 @@
+id: telegram
+name: Telegram
+category: communication
+description: Telegram Bot API
+auth:
+  type: bearer_token
+  env:
+  - TELEGRAM_BOT_TOKEN
+transport: streamable-http
+port: 8066
+image: yourorg/mcp-telegram
+version: 0.1.0
+tools:
+- send_message
+- get_updates
+docs: https://core.telegram.org/bots/api
+maintainers:
+- platform-team
+status: planned

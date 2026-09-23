@@ -1,0 +1,18 @@
+id: perplexity
+name: Perplexity
+category: search
+description: Perplexity online API
+auth:
+  type: bearer_token
+  env:
+  - PERPLEXITY_API_KEY
+transport: streamable-http
+port: 8106
+image: yourorg/mcp-perplexity
+version: 0.1.0
+tools:
+- ask
+docs: https://docs.perplexity.ai/
+maintainers:
+- platform-team
+status: planned

@@ -1,0 +1,20 @@
+id: opensearch
+name: OpenSearch
+category: database
+description: OpenSearch search + index
+auth:
+  type: custom
+  env:
+  - OPENSEARCH_URL
+transport: streamable-http
+port: 8018
+image: yourorg/mcp-opensearch
+version: 0.1.0
+tools:
+- search
+- index_doc
+- list_indices
+docs: https://opensearch.org/docs/latest/
+maintainers:
+- platform-team
+status: planned

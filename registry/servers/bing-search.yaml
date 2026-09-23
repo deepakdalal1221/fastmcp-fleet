@@ -1,0 +1,19 @@
+id: bing-search
+name: Bing Search
+category: search
+description: Bing Web Search API
+auth:
+  type: api_key
+  env:
+  - BING_API_KEY
+transport: streamable-http
+port: 8103
+image: yourorg/mcp-bing-search
+version: 0.1.0
+tools:
+- web_search
+- news_search
+docs: https://learn.microsoft.com/en-us/bing/search-apis/
+maintainers:
+- platform-team
+status: planned
