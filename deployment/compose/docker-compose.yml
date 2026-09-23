@@ -28,7 +28,7 @@ services:
       <<: *common-env
       MCP_PORT: "8000"
       MCP_AUTH_TOKEN: ${MCP_AUTH_TOKEN:-}
-      GATEWAY_SERVERS: fetch,filesystem,time,github,postgres,sqlite,redis,mongodb,mysql,slack,discord,jira,linear,notion,brave-search,tavily,openai,anthropic,s3,sentry,cloudflare,datadog,grafana,prometheus,new-relic,pagerduty,stripe,hubspot,sendgrid,twilio,mailchimp,1password,snyk,auth0,okta,gitlab,asana,jenkins,airtable,gemini,vercel,netlify,huggingface,confluence,digitalocean,render,fly-io,gitea,terraform,circleci,gitlab-ci,elasticsearch,vault,mistral,bitbucket,cohere,groq,openrouter,replicate,supabase,azure-devops,sourcegraph,codecov,argocd,buildkite,github-actions
+      GATEWAY_SERVERS: fetch,filesystem,time,github,postgres,sqlite,redis,mongodb,mysql,slack,discord,jira,linear,notion,brave-search,tavily,openai,anthropic,s3,sentry,cloudflare,datadog,grafana,prometheus,new-relic,pagerduty,stripe,hubspot,sendgrid,twilio,mailchimp,1password,snyk,auth0,okta,gitlab,asana,jenkins,airtable,gemini,vercel,netlify,huggingface,confluence,digitalocean,render,fly-io,gitea,terraform,circleci,gitlab-ci,elasticsearch,vault,mistral,bitbucket,cohere,groq,openrouter,replicate,supabase,azure-devops,sourcegraph,codecov,argocd,buildkite,github-actions,ansible,pulumi,drone,teamcity
     depends_on:
       - fetch
       - filesystem
@@ -840,6 +840,61 @@ services:
       GITHUB_TOKEN: ${GITHUB_TOKEN:-}
     ports:
       - "8054:8054"
+
+  ansible:
+    <<: *common
+    build:
+      <<: *server-build
+      args:
+        SERVER_ID: ansible
+    environment:
+      <<: *common-env
+      MCP_PORT: "8049"
+      TOWER_URL: ${TOWER_URL:-}
+      TOWER_TOKEN: ${TOWER_TOKEN:-}
+    ports:
+      - "8049:8049"
+
+  pulumi:
+    <<: *common
+    build:
+      <<: *server-build
+      args:
+        SERVER_ID: pulumi
+    environment:
+      <<: *common-env
+      MCP_PORT: "8050"
+      PULUMI_ACCESS_TOKEN: ${PULUMI_ACCESS_TOKEN:-}
+    ports:
+      - "8050:8050"
+
+  drone:
+    <<: *common
+    build:
+      <<: *server-build
+      args:
+        SERVER_ID: drone
+    environment:
+      <<: *common-env
+      MCP_PORT: "8059"
+      DRONE_URL: ${DRONE_URL:-}
+      DRONE_TOKEN: ${DRONE_TOKEN:-}
+    ports:
+      - "8059:8059"
+
+  teamcity:
+    <<: *common
+    build:
+      <<: *server-build
+      args:
+        SERVER_ID: teamcity
+    environment:
+      <<: *common-env
+      MCP_PORT: "8058"
+      TEAMCITY_URL: ${TEAMCITY_URL:-}
+      TEAMCITY_TOKEN: ${TEAMCITY_TOKEN:-}
+    ports:
+      - "8058:8058"
 
 networks:
   mcp:
