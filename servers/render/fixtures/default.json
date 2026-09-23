@@ -1,0 +1,6 @@
+{
+  "offline": true,
+  "server_id": "render",
+  "data": [],
+  "note": "synthetic default for render; add per-endpoint JSON to customize"
+}

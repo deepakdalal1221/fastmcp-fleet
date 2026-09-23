@@ -1,0 +1,6 @@
+{
+  "offline": true,
+  "server_id": "confluence",
+  "data": [],
+  "note": "synthetic default for confluence; add per-endpoint JSON to customize"
+}

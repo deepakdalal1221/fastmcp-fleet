@@ -1,0 +1,6 @@
+{
+  "offline": true,
+  "server_id": "fly-io",
+  "data": [],
+  "note": "synthetic default for fly-io; add per-endpoint JSON to customize"
+}

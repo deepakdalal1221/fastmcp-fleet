@@ -1,0 +1,6 @@
+{
+  "offline": true,
+  "server_id": "gemini",
+  "data": [],
+  "note": "synthetic default for gemini; add per-endpoint JSON to customize"
+}

@@ -1,0 +1,11 @@
+{
+  "object": "list",
+  "has_more": false,
+  "data": [
+    {
+      "id": "cus_offline123",
+      "email": "test@example.com",
+      "created": 1700000000
+    }
+  ]
+}

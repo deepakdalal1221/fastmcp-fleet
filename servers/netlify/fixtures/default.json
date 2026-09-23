@@ -1,0 +1,6 @@
+{
+  "offline": true,
+  "server_id": "netlify",
+  "data": [],
+  "note": "synthetic default for netlify; add per-endpoint JSON to customize"
+}

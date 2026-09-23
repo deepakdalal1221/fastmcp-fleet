@@ -1,0 +1,6 @@
+{
+  "offline": true,
+  "server_id": "airtable",
+  "data": [],
+  "note": "synthetic default for airtable; add per-endpoint JSON to customize"
+}

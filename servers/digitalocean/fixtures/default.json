@@ -1,0 +1,6 @@
+{
+  "offline": true,
+  "server_id": "digitalocean",
+  "data": [],
+  "note": "synthetic default for digitalocean; add per-endpoint JSON to customize"
+}

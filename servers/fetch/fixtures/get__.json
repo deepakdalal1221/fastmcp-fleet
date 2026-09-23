@@ -1,0 +1,7 @@
+{
+  "url": "https://example.com/",
+  "status": 200,
+  "content_type": "text/html",
+  "text": "<html><body>offline fixture response</body></html>",
+  "truncated": false
+}

@@ -1,0 +1,9 @@
+{
+  "id": 1,
+  "name": "hello-world",
+  "full_name": "octocat/hello-world",
+  "description": "offline fixture",
+  "stargazers_count": 42,
+  "forks_count": 5,
+  "html_url": "https://github.com/octocat/hello-world"
+}

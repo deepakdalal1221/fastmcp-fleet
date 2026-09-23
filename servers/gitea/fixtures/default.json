@@ -1,0 +1,6 @@
+{
+  "offline": true,
+  "server_id": "gitea",
+  "data": [],
+  "note": "synthetic default for gitea; add per-endpoint JSON to customize"
+}
