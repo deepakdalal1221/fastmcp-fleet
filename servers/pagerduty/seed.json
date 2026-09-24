@@ -1,0 +1,24 @@
+{
+  "incidents:P_SVC1": [
+    {
+      "key": "PDOFF0001",
+      "value": {
+        "id": "PDOFF0001",
+        "title": "API 5xx errors spiking",
+        "urgency": "high",
+        "status": "triggered",
+        "service_id": "P_SVC1"
+      }
+    },
+    {
+      "key": "PDOFF0002",
+      "value": {
+        "id": "PDOFF0002",
+        "title": "Disk usage above 90%",
+        "urgency": "low",
+        "status": "acknowledged",
+        "service_id": "P_SVC1"
+      }
+    }
+  ]
+}

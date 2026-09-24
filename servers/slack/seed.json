@@ -1,0 +1,22 @@
+{
+  "messages:C_DEMO": [
+    {
+      "key": "1700000001.000001",
+      "value": {
+        "ts": "1700000001.000001",
+        "channel": "C_DEMO",
+        "user": "U_ALICE",
+        "text": "Kickoff meeting at 10am tomorrow"
+      }
+    },
+    {
+      "key": "1700000002.000002",
+      "value": {
+        "ts": "1700000002.000002",
+        "channel": "C_DEMO",
+        "user": "U_BOB",
+        "text": "Notes are in the doc \u2014 link in the pinned message"
+      }
+    }
+  ]
+}

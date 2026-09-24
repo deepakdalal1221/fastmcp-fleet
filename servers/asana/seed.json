@@ -1,0 +1,24 @@
+{
+  "tasks:P1": [
+    {
+      "key": "10001",
+      "value": {
+        "gid": "10001",
+        "name": "Prepare Q4 roadmap",
+        "notes": "Draft top-level themes",
+        "assignee": "alice@example.com",
+        "completed": false
+      }
+    },
+    {
+      "key": "10002",
+      "value": {
+        "gid": "10002",
+        "name": "Onboard new engineer",
+        "notes": "Set up laptop + accounts",
+        "assignee": "bob@example.com",
+        "completed": true
+      }
+    }
+  ]
+}

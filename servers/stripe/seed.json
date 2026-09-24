@@ -1,0 +1,26 @@
+{
+  "charges": [
+    {
+      "key": "ch_offline_1",
+      "value": {
+        "id": "ch_offline_1",
+        "amount": 2000,
+        "currency": "usd",
+        "status": "succeeded",
+        "customer": "cus_offline123",
+        "description": "Pro plan"
+      }
+    },
+    {
+      "key": "ch_offline_2",
+      "value": {
+        "id": "ch_offline_2",
+        "amount": 500,
+        "currency": "usd",
+        "status": "succeeded",
+        "customer": "cus_offline456",
+        "description": "Starter plan"
+      }
+    }
+  ]
+}

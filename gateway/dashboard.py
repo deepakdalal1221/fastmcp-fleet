@@ -17,6 +17,7 @@ from typing import Any
 
 import httpx
 import yaml
+from mcp_common import local_store
 from starlette.applications import Starlette
 from starlette.exceptions import HTTPException
 from starlette.requests import Request
@@ -186,7 +187,8 @@ async def api_reset(request: Request):
         if p.exists():
             p.unlink()
             removed.append(str(p))
-    return JSONResponse({"removed": removed, "sid": sid})
+    seeded = await local_store.seed(sid)
+    return JSONResponse({"removed": removed, "sid": sid, "seeded": seeded})
 
 
 async def api_reset_all(request: Request):
@@ -198,7 +200,10 @@ async def api_reset_all(request: Request):
     for sd in (REPO_ROOT / "servers").glob("*/state.db"):
         sd.unlink()
         removed.append(str(sd))
-    return JSONResponse({"removed": removed, "count": len(removed)})
+    seeded_total = 0
+    for seed_file in (REPO_ROOT / "servers").glob("*/seed.json"):
+        seeded_total += await local_store.seed(seed_file.parent.name)
+    return JSONResponse({"removed": removed, "count": len(removed), "seeded": seeded_total})
 
 
 HTML = r"""
@@ -620,7 +625,7 @@ HTML = r"""
           if (this.cmdkQuery === '') {
             items.push({type:'view', name:'Metrics', desc:'call counts + latency', run: () => this.view = 'metrics'});
             items.push({type:'view', name:'State inspector', desc:'browse SQLite state', run: () => this.view = 'state'});
-            items.push({type:'action', name:'Reset all state', desc:'clear every state.db', run: () => this.resetAll()});
+            items.push({type:'action', name:'Reset all state', desc:'clear every state.db & reseed', run: () => this.resetAll()});
           }
           this.allTools.forEach(t => {
             if (!q || t.name.toLowerCase().includes(q)) items.push({type:'tool', name:t.name, desc:t.description || '', run:() => this.pickToolByName(t)});
@@ -735,14 +740,17 @@ HTML = r"""
         },
         prettySchema(s) { return s ? JSON.stringify(s, null, 2) : '(no inputSchema)'; },
         async resetServer(srv) {
-          if (!confirm(`Reset state for ${srv.id}?`)) return;
+          if (!confirm(`Reset state for ${srv.id}? (Restores seed.json if present)`)) return;
           const r = await fetch('/api/reset/' + srv.id, {method:'POST'}).then(r => r.json());
-          alert(r.removed.length ? `Removed: ${r.removed.join(', ')}` : `No state for ${srv.id}`);
+          const parts = [];
+          if (r.removed && r.removed.length) parts.push(`Removed: ${r.removed.length} db(s)`);
+          if (r.seeded) parts.push(`Seeded: ${r.seeded} rows`);
+          alert(parts.length ? parts.join(' • ') : `No state for ${srv.id}`);
         },
         async resetAll() {
-          if (!confirm('Reset ALL server state? This deletes every state.db.')) return;
+          if (!confirm('Reset ALL server state? Restores seed.json baselines for stateful servers.')) return;
           const r = await fetch('/api/reset-all', {method:'POST'}).then(r => r.json());
-          alert(`Removed ${r.count} state DBs`);
+          alert(`Removed ${r.count} state DBs • Seeded ${r.seeded || 0} rows`);
         },
         async inspectState(srv) {
           this.view = 'state'; this.stateSid = srv.id; this.stateBucket = '';

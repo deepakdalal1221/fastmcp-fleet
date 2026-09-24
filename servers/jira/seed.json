@@ -1,0 +1,24 @@
+{
+  "issues:DEMO/DEMO-1": [
+    {
+      "key": "1",
+      "value": {
+        "key": "DEMO-1",
+        "summary": "Investigate slow queries",
+        "status": "In Progress",
+        "assignee": "alice",
+        "project": "DEMO"
+      }
+    },
+    {
+      "key": "2",
+      "value": {
+        "key": "DEMO-2",
+        "summary": "Update documentation",
+        "status": "To Do",
+        "assignee": "bob",
+        "project": "DEMO"
+      }
+    }
+  ]
+}

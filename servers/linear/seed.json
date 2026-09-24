@@ -1,0 +1,22 @@
+{
+  "issues:TEAM": [
+    {
+      "key": "OFF-001",
+      "value": {
+        "identifier": "OFF-001",
+        "title": "API rate limit hits on prod",
+        "state": "In Progress",
+        "team_id": "TEAM"
+      }
+    },
+    {
+      "key": "OFF-002",
+      "value": {
+        "identifier": "OFF-002",
+        "title": "Add retries to webhook client",
+        "state": "Backlog",
+        "team_id": "TEAM"
+      }
+    }
+  ]
+}

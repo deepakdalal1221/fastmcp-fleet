@@ -1,0 +1,43 @@
+{
+  "issues:acme/app": [
+    {
+      "key": "1",
+      "value": {
+        "number": 1,
+        "title": "Sample bug: login broken",
+        "body": "Users can't log in on Safari",
+        "state": "open",
+        "html_url": "https://github.com/acme/app/issues/1",
+        "user": {
+          "login": "octocat"
+        }
+      }
+    },
+    {
+      "key": "2",
+      "value": {
+        "number": 2,
+        "title": "Feature: dark mode",
+        "body": "Add dark theme support",
+        "state": "open",
+        "html_url": "https://github.com/acme/app/issues/2",
+        "user": {
+          "login": "alice"
+        }
+      }
+    },
+    {
+      "key": "3",
+      "value": {
+        "number": 3,
+        "title": "Deploy pipeline broken",
+        "body": "CI red since Tuesday",
+        "state": "closed",
+        "html_url": "https://github.com/acme/app/issues/3",
+        "user": {
+          "login": "bob"
+        }
+      }
+    }
+  ]
+}

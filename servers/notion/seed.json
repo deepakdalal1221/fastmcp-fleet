@@ -1,0 +1,22 @@
+{
+  "pages:parent_demo": [
+    {
+      "key": "page_offline_1",
+      "value": {
+        "id": "page_offline_1",
+        "parent_id": "parent_demo",
+        "title": "Q4 planning doc",
+        "content": "Themes: performance, DX, growth"
+      }
+    },
+    {
+      "key": "page_offline_2",
+      "value": {
+        "id": "page_offline_2",
+        "parent_id": "parent_demo",
+        "title": "Meeting notes 2026-09-24",
+        "content": "Present: Alice, Bob"
+      }
+    }
+  ]
+}

@@ -132,3 +132,38 @@ def next_id(server_id: str, collection: str) -> int:
             (collection,),
         ).fetchone()
     return int(r[0]) + 1
+
+
+def _seed_path(server_id: str) -> Path:
+    return ROOT_DIR / "servers" / server_id / "seed.json"
+
+
+def _seed_sync(server_id: str) -> int:
+    p = _seed_path(server_id)
+    if not p.exists():
+        return 0
+    data = json.loads(p.read_text())
+    if not isinstance(data, dict):
+        return 0
+    rows = 0
+    with _conn(server_id) as c:
+        for collection, entries in data.items():
+            if not isinstance(entries, list):
+                continue
+            for entry in entries:
+                key = str(entry.get("key"))
+                value = entry.get("value")
+                if value is None:
+                    continue
+                c.execute(
+                    "INSERT INTO store(collection,key,value) VALUES(?,?,?) "
+                    "ON CONFLICT(collection,key) DO UPDATE SET value=excluded.value",
+                    (collection, key, json.dumps(value)),
+                )
+                rows += 1
+    return rows
+
+
+async def seed(server_id: str) -> int:
+    """Populate the store from `servers/<id>/seed.json` if present. Returns rows loaded."""
+    return await asyncio.to_thread(_seed_sync, server_id)
