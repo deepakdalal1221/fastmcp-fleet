@@ -40,7 +40,7 @@ def register_tools(mcp: FastMCP) -> None:
     ) -> dict:
         """List monday.com boards. Offline: reads local_store."""
         if is_offline():
-            stored = local_store.list_all("monday", "boards")
+            stored = await local_store.list_all("monday", "boards")
             return {"boards": stored[:limit], "count": len(stored)}
         query = f"{{ boards(limit: {limit}) {{ id name state }} }}"
         async with make_client("monday", timeout=_TIMEOUT) as c:
@@ -55,7 +55,7 @@ def register_tools(mcp: FastMCP) -> None:
     ) -> dict:
         """List items on a monday.com board. Offline: reads local_store."""
         if is_offline():
-            items = local_store.list_all("monday", f"items:{board_id}")
+            items = await local_store.list_all("monday", f"items:{board_id}")
             return {"board_id": board_id, "items": items[:limit], "count": len(items)}
         query = (
             f"{{ boards(ids: {board_id}) {{ items_page(limit: {limit}) "
@@ -75,7 +75,7 @@ def register_tools(mcp: FastMCP) -> None:
         if is_offline():
             item_id = local_store.next_id("monday", "item")
             record = {"id": str(item_id), "board_id": board_id, "name": name, "state": "active"}
-            local_store.put("monday", f"items:{board_id}", str(item_id), record)
+            await local_store.put("monday", f"items:{board_id}", str(item_id), record)
             return {"created": record}
         mutation = (
             f'mutation {{ create_item(board_id: {board_id}, item_name: "{name}") {{ id name }} }}'

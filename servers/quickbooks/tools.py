@@ -50,7 +50,7 @@ def register_tools(mcp: FastMCP) -> None:
     ) -> dict:
         """List QuickBooks invoices. Offline: reads local_store."""
         if is_offline():
-            invs = local_store.list_all("quickbooks", "invoices")
+            invs = await local_store.list_all("quickbooks", "invoices")
             return {"invoices": invs[:limit], "count": len(invs)}
         q = f"SELECT * FROM Invoice MAXRESULTS {limit}"
         async with make_client("quickbooks", timeout=_TIMEOUT) as c:
@@ -68,7 +68,7 @@ def register_tools(mcp: FastMCP) -> None:
     ) -> dict:
         """List QuickBooks customers. Offline: reads local_store."""
         if is_offline():
-            cs = local_store.list_all("quickbooks", "customers")
+            cs = await local_store.list_all("quickbooks", "customers")
             return {"customers": cs[:limit], "count": len(cs)}
         q = f"SELECT * FROM Customer MAXRESULTS {limit}"
         async with make_client("quickbooks", timeout=_TIMEOUT) as c:

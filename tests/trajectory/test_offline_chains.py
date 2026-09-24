@@ -191,3 +191,75 @@ async def test_chain_github_jira_slack():
     assert len(jr_list["issues"]) == 1
     assert len(sl_list["messages"]) == 1
     assert j["key"] in sl_list["messages"][0]["text"]
+
+
+@pytest.mark.asyncio
+@pytest.mark.trajectory
+async def test_hubspot_roundtrip():
+    os.environ.setdefault("HUBSPOT_TOKEN", "offline-dummy")
+    fns = await _register("hubspot")
+    await fns["create_contact"](email="alice@example.com", firstname="Alice")
+    r = await fns["list_contacts"]()
+    assert r["count"] >= 1
+
+
+@pytest.mark.asyncio
+@pytest.mark.trajectory
+async def test_freshdesk_roundtrip():
+    for v in ("FRESHDESK_DOMAIN", "FRESHDESK_API_KEY"):
+        os.environ.setdefault(v, "offline-dummy")
+    fns = await _register("freshdesk")
+    await fns["create_ticket"](subject="Bug X", description="from test", email="a@b.com")
+    r = await fns["list_tickets"]()
+    assert r["count"] >= 1
+
+
+@pytest.mark.asyncio
+@pytest.mark.trajectory
+async def test_monday_roundtrip():
+    os.environ.setdefault("MONDAY_TOKEN", "offline-dummy")
+    fns = await _register("monday")
+    await fns["create_item"](board_id="B1", name="Row 1")
+    r = await fns["list_items"](board_id="B1")
+    assert r["count"] >= 1
+
+
+@pytest.mark.asyncio
+@pytest.mark.trajectory
+async def test_clickup_roundtrip():
+    os.environ.setdefault("CLICKUP_TOKEN", "offline-dummy")
+    fns = await _register("clickup")
+    await fns["create_task"](list_id="L1", name="Task 1")
+    r = await fns["list_tasks"](list_id="L1")
+    assert r["count"] >= 1
+
+
+@pytest.mark.asyncio
+@pytest.mark.trajectory
+async def test_plane_roundtrip():
+    for v in ("PLANE_URL", "PLANE_TOKEN"):
+        os.environ.setdefault(v, "offline-dummy")
+    fns = await _register("plane")
+    await fns["create_issue"](workspace_slug="w1", project_id="p1", name="Issue 1")
+    r = await fns["list_issues"](workspace_slug="w1", project_id="p1")
+    assert r["count"] >= 1
+
+
+@pytest.mark.asyncio
+@pytest.mark.trajectory
+async def test_wrike_roundtrip():
+    os.environ.setdefault("WRIKE_TOKEN", "offline-dummy")
+    fns = await _register("wrike")
+    await fns["create_task"](title="Wrike task 1")
+    r = await fns["list_tasks"]()
+    assert r["count"] >= 1
+
+
+@pytest.mark.asyncio
+@pytest.mark.trajectory
+async def test_shortcut_roundtrip():
+    os.environ.setdefault("SHORTCUT_TOKEN", "offline-dummy")
+    fns = await _register("shortcut")
+    await fns["create_story"](name="Story 1")
+    r = await fns["list_stories"]()
+    assert r["count"] >= 1

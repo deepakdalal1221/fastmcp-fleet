@@ -38,7 +38,7 @@ def register_tools(mcp: FastMCP) -> None:
     async def list_teams() -> dict:
         """List ClickUp teams. Offline: reads local_store."""
         if is_offline():
-            teams = local_store.list_all("clickup", "teams")
+            teams = await local_store.list_all("clickup", "teams")
             return {"teams": teams, "count": len(teams)}
         async with make_client("clickup", timeout=_TIMEOUT) as c:
             r = await c.get(f"{_BASE}/team", headers=_headers())
@@ -51,7 +51,7 @@ def register_tools(mcp: FastMCP) -> None:
     ) -> dict:
         """List tasks in a ClickUp list. Offline: reads local_store."""
         if is_offline():
-            tasks = local_store.list_all("clickup", f"tasks:{list_id}")
+            tasks = await local_store.list_all("clickup", f"tasks:{list_id}")
             return {"list_id": list_id, "tasks": tasks, "count": len(tasks)}
         async with make_client("clickup", timeout=_TIMEOUT) as c:
             r = await c.get(f"{_BASE}/list/{list_id}/task", headers=_headers())
@@ -74,7 +74,7 @@ def register_tools(mcp: FastMCP) -> None:
                 "description": description,
                 "status": "open",
             }
-            local_store.put("clickup", f"tasks:{list_id}", str(tid), rec)
+            await local_store.put("clickup", f"tasks:{list_id}", str(tid), rec)
             return {"created": rec}
         payload = {"name": name, "description": description}
         async with make_client("clickup", timeout=_TIMEOUT) as c:
