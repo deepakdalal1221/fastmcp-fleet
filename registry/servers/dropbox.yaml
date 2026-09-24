@@ -11,10 +11,10 @@ port: 8093
 image: yourorg/mcp-dropbox
 version: 0.1.0
 tools:
-- list_folder
-- upload
 - download
+- list_files
+- upload
 docs: https://www.dropbox.com/developers/documentation
 maintainers:
 - platform-team
-status: planned
+status: active

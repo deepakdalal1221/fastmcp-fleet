@@ -12,10 +12,10 @@ port: 8028
 image: yourorg/mcp-planetscale
 version: 0.1.0
 tools:
-- list_databases
+- get_database
 - list_branches
-- query
+- list_databases
 docs: https://planetscale.com/docs/reference
 maintainers:
 - platform-team
-status: planned
+status: active

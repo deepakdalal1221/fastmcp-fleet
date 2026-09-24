@@ -13,8 +13,9 @@ port: 8029
 image: yourorg/mcp-surrealdb
 version: 0.1.0
 tools:
-- query
+- list_tables
+- sql
 docs: https://surrealdb.com/docs
 maintainers:
 - platform-team
-status: planned
+status: active

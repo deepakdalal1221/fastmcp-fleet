@@ -11,10 +11,10 @@ port: 8018
 image: yourorg/mcp-opensearch
 version: 0.1.0
 tools:
-- search
-- index_doc
+- get_index
 - list_indices
+- search
 docs: https://opensearch.org/docs/latest/
 maintainers:
 - platform-team
-status: planned
+status: active
