@@ -13,7 +13,8 @@ version: 0.1.0
 tools:
 - chat_completion
 - embed
+- list_models
 docs: https://docs.mistral.ai/
 maintainers:
 - platform-team
-status: planned
+status: active

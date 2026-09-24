@@ -17,4 +17,4 @@ tools:
 docs: https://huggingface.co/docs/api-inference/
 maintainers:
 - platform-team
-status: planned
+status: active

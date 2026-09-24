@@ -11,10 +11,10 @@ port: 8048
 image: yourorg/mcp-terraform
 version: 0.1.0
 tools:
-- list_workspaces
+- get_workspace
 - list_runs
-- trigger_run
+- list_workspaces
 docs: https://developer.hashicorp.com/terraform/cloud-docs/api-docs
 maintainers:
 - platform-team
-status: planned
+status: active

@@ -12,10 +12,10 @@ port: 8126
 image: yourorg/mcp-vault
 version: 0.1.0
 tools:
-- read_secret
-- write_secret
 - list_secrets
+- list_secrets_engines
+- read_secret
 docs: https://developer.hashicorp.com/vault/api-docs
 maintainers:
 - platform-team
-status: planned
+status: active

@@ -11,9 +11,10 @@ port: 8055
 image: yourorg/mcp-gitlab-ci
 version: 0.1.0
 tools:
+- get_pipeline
+- list_jobs
 - list_pipelines
-- trigger_pipeline
 docs: https://docs.gitlab.com/ee/api/pipelines.html
 maintainers:
 - platform-team
-status: planned
+status: active

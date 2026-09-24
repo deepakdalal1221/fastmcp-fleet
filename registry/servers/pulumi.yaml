@@ -11,9 +11,10 @@ port: 8050
 image: yourorg/mcp-pulumi
 version: 0.1.0
 tools:
+- get_stack
+- list_organizations
 - list_stacks
-- list_updates
 docs: https://www.pulumi.com/docs/reference/service-rest-api/
 maintainers:
 - platform-team
-status: planned
+status: active

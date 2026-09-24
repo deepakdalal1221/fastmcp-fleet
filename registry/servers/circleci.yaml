@@ -11,9 +11,10 @@ port: 8056
 image: yourorg/mcp-circleci
 version: 0.1.0
 tools:
-- list_projects
+- get_pipeline
+- list_pipelines
 - list_workflows
 docs: https://circleci.com/docs/api/v2/
 maintainers:
 - platform-team
-status: planned
+status: active

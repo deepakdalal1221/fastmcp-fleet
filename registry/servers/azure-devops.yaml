@@ -12,11 +12,10 @@ port: 8008
 image: yourorg/mcp-azure-devops
 version: 0.1.0
 tools:
+- list_pipelines
 - list_projects
 - list_repos
-- list_work_items
-- create_work_item
 docs: https://learn.microsoft.com/en-us/rest/api/azure/devops/
 maintainers:
 - platform-team
-status: planned
+status: active

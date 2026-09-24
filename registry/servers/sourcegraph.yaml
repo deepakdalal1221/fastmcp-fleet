@@ -12,9 +12,10 @@ port: 8009
 image: yourorg/mcp-sourcegraph
 version: 0.1.0
 tools:
-- search_code
 - get_file
+- search
+- search_symbols
 docs: https://sourcegraph.com/docs/api/graphql
 maintainers:
 - platform-team
-status: planned
+status: active

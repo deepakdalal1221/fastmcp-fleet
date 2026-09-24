@@ -11,9 +11,10 @@ port: 8043
 image: yourorg/mcp-heroku
 version: 0.1.0
 tools:
+- get_app
 - list_apps
 - list_dynos
 docs: https://devcenter.heroku.com/articles/platform-api-reference
 maintainers:
 - platform-team
-status: planned
+status: active

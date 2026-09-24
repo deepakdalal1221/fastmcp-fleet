@@ -1839,6 +1839,20 @@ def to_manifest(entry: Entry, port: int) -> dict:
     }
 
 
+def _preserve_status(server_id: str, default: str = "planned") -> str:
+    """Return the current status: value from the existing yaml, else `default`."""
+    from pathlib import Path as _Path
+
+    p = _Path(__file__).resolve().parent.parent / "registry" / "servers" / f"{server_id}.yaml"
+    if not p.exists():
+        return default
+    for line in p.read_text().splitlines():
+        s = line.strip()
+        if s.startswith("status:"):
+            return s.split(":", 1)[1].strip()
+    return default
+
+
 def main() -> None:
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     ports = assign_ports()

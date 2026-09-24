@@ -12,7 +12,8 @@ image: yourorg/mcp-groq
 version: 0.1.0
 tools:
 - chat_completion
+- list_models
 docs: https://console.groq.com/docs/quickstart
 maintainers:
 - platform-team
-status: planned
+status: active

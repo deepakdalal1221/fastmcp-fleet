@@ -11,9 +11,10 @@ port: 8010
 image: yourorg/mcp-codecov
 version: 0.1.0
 tools:
-- get_coverage
+- get_repo_coverage
 - list_reports
+- list_repos
 docs: https://docs.codecov.com/reference
 maintainers:
 - platform-team
-status: planned
+status: active

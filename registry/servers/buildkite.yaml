@@ -11,9 +11,10 @@ port: 8057
 image: yourorg/mcp-buildkite
 version: 0.1.0
 tools:
-- list_pipelines
+- get_build
 - list_builds
+- list_pipelines
 docs: https://buildkite.com/docs/apis/rest-api
 maintainers:
 - platform-team
-status: planned
+status: active

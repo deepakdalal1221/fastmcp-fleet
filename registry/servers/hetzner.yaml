@@ -11,9 +11,10 @@ port: 8037
 image: yourorg/mcp-hetzner
 version: 0.1.0
 tools:
+- list_images
 - list_servers
-- list_volumes
+- list_ssh_keys
 docs: https://docs.hetzner.cloud/
 maintainers:
 - platform-team
-status: planned
+status: active

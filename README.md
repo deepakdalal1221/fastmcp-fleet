@@ -4,7 +4,7 @@
 [![Python 3.12+](https://img.shields.io/badge/python-3.12+-blue.svg)](https://www.python.org/downloads/)
 [![Tests](https://img.shields.io/badge/tests-200%20passing-brightgreen.svg)](tests/)
 [![Offline First](https://img.shields.io/badge/mode-offline%20first-informational.svg)](docs/architecture.md)
-[![Servers](https://img.shields.io/badge/servers-76%20active%20%2F%20173%20catalogued-blueviolet.svg)](registry/servers/)
+[![Servers](https://img.shields.io/badge/servers-76%20active%20%2F%20175%20catalogued-blueviolet.svg)](registry/servers/)
 [![FastMCP](https://img.shields.io/badge/framework-FastMCP-orange.svg)](https://github.com/jlowin/fastmcp)
 [![Docker](https://img.shields.io/badge/docker-compose%20ready-2496ED.svg)](deployment/compose/docker-compose.yml)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-ff69b4.svg)](CONTRIBUTING.md)

@@ -12,9 +12,9 @@ port: 8143
 image: yourorg/mcp-modal
 version: 0.1.0
 tools:
+- get_function_stats
 - list_apps
-- invoke_function
 docs: https://modal.com/docs/reference
 maintainers:
 - platform-team
-status: planned
+status: active

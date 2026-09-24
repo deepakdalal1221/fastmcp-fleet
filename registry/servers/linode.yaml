@@ -11,9 +11,10 @@ port: 8036
 image: yourorg/mcp-linode
 version: 0.1.0
 tools:
+- list_domains
 - list_instances
 - list_volumes
 docs: https://www.linode.com/docs/api/
 maintainers:
 - platform-team
-status: planned
+status: active

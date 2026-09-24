@@ -20,7 +20,7 @@
     <text x="85"  y="22" text-anchor="middle" font-size="14" fill="#d1fae5" opacity="0">76 active servers<animate attributeName="opacity" from="0" to="1" begin="0.2s" dur="0.6s" fill="freeze"/></text>
 
     <rect x="184" y="0" width="180" height="34" rx="6" fill="#1e3a8a" opacity="0"><animate attributeName="opacity" from="0" to="1" begin="0.5s" dur="0.6s" fill="freeze"/></rect>
-    <text x="274" y="22" text-anchor="middle" font-size="14" fill="#dbeafe" opacity="0">173 catalogued<animate attributeName="opacity" from="0" to="1" begin="0.5s" dur="0.6s" fill="freeze"/></text>
+    <text x="274" y="22" text-anchor="middle" font-size="14" fill="#dbeafe" opacity="0">175 catalogued<animate attributeName="opacity" from="0" to="1" begin="0.5s" dur="0.6s" fill="freeze"/></text>
 
     <rect x="378" y="0" width="180" height="34" rx="6" fill="#7c2d12" opacity="0"><animate attributeName="opacity" from="0" to="1" begin="0.8s" dur="0.6s" fill="freeze"/></rect>
     <text x="468" y="22" text-anchor="middle" font-size="14" fill="#fed7aa" opacity="0"><animate attributeName="opacity" from="0" to="1" begin="0.8s" dur="0.6s" fill="freeze"/><tspan>200 tests passing</tspan></text>

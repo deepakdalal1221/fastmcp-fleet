@@ -17,4 +17,4 @@ tools:
 docs: https://grafana.com/docs/grafana/latest/developers/http_api/
 maintainers:
 - platform-team
-status: planned
+status: active

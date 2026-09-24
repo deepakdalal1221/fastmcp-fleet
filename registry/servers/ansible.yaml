@@ -12,9 +12,10 @@ port: 8049
 image: yourorg/mcp-ansible
 version: 0.1.0
 tools:
-- list_jobs
-- launch_job
+- list_inventories
+- list_job_templates
+- list_projects
 docs: https://docs.ansible.com/automation-controller/latest/html/controllerapi/
 maintainers:
 - platform-team
-status: planned
+status: active

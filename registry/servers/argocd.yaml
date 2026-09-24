@@ -12,9 +12,10 @@ port: 8052
 image: yourorg/mcp-argocd
 version: 0.1.0
 tools:
+- get_application
 - list_applications
 - sync_application
 docs: https://argo-cd.readthedocs.io/en/stable/developer-guide/api-docs/
 maintainers:
 - platform-team
-status: planned
+status: active

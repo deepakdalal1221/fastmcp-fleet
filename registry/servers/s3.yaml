@@ -20,4 +20,4 @@ tools:
 docs: https://docs.aws.amazon.com/s3/
 maintainers:
 - platform-team
-status: planned
+status: active

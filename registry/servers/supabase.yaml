@@ -12,11 +12,10 @@ port: 8027
 image: yourorg/mcp-supabase
 version: 0.1.0
 tools:
-- query_table
-- insert
-- update
-- delete
+- insert_into
+- list_tables
+- select_from
 docs: https://supabase.com/docs
 maintainers:
 - platform-team
-status: planned
+status: active

@@ -17,4 +17,4 @@ tools:
 docs: https://prometheus.io/docs/prometheus/latest/querying/api/
 maintainers:
 - platform-team
-status: planned
+status: active

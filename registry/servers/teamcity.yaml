@@ -12,9 +12,10 @@ port: 8058
 image: yourorg/mcp-teamcity
 version: 0.1.0
 tools:
+- get_build
+- list_builds
 - list_projects
-- trigger_build
 docs: https://www.jetbrains.com/help/teamcity/rest/teamcity-rest-api-documentation.html
 maintainers:
 - platform-team
-status: planned
+status: active
