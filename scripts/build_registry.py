@@ -1835,7 +1835,7 @@ def to_manifest(entry: Entry, port: int) -> dict:
         "tools": entry.tools,
         "docs": entry.docs,
         "maintainers": ["platform-team"],
-        "status": entry.status,
+        "status": _preserve_status(entry.id, entry.status),
     }
 
 
