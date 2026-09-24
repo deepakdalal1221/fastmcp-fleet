@@ -34,3 +34,4 @@ from mcp_common.http import is_offline, make_client
 __all__ = list(dict.fromkeys((globals().get("__all__") or []) + ["make_client", "is_offline"]))
 
 from mcp_common import store as local_store
+from mcp_common.trajectory import TrajectoryMiddleware

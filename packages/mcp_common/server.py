@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import os
 from typing import Any
 
 from fastmcp import FastMCP
@@ -10,6 +11,7 @@ from mcp_common.health import register_health
 from mcp_common.logging import get_logger, setup_logging
 from mcp_common.middleware import RateLimitMiddleware, TimingLoggingMiddleware
 from mcp_common.registry import ServerManifest, load_manifest
+from mcp_common.trajectory import TrajectoryMiddleware
 
 
 def create_server(
@@ -29,6 +31,8 @@ def create_server(
     mcp = FastMCP(name=manifest.name)
     try:
         mcp.add_middleware(TimingLoggingMiddleware(server_id))
+        if os.environ.get("MCP_RECORD_TRAJECTORY"):
+            mcp.add_middleware(TrajectoryMiddleware(server_id))
         if cfg.rate_limit_enabled:
             mcp.add_middleware(
                 RateLimitMiddleware(
