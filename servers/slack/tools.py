@@ -215,3 +215,43 @@ def register_tools(mcp: FastMCP) -> None:
                 for m in j.get("messages", [])
             ]
         }
+
+    @mcp.tool
+    async def edit_message(
+        channel: Annotated[str, Field(min_length=1)],
+        ts: Annotated[str, Field(min_length=1, description="message timestamp id")],
+        text: Annotated[str, Field(min_length=1)],
+    ) -> dict:
+        """Edit a Slack message."""
+        if is_offline():
+            existing = await local_store.get("slack", f"messages:{channel}", ts)
+            if not existing:
+                raise NotFoundError(f"message {ts} not found")
+            existing["text"] = text
+            existing["edited"] = True
+            await local_store.put("slack", f"messages:{channel}", ts, existing)
+            return existing
+        async with make_client("slack", timeout=_TIMEOUT) as c:
+            r = await c.post(
+                f"{_BASE}/chat.update",
+                headers=_headers(),
+                json={"channel": channel, "ts": ts, "text": text},
+            )
+            _raise_for(r)
+        return r.json()
+
+    @mcp.tool
+    async def delete_message(
+        channel: Annotated[str, Field(min_length=1)],
+        ts: Annotated[str, Field(min_length=1, description="message timestamp id")],
+    ) -> dict:
+        """Delete a Slack message."""
+        if is_offline():
+            ok = await local_store.delete("slack", f"messages:{channel}", ts)
+            return {"deleted": ok, "ts": ts}
+        async with make_client("slack", timeout=_TIMEOUT) as c:
+            r = await c.post(
+                f"{_BASE}/chat.delete", headers=_headers(), json={"channel": channel, "ts": ts}
+            )
+            _raise_for(r)
+        return {"deleted": True, "ts": ts}

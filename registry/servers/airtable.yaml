@@ -11,10 +11,11 @@ port: 8172
 image: yourorg/mcp-airtable
 version: 0.1.0
 tools:
-- list_bases
-- list_tables
-- list_records
 - create_record
+- delete_record
+- list_bases
+- list_records
+- list_tables
 - update_record
 docs: https://airtable.com/developers/web/api/introduction
 maintainers:

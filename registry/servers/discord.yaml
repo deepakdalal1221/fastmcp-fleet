@@ -11,8 +11,11 @@ port: 8062
 image: yourorg/mcp-discord
 version: 0.1.0
 tools:
-- list_guilds
+- delete_message
+- edit_message
 - list_channels
+- list_guilds
+- list_messages
 - post_message
 docs: https://discord.com/developers/docs/intro
 maintainers:

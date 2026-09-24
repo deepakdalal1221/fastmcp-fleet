@@ -5,6 +5,7 @@ from typing import Annotated
 
 import httpx
 from fastmcp import FastMCP
+from mcp_common import local_store
 from mcp_common.errors import (
     AuthError,
     ConfigError,
@@ -12,7 +13,7 @@ from mcp_common.errors import (
     RateLimitError,
     UpstreamError,
 )
-from mcp_common.http import make_client
+from mcp_common.http import is_offline, make_client
 from pydantic import Field
 
 _TIMEOUT = 30.0
@@ -120,3 +121,37 @@ def register_tools(mcp: FastMCP) -> None:
                 for i in data
             ]
         }
+
+    @mcp.tool
+    async def create_issue(
+        owner: Annotated[str, Field(min_length=1)],
+        repo: Annotated[str, Field(min_length=1)],
+        title: Annotated[str, Field(min_length=1)],
+        body: Annotated[str | None, Field(description="issue body")] = None,
+    ) -> dict:
+        """Create a Gitea issue."""
+        payload = {"title": title}
+        if body is not None:
+            payload["body"] = body
+        async with make_client("gitea", timeout=_TIMEOUT) as c:
+            r = await c.post(
+                f"{_base()}/repos/{owner}/{repo}/issues", headers=_headers(), json=payload
+            )
+            _raise_for(r)
+        return r.json()
+
+    @mcp.tool
+    async def close_issue(
+        owner: Annotated[str, Field(min_length=1)],
+        repo: Annotated[str, Field(min_length=1)],
+        number: Annotated[int, Field(ge=1)],
+    ) -> dict:
+        """Close a Gitea issue."""
+        async with make_client("gitea", timeout=_TIMEOUT) as c:
+            r = await c.patch(
+                f"{_base()}/repos/{owner}/{repo}/issues/{number}",
+                headers=_headers(),
+                json={"state": "closed"},
+            )
+            _raise_for(r)
+        return r.json()

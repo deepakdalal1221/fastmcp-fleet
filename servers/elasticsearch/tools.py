@@ -111,3 +111,32 @@ def register_tools(mcp: FastMCP) -> None:
             ),
             "settings_index": ((info.get("settings") or {}).get("index") or {}),
         }
+
+    @mcp.tool
+    async def index_doc(
+        index: Annotated[str, Field(min_length=1)],
+        document: Annotated[dict, Field(description="document body")],
+        doc_id: Annotated[
+            str | None, Field(description="optional document id; auto-generated if omitted")
+        ] = None,
+    ) -> dict:
+        """Index a document into an Elasticsearch index."""
+        url = f"{_base()}/{index}/_doc/{doc_id}" if doc_id else f"{_base()}/{index}/_doc"
+        async with make_client("elasticsearch", timeout=_TIMEOUT) as c:
+            r = await c.post(
+                url, auth=_auth(), json=document, headers={"Content-Type": "application/json"}
+            )
+            _raise_for(r)
+            data = r.json()
+        return {"_id": data.get("_id"), "_index": data.get("_index"), "result": data.get("result")}
+
+    @mcp.tool
+    async def delete_doc(
+        index: Annotated[str, Field(min_length=1)],
+        doc_id: Annotated[str, Field(min_length=1)],
+    ) -> dict:
+        """Delete an Elasticsearch document."""
+        async with make_client("elasticsearch", timeout=_TIMEOUT) as c:
+            r = await c.delete(f"{_base()}/{index}/_doc/{doc_id}", auth=_auth())
+            _raise_for(r)
+        return {"deleted": True, "_index": index, "_id": doc_id}

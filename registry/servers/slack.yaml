@@ -11,10 +11,12 @@ port: 8061
 image: yourorg/mcp-slack
 version: 0.1.0
 tools:
-- list_channels
-- post_message
-- list_users
+- delete_message
+- edit_message
 - get_conversation
+- list_channels
+- list_users
+- post_message
 docs: https://api.slack.com/
 maintainers:
 - platform-team

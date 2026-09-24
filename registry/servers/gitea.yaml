@@ -12,9 +12,11 @@ port: 8004
 image: yourorg/mcp-gitea
 version: 0.1.0
 tools:
-- list_repos
+- close_issue
+- create_issue
 - get_repo
 - list_issues
+- list_repos
 docs: https://docs.gitea.com/api/
 maintainers:
 - platform-team

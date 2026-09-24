@@ -12,9 +12,11 @@ port: 8074
 image: yourorg/mcp-trello
 version: 0.1.0
 tools:
+- create_card
+- delete_card
 - list_boards
 - list_cards
-- create_card
+- update_card
 docs: https://developer.atlassian.com/cloud/trello/rest/
 maintainers:
 - platform-team

@@ -11,10 +11,12 @@ port: 8081
 image: yourorg/mcp-notion
 version: 0.1.0
 tools:
-- search
-- get_page
 - create_page
+- delete_page
+- get_page
 - query_database
+- search
+- update_page
 docs: https://developers.notion.com/reference/intro
 maintainers:
 - platform-team

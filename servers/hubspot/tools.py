@@ -5,8 +5,9 @@ from typing import Annotated
 
 import httpx
 from fastmcp import FastMCP
+from mcp_common import local_store
 from mcp_common.errors import AuthError, ConfigError, NotFoundError, RateLimitError, UpstreamError
-from mcp_common.http import make_client
+from mcp_common.http import is_offline, make_client
 from pydantic import Field
 
 _BASE = "https://api.hubapi.com/crm/v3"
@@ -102,3 +103,65 @@ def register_tools(mcp: FastMCP) -> None:
                 for c in r.json().get("results", [])
             ]
         }
+
+    @mcp.tool
+    async def create_contact(
+        email: Annotated[str, Field(min_length=1)],
+        firstname: Annotated[str | None, Field(description="first name")] = None,
+        lastname: Annotated[str | None, Field(description="last name")] = None,
+    ) -> dict:
+        """Create a HubSpot contact. Offline mode persists to local state."""
+        if is_offline():
+            n = local_store.next_id("hubspot", "contacts")
+            contact = {
+                "id": str(1000 + n),
+                "properties": {"email": email, "firstname": firstname, "lastname": lastname},
+            }
+            await local_store.put("hubspot", "contacts", contact["id"], contact)
+            return contact
+        payload = {
+            "properties": {
+                k: v
+                for k, v in {"email": email, "firstname": firstname, "lastname": lastname}.items()
+                if v
+            }
+        }
+        async with make_client("hubspot", timeout=_TIMEOUT) as c:
+            r = await c.post(f"{_BASE}/crm/v3/objects/contacts", headers=_headers(), json=payload)
+            _raise_for(r)
+        return r.json()
+
+    @mcp.tool
+    async def update_contact(
+        contact_id: Annotated[str, Field(min_length=1)],
+        properties: Annotated[dict, Field(description="properties to patch")],
+    ) -> dict:
+        """Update a HubSpot contact. Offline mode patches local state."""
+        if is_offline():
+            existing = await local_store.get("hubspot", "contacts", contact_id)
+            if not existing:
+                raise NotFoundError(f"contact {contact_id} not found")
+            existing["properties"].update(properties)
+            await local_store.put("hubspot", "contacts", contact_id, existing)
+            return existing
+        async with make_client("hubspot", timeout=_TIMEOUT) as c:
+            r = await c.patch(
+                f"{_BASE}/crm/v3/objects/contacts/{contact_id}",
+                headers=_headers(),
+                json={"properties": properties},
+            )
+            _raise_for(r)
+        return r.json()
+
+    @mcp.tool
+    async def delete_contact(
+        contact_id: Annotated[str, Field(min_length=1)],
+    ) -> dict:
+        """Delete a HubSpot contact. Offline mode removes from local state."""
+        if is_offline():
+            ok = await local_store.delete("hubspot", "contacts", contact_id)
+            return {"deleted": ok, "id": contact_id}
+        async with make_client("hubspot", timeout=_TIMEOUT) as c:
+            r = await c.delete(f"{_BASE}/crm/v3/objects/contacts/{contact_id}", headers=_headers())
+            _raise_for(r)
+        return {"deleted": True, "id": contact_id}

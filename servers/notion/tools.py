@@ -199,3 +199,51 @@ def register_tools(mcp: FastMCP) -> None:
             "has_more": bool(data.get("has_more")),
             "next_cursor": data.get("next_cursor"),
         }
+
+    @mcp.tool
+    async def update_page(
+        page_id: Annotated[str, Field(min_length=1)],
+        properties: Annotated[dict, Field(description="Notion page properties to patch")] = {},
+        archived: Annotated[bool, Field(description="archive/unarchive the page")] = False,
+    ) -> dict:
+        """Update a Notion page. Offline mode patches local state."""
+        if is_offline():
+            for col_name in ["pages:*"]:
+                pass
+            # Try common parent collections
+            import sqlite3
+
+            from mcp_common.store import _db_path
+
+            with sqlite3.connect(_db_path("notion")) as conn:
+                row = conn.execute(
+                    "SELECT collection, key, value FROM store WHERE key=?", (page_id,)
+                ).fetchone()
+            if row:
+                import json as _j
+
+                col, key, val = row
+                page = _j.loads(val)
+                if properties:
+                    page.setdefault("properties", {}).update(properties)
+                if archived:
+                    page["archived"] = True
+                await local_store.put("notion", col, key, page)
+                return {
+                    "id": page_id,
+                    "archived": page.get("archived", False),
+                    "title": page.get("title"),
+                }
+            raise NotFoundError(f"page {page_id} not found in local state")
+        payload = {"properties": properties, "archived": archived} if properties or archived else {}
+        async with make_client("notion", timeout=_TIMEOUT) as c:
+            r = await c.patch(f"{_BASE}/pages/{page_id}", headers=_headers(), json=payload)
+            _raise_for(r)
+        return r.json()
+
+    @mcp.tool
+    async def delete_page(
+        page_id: Annotated[str, Field(min_length=1)],
+    ) -> dict:
+        """Archive a Notion page (Notion's soft-delete)."""
+        return await update_page.fn(page_id=page_id, archived=True)

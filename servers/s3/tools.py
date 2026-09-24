@@ -200,3 +200,23 @@ def register_tools(mcp: FastMCP) -> None:
             "etag": (response.get("ETag") or "").strip('"'),
             "version_id": response.get("VersionId"),
         }
+
+    @mcp.tool
+    async def delete_object(
+        bucket: Annotated[str, Field(min_length=1)],
+        key: Annotated[str, Field(min_length=1)],
+    ) -> dict:
+        """Delete an S3 object."""
+        if is_offline():
+            ok = await local_store.delete("s3", f"objects:{bucket}", key)
+            return {"deleted": ok, "bucket": bucket, "key": key}
+        import aioboto3
+
+        session = aioboto3.Session(
+            aws_access_key_id=os.environ.get("AWS_ACCESS_KEY_ID"),
+            aws_secret_access_key=os.environ.get("AWS_SECRET_ACCESS_KEY"),
+            region_name=os.environ.get("AWS_REGION", "us-east-1"),
+        )
+        async with session.client("s3") as c:
+            await c.delete_object(Bucket=bucket, Key=key)
+        return {"deleted": True, "bucket": bucket, "key": key}

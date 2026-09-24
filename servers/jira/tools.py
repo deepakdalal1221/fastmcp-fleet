@@ -260,3 +260,32 @@ def register_tools(mcp: FastMCP) -> None:
             "total": data.get("total", len(projects)),
             "count": len(projects),
         }
+
+    @mcp.tool
+    async def delete_issue(
+        key: Annotated[str, Field(min_length=1, description="issue key like DEMO-1")],
+    ) -> dict:
+        """Delete a Jira issue."""
+        if is_offline():
+            project = key.split("-", 1)[0]
+            ok = await local_store.delete("jira", f"issues:{project}", key)
+            return {"deleted": ok, "key": key}
+        async with make_client("jira", timeout=_TIMEOUT) as c:
+            r = await c.delete(f"{_base()}/rest/api/3/issue/{key}", auth=_auth())
+            _raise_for(r)
+        return {"deleted": True, "key": key}
+
+    @mcp.tool
+    async def close_issue(
+        key: Annotated[str, Field(min_length=1)],
+    ) -> dict:
+        """Close a Jira issue (offline: status→Done)."""
+        if is_offline():
+            project = key.split("-", 1)[0]
+            existing = await local_store.get("jira", f"issues:{project}", key)
+            if not existing:
+                raise NotFoundError(f"issue {key} not found")
+            existing["fields"]["status"] = {"name": "Done"}
+            await local_store.put("jira", f"issues:{project}", key, existing)
+            return {"key": key, "status": "Done"}
+        raise UpstreamError("close_issue live path requires transition workflow; use update_issue")

@@ -11,6 +11,8 @@ port: 8091
 image: yourorg/mcp-google-drive
 version: 0.1.0
 tools:
+- create_file
+- delete_file
 - get_file
 - list_files
 - search_files

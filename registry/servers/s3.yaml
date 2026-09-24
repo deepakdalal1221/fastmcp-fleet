@@ -13,9 +13,10 @@ port: 8095
 image: yourorg/mcp-s3
 version: 0.1.0
 tools:
+- delete_object
+- get_object
 - list_buckets
 - list_objects
-- get_object
 - put_object
 docs: https://docs.aws.amazon.com/s3/
 maintainers:

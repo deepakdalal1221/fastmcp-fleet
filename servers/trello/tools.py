@@ -92,3 +92,33 @@ def register_tools(mcp: FastMCP) -> None:
             "url": card.get("url"),
             "due": card.get("due"),
         }
+
+    @mcp.tool
+    async def update_card(
+        card_id: Annotated[str, Field(min_length=1)],
+        name: Annotated[str | None, Field(description="new name")] = None,
+        desc: Annotated[str | None, Field(description="new description")] = None,
+        closed: Annotated[bool | None, Field(description="archive/unarchive")] = None,
+    ) -> dict:
+        """Update a Trello card."""
+        params = dict(_creds())
+        if name is not None:
+            params["name"] = name
+        if desc is not None:
+            params["desc"] = desc
+        if closed is not None:
+            params["closed"] = str(closed).lower()
+        async with make_client("trello", timeout=_TIMEOUT) as c:
+            r = await c.put(f"{_BASE}/cards/{card_id}", params=params)
+            _raise_for(r)
+        return r.json()
+
+    @mcp.tool
+    async def delete_card(
+        card_id: Annotated[str, Field(min_length=1)],
+    ) -> dict:
+        """Delete a Trello card."""
+        async with make_client("trello", timeout=_TIMEOUT) as c:
+            r = await c.delete(f"{_BASE}/cards/{card_id}", params=_creds())
+            _raise_for(r)
+        return {"deleted": True, "id": card_id}

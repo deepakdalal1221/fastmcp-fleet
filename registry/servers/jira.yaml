@@ -13,11 +13,13 @@ port: 8071
 image: yourorg/mcp-jira
 version: 0.1.0
 tools:
-- search_issues
-- get_issue
+- close_issue
 - create_issue
-- update_issue
+- delete_issue
+- get_issue
 - list_projects
+- search_issues
+- update_issue
 docs: https://developer.atlassian.com/cloud/jira/platform/rest/v3/
 maintainers:
 - platform-team

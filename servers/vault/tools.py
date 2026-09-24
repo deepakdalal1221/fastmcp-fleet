@@ -94,3 +94,34 @@ def register_tools(mcp: FastMCP) -> None:
             "keys": sorted(inner.keys()),
             "version": ((data.get("data") or {}).get("metadata") or {}).get("version"),
         }
+
+    @mcp.tool
+    async def write_secret(
+        mount: Annotated[str, Field(min_length=1)],
+        path: Annotated[str, Field(min_length=1)],
+        data: Annotated[dict, Field(description="secret key-value pairs")],
+    ) -> dict:
+        """Write a KV v2 secret at mount/path."""
+        url = f"{_base()}/{mount.strip('/')}/data/{path.strip('/')}"
+        async with make_client("vault", timeout=_TIMEOUT) as c:
+            r = await c.post(url, headers=_headers(), json={"data": data})
+            _raise_for(r)
+            j = r.json()
+        return {
+            "path": path,
+            "version": (j.get("data") or {}).get("version"),
+            "keys": sorted(data.keys()),
+        }
+
+    @mcp.tool
+    async def delete_secret(
+        mount: Annotated[str, Field(min_length=1)],
+        path: Annotated[str, Field(min_length=1)],
+    ) -> dict:
+        """Delete a KV v2 secret."""
+        url = f"{_base()}/{mount.strip('/')}/data/{path.strip('/')}"
+        async with make_client("vault", timeout=_TIMEOUT) as c:
+            r = await c.delete(url, headers=_headers())
+            if r.status_code not in (200, 204):
+                _raise_for(r)
+        return {"deleted": True, "path": path}

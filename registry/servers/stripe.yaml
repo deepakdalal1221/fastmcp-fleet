@@ -11,10 +11,12 @@ port: 8154
 image: yourorg/mcp-stripe
 version: 0.1.0
 tools:
-- list_customers
-- list_charges
-- list_subscriptions
+- cancel_subscription
 - create_payment_intent
+- list_charges
+- list_customers
+- list_subscriptions
+- refund_charge
 docs: https://stripe.com/docs/api
 maintainers:
 - platform-team

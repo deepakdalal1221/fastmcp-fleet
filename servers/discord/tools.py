@@ -5,6 +5,7 @@ from typing import Annotated, Any
 
 import httpx
 from fastmcp import FastMCP
+from mcp_common import local_store
 from mcp_common.errors import (
     AuthError,
     ConfigError,
@@ -13,7 +14,7 @@ from mcp_common.errors import (
     UpstreamError,
     ValidationError,
 )
-from mcp_common.http import make_client
+from mcp_common.http import is_offline, make_client
 from pydantic import Field
 
 _API_BASE = "https://discord.com/api/v10"
@@ -154,3 +155,63 @@ def register_tools(mcp: FastMCP) -> None:
         async with make_client("discord", timeout=30.0) as client:
             data = await _post(client, f"/channels/{channel_id}/messages", {"content": content})
         return _message_slim(data or {})
+
+    @mcp.tool
+    async def list_messages(
+        channel_id: Annotated[str, Field(min_length=1)],
+        limit: Annotated[int, Field(ge=1, le=100)] = 50,
+    ) -> dict:
+        """List recent messages in a Discord channel."""
+        if is_offline():
+            stored = await local_store.list_all("discord", f"messages:{channel_id}")
+            msgs = [row["value"] for row in stored][:limit]
+            return {"messages": msgs}
+        async with make_client("discord", timeout=_TIMEOUT) as c:
+            r = await c.get(
+                f"{_BASE}/channels/{channel_id}/messages",
+                headers=_headers(),
+                params={"limit": limit},
+            )
+            _raise_for(r)
+        return {"messages": r.json()}
+
+    @mcp.tool
+    async def edit_message(
+        channel_id: Annotated[str, Field(min_length=1)],
+        message_id: Annotated[str, Field(min_length=1)],
+        content: Annotated[str, Field(min_length=1)],
+    ) -> dict:
+        """Edit a Discord message."""
+        if is_offline():
+            existing = await local_store.get("discord", f"messages:{channel_id}", message_id)
+            if not existing:
+                raise NotFoundError(f"message {message_id} not found")
+            existing["content"] = content
+            existing["edited_timestamp"] = "offline"
+            await local_store.put("discord", f"messages:{channel_id}", message_id, existing)
+            return existing
+        async with make_client("discord", timeout=_TIMEOUT) as c:
+            r = await c.patch(
+                f"{_BASE}/channels/{channel_id}/messages/{message_id}",
+                headers=_headers(),
+                json={"content": content},
+            )
+            _raise_for(r)
+        return r.json()
+
+    @mcp.tool
+    async def delete_message(
+        channel_id: Annotated[str, Field(min_length=1)],
+        message_id: Annotated[str, Field(min_length=1)],
+    ) -> dict:
+        """Delete a Discord message."""
+        if is_offline():
+            ok = await local_store.delete("discord", f"messages:{channel_id}", message_id)
+            return {"deleted": ok, "id": message_id}
+        async with make_client("discord", timeout=_TIMEOUT) as c:
+            r = await c.delete(
+                f"{_BASE}/channels/{channel_id}/messages/{message_id}", headers=_headers()
+            )
+            if r.status_code not in (200, 204):
+                _raise_for(r)
+        return {"deleted": True, "id": message_id}

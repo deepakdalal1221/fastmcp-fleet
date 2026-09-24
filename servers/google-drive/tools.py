@@ -82,3 +82,31 @@ def register_tools(mcp: FastMCP) -> None:
             _raise_for(r)
             data = r.json()
         return {"files": data.get("files", [])}
+
+    @mcp.tool
+    async def create_file(
+        name: Annotated[str, Field(min_length=1)],
+        parents: Annotated[list[str] | None, Field(description="parent folder ids")] = None,
+        mime_type: Annotated[
+            str, Field(description="MIME type")
+        ] = "application/vnd.google-apps.document",
+    ) -> dict:
+        """Create a Google Drive file (metadata only; content via update)."""
+        body = {"name": name, "mimeType": mime_type}
+        if parents:
+            body["parents"] = parents
+        async with make_client("google-drive", timeout=_TIMEOUT) as c:
+            r = await c.post(f"{_BASE}/files", headers=_headers(), json=body)
+            _raise_for(r)
+        return r.json()
+
+    @mcp.tool
+    async def delete_file(
+        file_id: Annotated[str, Field(min_length=1)],
+    ) -> dict:
+        """Delete a Google Drive file."""
+        async with make_client("google-drive", timeout=_TIMEOUT) as c:
+            r = await c.delete(f"{_BASE}/files/{file_id}", headers=_headers())
+            if r.status_code not in (200, 204):
+                _raise_for(r)
+        return {"deleted": True, "id": file_id}

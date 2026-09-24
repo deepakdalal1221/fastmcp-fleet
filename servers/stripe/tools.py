@@ -158,3 +158,45 @@ def register_tools(mcp: FastMCP) -> None:
             "customer": j.get("customer"),
             "status": j.get("status"),
         }
+
+    @mcp.tool
+    async def refund_charge(
+        charge_id: Annotated[str, Field(min_length=1)],
+        amount: Annotated[
+            int | None, Field(description="partial refund amount in cents; omit for full")
+        ] = None,
+    ) -> dict:
+        """Refund a Stripe charge (full or partial)."""
+        if is_offline():
+            existing = await local_store.get("stripe", "charges", charge_id)
+            if not existing:
+                raise NotFoundError(f"charge {charge_id} not found")
+            refunded = amount or existing.get("amount", 0)
+            existing["refunded"] = refunded
+            existing["status"] = "refunded"
+            await local_store.put("stripe", "charges", charge_id, existing)
+            return {
+                "id": f"re_offline_{charge_id[-6:]}",
+                "charge": charge_id,
+                "amount": refunded,
+                "status": "succeeded",
+            }
+        data = {}
+        if amount is not None:
+            data["amount"] = str(amount)
+        async with make_client("stripe", timeout=_TIMEOUT) as c:
+            r = await c.post(
+                f"{_BASE}/v1/charges/{charge_id}/refund", headers=_headers(), data=data
+            )
+            _raise_for(r)
+        return r.json()
+
+    @mcp.tool
+    async def cancel_subscription(
+        subscription_id: Annotated[str, Field(min_length=1)],
+    ) -> dict:
+        """Cancel a Stripe subscription immediately."""
+        async with make_client("stripe", timeout=_TIMEOUT) as c:
+            r = await c.delete(f"{_BASE}/v1/subscriptions/{subscription_id}", headers=_headers())
+            _raise_for(r)
+        return r.json()

@@ -5,6 +5,7 @@ from typing import Annotated
 
 import httpx
 from fastmcp import FastMCP
+from mcp_common import local_store
 from mcp_common.errors import (
     AuthError,
     ConfigError,
@@ -12,7 +13,7 @@ from mcp_common.errors import (
     RateLimitError,
     UpstreamError,
 )
-from mcp_common.http import make_client
+from mcp_common.http import is_offline, make_client
 from pydantic import Field
 
 _BASE = "https://api.airtable.com/v0"
@@ -130,3 +131,15 @@ def register_tools(mcp: FastMCP) -> None:
             _raise_for(r)
             rec = r.json()
         return {"id": rec.get("id"), "fields": rec.get("fields", {})}
+
+    @mcp.tool
+    async def delete_record(
+        base_id: Annotated[str, Field(min_length=1)],
+        table: Annotated[str, Field(min_length=1)],
+        record_id: Annotated[str, Field(min_length=1)],
+    ) -> dict:
+        """Delete an Airtable record."""
+        async with make_client("airtable", timeout=_TIMEOUT) as c:
+            r = await c.delete(f"{_BASE}/{base_id}/{table}/{record_id}", headers=_headers())
+            _raise_for(r)
+        return {"deleted": True, "id": record_id}
