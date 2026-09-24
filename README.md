@@ -2,13 +2,12 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Python 3.12+](https://img.shields.io/badge/python-3.12+-blue.svg)](https://www.python.org/downloads/)
-[![Tests](https://img.shields.io/badge/tests-200%20passing-brightgreen.svg)](tests/)
+[![Tests](https://img.shields.io/badge/tests-478%20passing-brightgreen.svg)](tests/)
 [![Offline First](https://img.shields.io/badge/mode-offline%20first-informational.svg)](docs/architecture.md)
 [![Servers](https://img.shields.io/badge/servers-170%20active%20%2B%205%20pilot%20%2F%20175%20catalogued-blueviolet.svg)](registry/servers/)
 [![FastMCP](https://img.shields.io/badge/framework-FastMCP-orange.svg)](https://github.com/jlowin/fastmcp)
 [![Docker](https://img.shields.io/badge/docker-compose%20ready-2496ED.svg)](deployment/compose/docker-compose.yml)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-ff69b4.svg)](CONTRIBUTING.md)
-[![Dependabot](https://img.shields.io/badge/deps-dependabot-025E8C.svg)](.github/dependabot.yml)
 [![CodeQL](https://img.shields.io/badge/security-CodeQL-blue.svg)](.github/workflows/codeql.yml)
 
 > **A local-first FastMCP platform of 160+ mock MCP servers — GitHub, Slack, Stripe, Jira, Notion, Cloudflare, Datadog, and more — running behind one central gateway. Zero live API calls. Deterministic. Perfect for agent trajectory testing and OpenHands integration.**
@@ -38,7 +37,7 @@
 
 ## What is fastmcp-fleet?
 
-fastmcp-fleet is a **catalogue of 173 planned MCP servers, 49 of them already implemented**, packaged behind one FastMCP gateway on port `:8000`. Every server can run **fully offline** — HTTP requests are intercepted by a custom transport that serves fixture JSON, and stateful tools persist to a per-server SQLite store so subsequent reads see prior writes.
+fastmcp-fleet is a **catalogue of 175 MCP servers — 170 active + 5 pilot**, packaged behind one FastMCP gateway on port `:8000`. Every server can run **fully offline** — HTTP requests are intercepted by a custom transport that serves fixture JSON, and stateful tools persist to a per-server SQLite store so subsequent reads see prior writes.
 
 The point is not to replace live SaaS APIs. It is to give AI agents (OpenHands, Claude, Cursor, custom stacks) a **realistic, deterministic, credential-free** environment for:
 
@@ -128,7 +127,7 @@ The compose stack ships with `MCP_OFFLINE: "1"` set on every service via the `x-
 
 ## Server catalogue
 
-**170 active + 5 pilot = 175 servers** across 13 categories. Full list of 173 catalogued in [`registry/servers/`](registry/servers/).
+**170 active + 5 pilot = 175 servers** across 13 categories. Full list of 175 catalogued in [`registry/servers/`](registry/servers/).
 
 | Category | Count | Servers |
 |---|---:|---|
