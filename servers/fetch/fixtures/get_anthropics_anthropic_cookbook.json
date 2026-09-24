@@ -1,0 +1,7 @@
+{
+  "url": "https://github.com/anthropics/anthropic-cookbook",
+  "status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "text": "<!doctype html><html><head><title>anthropics/anthropic-cookbook</title></head><body><article><h1>anthropic-cookbook</h1><p>A collection of notebooks/recipes showcasing fun and effective ways of using Claude.</p><ul><li>Skills</li><li>Multimodal</li><li>Retrieval</li></ul></article></body></html>",
+  "truncated": false
+}

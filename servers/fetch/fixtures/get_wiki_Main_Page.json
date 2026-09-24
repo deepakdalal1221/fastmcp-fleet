@@ -1,0 +1,7 @@
+{
+  "url": "https://en.wikipedia.org/wiki/Main_Page",
+  "status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "text": "<!doctype html><html><head><title>Wikipedia, the free encyclopedia</title></head><body><h1>Wikipedia</h1><p>Welcome to Wikipedia, the free encyclopedia that anyone can edit.</p><p>Featured article: Offline fixture placeholder.</p></body></html>",
+  "truncated": false
+}

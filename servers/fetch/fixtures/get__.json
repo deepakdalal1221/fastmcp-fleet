@@ -1,7 +1,7 @@
 {
   "url": "https://example.com/",
   "status": 200,
-  "content_type": "text/html",
-  "text": "<html><body>offline fixture response</body></html>",
+  "content_type": "text/html; charset=UTF-8",
+  "text": "<!doctype html>\n<html>\n<head><title>Example Domain</title></head>\n<body>\n<div>\n    <h1>Example Domain</h1>\n    <p>This domain is for use in illustrative examples in documents. You may use this domain in literature without prior coordination or asking for permission.</p>\n    <p><a href=\"https://www.iana.org/domains/example\">More information...</a></p>\n</div>\n</body>\n</html>",
   "truncated": false
 }

@@ -1,0 +1,7 @@
+{
+  "url": "offline://default",
+  "status": 200,
+  "content_type": "text/html",
+  "text": "<html><body><p>Offline fetch fixture. Add a specific get_<slug>.json to servers/fetch/fixtures/ to customize this response for a real URL.</p></body></html>",
+  "truncated": false
+}
