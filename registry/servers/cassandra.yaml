@@ -19,4 +19,4 @@ tools:
 docs: https://cassandra.apache.org/doc/
 maintainers:
 - platform-team
-status: planned
+status: active
