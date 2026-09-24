@@ -18,4 +18,4 @@ tools:
 docs: https://learn.microsoft.com/en-us/azure/cosmos-db/
 maintainers:
 - platform-team
-status: planned
+status: active

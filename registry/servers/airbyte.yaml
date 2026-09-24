@@ -17,4 +17,4 @@ tools:
 docs: https://docs.airbyte.com/api-documentation
 maintainers:
 - platform-team
-status: planned
+status: active

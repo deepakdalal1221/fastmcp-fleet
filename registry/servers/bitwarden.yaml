@@ -16,4 +16,4 @@ tools:
 docs: https://bitwarden.com/help/vault-management-api/
 maintainers:
 - platform-team
-status: planned
+status: active
