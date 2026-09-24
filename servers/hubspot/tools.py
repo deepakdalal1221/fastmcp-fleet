@@ -43,6 +43,9 @@ def register_tools(mcp: FastMCP) -> None:
         limit: Annotated[int, Field(description="Max contacts to return", ge=1, le=100)] = 20,
     ) -> dict:
         """List HubSpot contacts."""
+        if is_offline():
+            items = await local_store.list_all("hubspot", "contacts")
+            return {"contacts": items[:limit], "count": len(items)}
         async with make_client("hubspot", timeout=_TIMEOUT) as client:
             r = await client.get(
                 f"{_BASE}/objects/contacts", headers=_headers(), params={"limit": limit}

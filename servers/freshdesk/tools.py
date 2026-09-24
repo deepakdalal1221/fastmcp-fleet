@@ -40,6 +40,9 @@ def register_tools(mcp: FastMCP) -> None:
     @mcp.tool
     async def list_tickets(per_page: Annotated[int, Field(ge=1, le=100)] = 30) -> dict:
         """List Freshdesk tickets."""
+        if is_offline():
+            items = await local_store.list_all("freshdesk", "tickets")
+            return {"tickets": items, "count": len(items)}
         async with make_client("freshdesk", timeout=_TIMEOUT) as c:
             r = await c.get(f"{_base()}/tickets", auth=_auth(), params={"per_page": per_page})
             _raise_for(r)
@@ -83,6 +86,17 @@ def register_tools(mcp: FastMCP) -> None:
         ] = 2,
     ) -> dict:
         """Create a Freshdesk ticket."""
+        if is_offline():
+            n = local_store.next_id("freshdesk", "tickets")
+            record = {
+                "id": n,
+                "subject": subject,
+                "description": description,
+                "email": email,
+                "status": 2,
+            }
+            await local_store.put("freshdesk", "tickets", str(n), record)
+            return {"created": record}
         body = {
             "subject": subject,
             "description": description,
