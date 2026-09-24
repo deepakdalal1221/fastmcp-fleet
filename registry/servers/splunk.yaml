@@ -17,4 +17,4 @@ tools:
 docs: https://docs.splunk.com/Documentation/Splunk/latest/RESTREF/RESTprolog
 maintainers:
 - platform-team
-status: planned
+status: active
