@@ -21,4 +21,4 @@ tools:
 docs: https://docs.aws.amazon.com/amazondynamodb/
 maintainers:
 - platform-team
-status: planned
+status: active
