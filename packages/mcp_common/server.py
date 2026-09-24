@@ -45,6 +45,15 @@ def create_server(
     except AttributeError:
         log.warning("middleware.unsupported", note="FastMCP version lacks add_middleware")
     register_health(mcp, server_id, manifest.version)
+    if cfg.offline:
+        from mcp_common.store import _seed_sync
+
+        try:
+            seeded = _seed_sync(server_id)
+            if seeded > 0:
+                log.info("server.seeded", server=server_id, rows=seeded)
+        except Exception as exc:
+            log.warning("server.seed_failed", server=server_id, error=str(exc))
     return mcp, manifest, cfg
 
 
