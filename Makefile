@@ -96,3 +96,8 @@ logs:
 ## dev: run the whole fleet in a single Python process on :9000 (offline mode)
 dev:
 	MCP_OFFLINE=1 uv run python -m gateway.all_in_one
+
+.PHONY: demo
+## demo: scripted multi-server agent trajectory (github → jira → slack)
+demo:
+	@./scripts/demo.sh

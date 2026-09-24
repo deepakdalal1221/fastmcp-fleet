@@ -13,10 +13,10 @@ port: 8006
 image: yourorg/mcp-gerrit
 version: 0.1.0
 tools:
-- list_changes
 - get_change
-- list_reviewers
+- list_changes
+- list_projects
 docs: https://gerrit-review.googlesource.com/Documentation/rest-api.html
 maintainers:
 - platform-team
-status: planned
+status: active

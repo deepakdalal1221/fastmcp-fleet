@@ -15,8 +15,8 @@ version: 0.1.0
 tools:
 - cypher
 - list_labels
-- list_relationships
+- list_relationship_types
 docs: https://neo4j.com/docs/
 maintainers:
 - platform-team
-status: planned
+status: active

@@ -8,7 +8,7 @@ license = { text = "MIT" }
 authors = [{ name = "FastMCP Platform" }]
 
 dependencies = [
-    "fastmcp>=2.0.0",
+    "fastmcp>=4.0.8",
     "httpx>=0.27",
     "pydantic>=2.7",
     "pydantic-settings>=2.4",

@@ -11,9 +11,10 @@ port: 8060
 image: yourorg/mcp-spinnaker
 version: 0.1.0
 tools:
+- list_applications
 - list_pipelines
 - trigger_pipeline
 docs: https://spinnaker.io/docs/reference/api/
 maintainers:
 - platform-team
-status: planned
+status: active

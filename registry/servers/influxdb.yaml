@@ -13,9 +13,10 @@ port: 8030
 image: yourorg/mcp-influxdb
 version: 0.1.0
 tools:
-- query_flux
-- write_points
+- list_buckets
+- query
+- write
 docs: https://docs.influxdata.com/
 maintainers:
 - platform-team
-status: planned
+status: active

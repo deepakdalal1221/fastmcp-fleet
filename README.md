@@ -290,6 +290,95 @@ graph LR
 
 ---
 
+
+## CRUD coverage
+
+Per-server capabilities. **C**reate · **R**ead · **U**pdate · **D**elete. `·` = not implemented.
+
+| Server | Category | C R U D | Tools |
+|---|---|---|---|
+| `1password` | security | `· R · ·` | list_vaults, list_items, get_item |
+| `airtable` | productivity | `C R U D` | create_record, delete_record, list_bases, list_records, list_tables, update_reco |
+| `ansible` | devops | `· R · ·` | list_inventories, list_job_templates, list_projects |
+| `anthropic` | ai-ml | `· R · ·` | messages |
+| `argocd` | devops | `· R U ·` | get_application, list_applications, sync_application |
+| `asana` | project-management | `C R · ·` | list_workspaces, list_projects, list_tasks, create_task |
+| `auth0` | security | `· R · ·` | list_users, list_clients, list_rules |
+| `azure-devops` | development | `· R · ·` | list_pipelines, list_projects, list_repos |
+| `bitbucket` | development | `· R · ·` | get_repository, list_pullrequests, list_repositories |
+| `brave-search` | search | `C · · ·` | web_search, news_search |
+| `buildkite` | devops | `· R · ·` | get_build, list_builds, list_pipelines |
+| `circleci` | devops | `· R · ·` | get_pipeline, list_pipelines, list_workflows |
+| `cloudflare` | cloud | `· R · ·` | list_zones, list_dns_records, list_workers |
+| `codeberg` | development | `· R · ·` | list_repos, list_issues |
+| `codecov` | development | `· R · ·` | get_repo_coverage, list_reports, list_repos |
+| `cohere` | ai-ml | `· R · ·` | chat, embed, rerank |
+| `confluence` | productivity | `· R · ·` | list_spaces, get_page, search_content |
+| `datadog` | monitoring | `· R · ·` | query_metric, list_monitors, search_logs |
+| `digitalocean` | cloud | `· R · ·` | list_droplets, list_apps, list_databases |
+| `discord` | communication | `C R U D` | delete_message, edit_message, list_channels, list_guilds, list_messages, post_me |
+| `drone` | devops | `· R · ·` | get_build, list_builds, list_repos |
+| `elasticsearch` | database | `C R · D` | delete_doc, get_index, index_doc, list_indices, search |
+| `fly-io` | cloud | `· R · ·` | list_apps, list_machines, get_machine |
+| `freshdesk` | business | `C R U D` | close_ticket, create_ticket, delete_ticket, get_ticket, list_tickets, update_tic |
+| `gemini` | ai-ml | `· R · ·` | generate_content, embed_content, list_models |
+| `gerrit` | development | `· R · ·` | list_changes, get_change, list_reviewers |
+| `gitea` | development | `C R · D` | close_issue, create_issue, get_repo, list_issues, list_repos |
+| `github-actions` | devops | `· R · ·` | get_workflow_run, list_workflow_runs, list_workflows |
+| `gitlab-ci` | devops | `· R · ·` | get_pipeline, list_jobs, list_pipelines |
+| `gitlab` | development | `C R · ·` | list_projects, get_project, list_issues, create_issue, list_merge_requests |
+| `google-analytics` | monitoring | `C R · ·` | run_report, list_dimensions, list_metrics |
+| `google-drive` | storage | `C R · D` | create_file, delete_file, get_file, list_files, search_files |
+| `grafana` | monitoring | `· R · ·` | list_dashboards, query_datasource |
+| `groq` | ai-ml | `· R · ·` | chat_completion, list_models |
+| `heroku` | cloud | `· R · ·` | get_app, list_apps, list_dynos |
+| `hetzner` | cloud | `· R · ·` | list_images, list_servers, list_ssh_keys |
+| `hubspot` | business | `C R U D` | create_contact, delete_contact, list_companies, list_contacts, list_deals, updat |
+| `huggingface` | ai-ml | `· R · ·` | list_models, get_model, whoami |
+| `influxdb` | database | `C R · ·` | query_flux, write_points |
+| `jenkins` | devops | `C R · ·` | list_jobs, trigger_build, get_build |
+| `jira` | project-management | `C R U D` | close_issue, create_issue, delete_issue, get_issue, list_projects, search_issues |
+| `linear` | project-management | `C R · ·` | list_issues, create_issue, list_teams, list_projects |
+| `linode` | cloud | `· R · ·` | list_domains, list_instances, list_volumes |
+| `mailchimp` | business | `C R U D` | add_subscriber, list_audiences, list_campaigns, unsubscribe, update_subscriber |
+| `mistral` | ai-ml | `· R · ·` | chat_completion, embed, list_models |
+| `modal` | ai-ml | `· R · ·` | get_function_stats, list_apps |
+| `mongodb` | database | `C R U D` | find, insert, update, delete, list_collections |
+| `mysql` | database | `· R · ·` | query, list_tables, describe_table |
+| `neo4j` | database | `· R · ·` | cypher, list_labels, list_relationships |
+| `netlify` | cloud | `· R · ·` | list_sites, list_deploys, get_site |
+| `new-relic` | monitoring | `· R · ·` | nrql, list_alerts |
+| `notion` | productivity | `C R U D` | create_page, delete_page, get_page, query_database, search, update_page |
+| `okta` | security | `· R · ·` | list_users, list_groups, list_apps |
+| `openai` | ai-ml | `· R · ·` | chat_completion, embed, generate_image |
+| `openrouter` | ai-ml | `· R · ·` | chat_completion, list_models |
+| `pagerduty` | monitoring | `C R · ·` | list_incidents, create_incident, list_services |
+| `prometheus` | monitoring | `· R · ·` | query, query_range, list_targets |
+| `pulumi` | devops | `· R · ·` | get_stack, list_organizations, list_stacks |
+| `railway` | cloud | `· R · ·` | list_projects, list_services |
+| `redis` | database | `· R U D` | get, set, delete, keys, hget, hset |
+| `render` | cloud | `· R · ·` | list_services, get_service, list_deploys |
+| `replicate` | ai-ml | `C R · ·` | get_prediction, list_models, run_prediction |
+| `s3` | storage | `· R · D` | delete_object, get_object, list_buckets, list_objects, put_object |
+| `sendgrid` | communication | `C R · D` | delete_template, list_sent, list_templates, send_email |
+| `sentry` | monitoring | `· R · ·` | list_issues, get_issue, list_events |
+| `slack` | communication | `C R U D` | delete_message, edit_message, get_conversation, list_channels, list_users, post_ |
+| `snyk` | security | `· R · ·` | list_projects, list_issues |
+| `sourcegraph` | development | `· R · ·` | get_file, search, search_symbols |
+| `spinnaker` | devops | `C R · ·` | list_pipelines, trigger_pipeline |
+| `sqlite` | database | `· R · ·` | query, list_tables, describe_table |
+| `stripe` | business | `C R · D` | cancel_subscription, create_payment_intent, list_charges, list_customers, list_s |
+| `supabase` | database | `C R · ·` | insert_into, list_tables, select_from |
+| `tavily` | search | `· R · ·` | search, extract |
+| `teamcity` | devops | `· R · ·` | get_build, list_builds, list_projects |
+| `terraform` | devops | `· R · ·` | get_workspace, list_runs, list_workspaces |
+| `together-ai` | ai-ml | `· R · ·` | chat_completion, embed, list_models |
+| `trello` | project-management | `C R U D` | create_card, delete_card, list_boards, list_cards, update_card |
+| `twilio` | communication | `C R · D` | delete_message, list_messages, make_call, send_sms |
+| `vault` | security | `C R · D` | delete_secret, list_secrets, list_secrets_engines, read_secret, write_secret |
+| `vercel` | cloud | `· R · ·` | list_deployments, list_projects, get_deployment |
+| `wordpress` | productivity | `C R U D` | create_post, delete_post, list_pages, list_posts, update_post |
+
 ## Contributing
 
 Contributions welcome! See [CONTRIBUTING.md](CONTRIBUTING.md).

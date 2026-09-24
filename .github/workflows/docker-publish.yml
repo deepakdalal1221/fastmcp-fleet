@@ -1,0 +1,39 @@
+name: Docker Publish
+
+# Trigger: on git tag matching v*
+# Requires: DOCKERHUB_USERNAME and DOCKERHUB_TOKEN secrets to be configured
+#   Settings → Secrets and variables → Actions → New repository secret
+# When configured, tagging (e.g. `git tag v0.1.0 && git push --tags`) will
+# build+publish images for the pilot servers to Docker Hub.
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  publish:
+    if: ${{ vars.DOCKER_PUBLISH_ENABLED == 'true' }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        server: [fetch, filesystem, time, github, postgres]
+    steps:
+      - uses: actions/checkout@v7
+      - uses: docker/setup-buildx-action@v4
+      - uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Extract tag
+        id: tag
+        run: echo "version=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+      - uses: docker/build-push-action@v7
+        with:
+          context: .
+          file: docker/Dockerfile.server
+          build-args: SERVER_ID=${{ matrix.server }}
+          push: true
+          tags: |
+            ${{ secrets.DOCKERHUB_USERNAME }}/mcp-${{ matrix.server }}:${{ steps.tag.outputs.version }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/mcp-${{ matrix.server }}:latest
