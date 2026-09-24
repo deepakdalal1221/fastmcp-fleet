@@ -11,8 +11,10 @@ port: 8069
 image: yourorg/mcp-sendgrid
 version: 0.1.0
 tools:
-- send_email
+- delete_template
+- list_sent
 - list_templates
+- send_email
 docs: https://docs.sendgrid.com/api-reference
 maintainers:
 - platform-team

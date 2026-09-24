@@ -148,3 +148,29 @@ def register_tools(mcp: FastMCP) -> None:
             "to": j.get("to"),
             "from": j.get("from"),
         }
+
+    @mcp.tool
+    async def delete_message(
+        message_sid: Annotated[str, Field(min_length=1, description="Twilio message SID")],
+    ) -> dict:
+        """Delete a Twilio message (redact history)."""
+        if is_offline():
+            # Try each channel collection
+            import sqlite3
+
+            from mcp_common.store import _db_path
+
+            with sqlite3.connect(_db_path("twilio")) as conn:
+                rows = conn.execute(
+                    "SELECT collection, key FROM store WHERE key=?", (message_sid,)
+                ).fetchall()
+            deleted = 0
+            for col, key in rows:
+                if await local_store.delete("twilio", col, key):
+                    deleted += 1
+            return {"deleted": deleted > 0, "sid": message_sid}
+        async with make_client("twilio", timeout=_TIMEOUT) as c:
+            r = await c.delete(f"{_base()}/Messages/{message_sid}.json", auth=_auth())
+            if r.status_code not in (200, 204):
+                _raise_for(r)
+        return {"deleted": True, "sid": message_sid}

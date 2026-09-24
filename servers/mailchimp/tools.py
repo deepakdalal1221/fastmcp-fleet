@@ -5,8 +5,9 @@ from typing import Annotated
 
 import httpx
 from fastmcp import FastMCP
+from mcp_common import local_store
 from mcp_common.errors import AuthError, ConfigError, NotFoundError, RateLimitError, UpstreamError
-from mcp_common.http import make_client
+from mcp_common.http import is_offline, make_client
 from pydantic import Field
 
 _TIMEOUT = 30.0
@@ -109,3 +110,38 @@ def register_tools(mcp: FastMCP) -> None:
             "email_address": j.get("email_address"),
             "status": j.get("status"),
         }
+
+    @mcp.tool
+    async def update_subscriber(
+        list_id: Annotated[str, Field(min_length=1)],
+        subscriber_hash: Annotated[str, Field(min_length=1, description="MD5 of lowercased email")],
+        email_address: Annotated[str | None, Field(description="new email")] = None,
+        merge_fields: Annotated[dict | None, Field(description="e.g. FNAME/LNAME")] = None,
+    ) -> dict:
+        """Update a Mailchimp subscriber."""
+        body = {
+            k: v
+            for k, v in {"email_address": email_address, "merge_fields": merge_fields}.items()
+            if v is not None
+        }
+        async with make_client("mailchimp", timeout=_TIMEOUT) as c:
+            r = await c.patch(
+                f"{_base()}/lists/{list_id}/members/{subscriber_hash}", auth=_auth(), json=body
+            )
+            _raise_for(r)
+        return r.json()
+
+    @mcp.tool
+    async def unsubscribe(
+        list_id: Annotated[str, Field(min_length=1)],
+        subscriber_hash: Annotated[str, Field(min_length=1, description="MD5 of lowercased email")],
+    ) -> dict:
+        """Unsubscribe a Mailchimp subscriber (soft delete: sets status=unsubscribed)."""
+        async with make_client("mailchimp", timeout=_TIMEOUT) as c:
+            r = await c.patch(
+                f"{_base()}/lists/{list_id}/members/{subscriber_hash}",
+                auth=_auth(),
+                json={"status": "unsubscribed"},
+            )
+            _raise_for(r)
+        return {"list_id": list_id, "subscriber_hash": subscriber_hash, "status": "unsubscribed"}

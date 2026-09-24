@@ -12,9 +12,12 @@ port: 8160
 image: yourorg/mcp-freshdesk
 version: 0.1.0
 tools:
+- close_ticket
 - create_ticket
+- delete_ticket
 - get_ticket
 - list_tickets
+- update_ticket
 docs: https://developers.freshdesk.com/api/
 maintainers:
 - platform-team

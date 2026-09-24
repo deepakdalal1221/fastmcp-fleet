@@ -97,3 +97,39 @@ def register_tools(mcp: FastMCP) -> None:
                 for p in data
             ]
         }
+
+    @mcp.tool
+    async def update_post(
+        post_id: Annotated[int, Field(ge=1)],
+        title: Annotated[str | None, Field(description="new title")] = None,
+        content: Annotated[str | None, Field(description="new content")] = None,
+        status: Annotated[str | None, Field(description="publish | draft | private")] = None,
+    ) -> dict:
+        """Update a WordPress post."""
+        body = {
+            k: v
+            for k, v in {"title": title, "content": content, "status": status}.items()
+            if v is not None
+        }
+        async with make_client("wordpress", timeout=_TIMEOUT) as c:
+            r = await c.post(f"{_base()}/posts/{post_id}", auth=_auth(), json=body)
+            _raise_for(r)
+            p = r.json()
+        return {
+            "id": p["id"],
+            "title": (p.get("title") or {}).get("rendered"),
+            "status": p.get("status"),
+        }
+
+    @mcp.tool
+    async def delete_post(
+        post_id: Annotated[int, Field(ge=1)],
+        force: Annotated[bool, Field(description="permanently delete (skip trash)")] = False,
+    ) -> dict:
+        """Delete a WordPress post (moves to trash unless force=True)."""
+        async with make_client("wordpress", timeout=_TIMEOUT) as c:
+            r = await c.delete(
+                f"{_base()}/posts/{post_id}", auth=_auth(), params={"force": str(force).lower()}
+            )
+            _raise_for(r)
+        return {"deleted": True, "id": post_id, "force": force}

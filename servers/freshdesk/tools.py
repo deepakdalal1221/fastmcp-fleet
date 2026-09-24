@@ -95,3 +95,56 @@ def register_tools(mcp: FastMCP) -> None:
             _raise_for(r)
             t = r.json()
         return {"id": t.get("id"), "subject": t.get("subject"), "status": t.get("status")}
+
+    @mcp.tool
+    async def update_ticket(
+        ticket_id: Annotated[int, Field(ge=1)],
+        subject: Annotated[str | None, Field(description="new subject")] = None,
+        description: Annotated[str | None, Field(description="new description")] = None,
+        priority: Annotated[int | None, Field(ge=1, le=4)] = None,
+        status: Annotated[
+            int | None, Field(ge=2, le=5, description="2=open, 3=pending, 4=resolved, 5=closed")
+        ] = None,
+    ) -> dict:
+        """Update a Freshdesk ticket."""
+        body = {
+            k: v
+            for k, v in {
+                "subject": subject,
+                "description": description,
+                "priority": priority,
+                "status": status,
+            }.items()
+            if v is not None
+        }
+        async with make_client("freshdesk", timeout=_TIMEOUT) as c:
+            r = await c.put(f"{_base()}/tickets/{ticket_id}", auth=_auth(), json=body)
+            _raise_for(r)
+            t = r.json()
+        return {
+            "id": t.get("id"),
+            "subject": t.get("subject"),
+            "status": t.get("status"),
+            "priority": t.get("priority"),
+        }
+
+    @mcp.tool
+    async def close_ticket(
+        ticket_id: Annotated[int, Field(ge=1)],
+    ) -> dict:
+        """Close a Freshdesk ticket (status=5)."""
+        async with make_client("freshdesk", timeout=_TIMEOUT) as c:
+            r = await c.put(f"{_base()}/tickets/{ticket_id}", auth=_auth(), json={"status": 5})
+            _raise_for(r)
+        return {"id": ticket_id, "status": "closed"}
+
+    @mcp.tool
+    async def delete_ticket(
+        ticket_id: Annotated[int, Field(ge=1)],
+    ) -> dict:
+        """Delete a Freshdesk ticket."""
+        async with make_client("freshdesk", timeout=_TIMEOUT) as c:
+            r = await c.delete(f"{_base()}/tickets/{ticket_id}", auth=_auth())
+            if r.status_code not in (200, 204):
+                _raise_for(r)
+        return {"deleted": True, "id": ticket_id}

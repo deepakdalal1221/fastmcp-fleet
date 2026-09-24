@@ -13,9 +13,11 @@ port: 8174
 image: yourorg/mcp-wordpress
 version: 0.1.0
 tools:
-- list_posts
 - create_post
+- delete_post
 - list_pages
+- list_posts
+- update_post
 docs: https://developer.wordpress.org/rest-api/
 maintainers:
 - platform-team

@@ -5,8 +5,9 @@ from typing import Annotated
 
 import httpx
 from fastmcp import FastMCP
+from mcp_common import local_store
 from mcp_common.errors import AuthError, ConfigError, NotFoundError, RateLimitError, UpstreamError
-from mcp_common.http import make_client
+from mcp_common.http import is_offline, make_client
 from pydantic import Field
 
 _BASE = "https://api.sendgrid.com/v3"
@@ -70,3 +71,28 @@ def register_tools(mcp: FastMCP) -> None:
                 for t in r.json().get("result", [])
             ]
         }
+
+    @mcp.tool
+    async def delete_template(
+        template_id: Annotated[str, Field(min_length=1)],
+    ) -> dict:
+        """Delete a SendGrid dynamic template."""
+        async with make_client("sendgrid", timeout=_TIMEOUT) as c:
+            r = await c.delete(f"{_BASE}/templates/{template_id}", headers=_headers())
+            if r.status_code not in (200, 204):
+                _raise_for(r)
+        return {"deleted": True, "id": template_id}
+
+    @mcp.tool
+    async def list_sent(
+        limit: Annotated[int, Field(ge=1, le=100)] = 20,
+    ) -> dict:
+        """List emails locally sent via send_email (offline outbox). In live mode uses stats API."""
+        if is_offline():
+            stored = await local_store.list_all("sendgrid", "outbox")
+            emails = [row["value"] for row in stored][:limit]
+            return {"emails": emails, "count": len(emails)}
+        async with make_client("sendgrid", timeout=_TIMEOUT) as c:
+            r = await c.get(f"{_BASE}/messages", headers=_headers(), params={"limit": limit})
+            _raise_for(r)
+        return r.json()

@@ -12,9 +12,11 @@ port: 8161
 image: yourorg/mcp-mailchimp
 version: 0.1.0
 tools:
+- add_subscriber
 - list_audiences
 - list_campaigns
-- add_subscriber
+- unsubscribe
+- update_subscriber
 docs: https://mailchimp.com/developer/marketing/api/
 maintainers:
 - platform-team

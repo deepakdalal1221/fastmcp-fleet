@@ -12,9 +12,10 @@ port: 8068
 image: yourorg/mcp-twilio
 version: 0.1.0
 tools:
-- send_sms
+- delete_message
 - list_messages
 - make_call
+- send_sms
 docs: https://www.twilio.com/docs/usage/api
 maintainers:
 - platform-team
