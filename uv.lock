@@ -1010,6 +1010,11 @@ gcp = [
     { name = "google-cloud-storage" },
 ]
 
+[package.dev-dependencies]
+dev = [
+    { name = "jsonschema" },
+]
+
 [package.metadata]
 requires-dist = [
     { name = "aioboto3", marker = "extra == 'all'", specifier = ">=13.0" },
@@ -1055,6 +1060,9 @@ requires-dist = [
     { name = "types-pyyaml", marker = "extra == 'dev'", specifier = ">=6.0" },
 ]
 provides-extras = ["dev", "db", "aws", "gcp", "azure", "browser", "all"]
+
+[package.metadata.requires-dev]
+dev = [{ name = "jsonschema", specifier = ">=4.26.0" }]
 
 [[package]]
 name = "fastmcp-slim"

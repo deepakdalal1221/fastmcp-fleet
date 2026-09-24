@@ -1,4 +1,4 @@
-count: 173
+count: 175
 categories:
 - ai-ml
 - browser
@@ -708,4 +708,12 @@ servers:
 - id: gemini
   category: ai-ml
   port: 8173
+  status: planned
+- id: wordpress
+  category: productivity
+  port: 8174
+  status: planned
+- id: google-analytics
+  category: monitoring
+  port: 8175
   status: planned

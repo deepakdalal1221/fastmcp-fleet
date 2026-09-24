@@ -1,0 +1,22 @@
+id: wordpress
+name: WordPress
+category: productivity
+description: WordPress REST API
+auth:
+  type: basic
+  env:
+  - WP_URL
+  - WP_USER
+  - WP_PASSWORD
+transport: streamable-http
+port: 8174
+image: yourorg/mcp-wordpress
+version: 0.1.0
+tools:
+- list_posts
+- create_post
+- list_pages
+docs: https://developer.wordpress.org/rest-api/
+maintainers:
+- platform-team
+status: planned

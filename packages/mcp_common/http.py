@@ -28,3 +28,11 @@ def make_client(server_id: str, timeout: float = 30.0, **kwargs) -> httpx.AsyncC
 def is_offline() -> bool:
     """Return True when running in offline mode."""
     return _offline_from_env()
+
+
+def get_random(server_id: str, seed: int | None = None):
+    """Return a per-server seeded random.Random instance for deterministic mock variance."""
+    import random as _r
+
+    base = seed if seed is not None else int(os.environ.get("MCP_SEED", "42"))
+    return _r.Random(base + hash(server_id))

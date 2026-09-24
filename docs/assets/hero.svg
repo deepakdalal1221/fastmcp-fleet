@@ -17,7 +17,7 @@
 
   <g transform="translate(80,220)">
     <rect x="0"   y="0" width="170" height="34" rx="6" fill="#065f46" opacity="0"><animate attributeName="opacity" from="0" to="1" begin="0.2s" dur="0.6s" fill="freeze"/></rect>
-    <text x="85"  y="22" text-anchor="middle" font-size="14" fill="#d1fae5" opacity="0">71 active servers<animate attributeName="opacity" from="0" to="1" begin="0.2s" dur="0.6s" fill="freeze"/></text>
+    <text x="85"  y="22" text-anchor="middle" font-size="14" fill="#d1fae5" opacity="0">76 active servers<animate attributeName="opacity" from="0" to="1" begin="0.2s" dur="0.6s" fill="freeze"/></text>
 
     <rect x="184" y="0" width="180" height="34" rx="6" fill="#1e3a8a" opacity="0"><animate attributeName="opacity" from="0" to="1" begin="0.5s" dur="0.6s" fill="freeze"/></rect>
     <text x="274" y="22" text-anchor="middle" font-size="14" fill="#dbeafe" opacity="0">173 catalogued<animate attributeName="opacity" from="0" to="1" begin="0.5s" dur="0.6s" fill="freeze"/></text>

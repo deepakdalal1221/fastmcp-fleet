@@ -1,0 +1,21 @@
+id: google-analytics
+name: Google Analytics
+category: monitoring
+description: GA4 Data API
+auth:
+  type: bearer_token
+  env:
+  - GA_TOKEN
+  - GA_PROPERTY_ID
+transport: streamable-http
+port: 8175
+image: yourorg/mcp-google-analytics
+version: 0.1.0
+tools:
+- run_report
+- list_dimensions
+- list_metrics
+docs: https://developers.google.com/analytics/devguides/reporting/data/v1
+maintainers:
+- platform-team
+status: planned

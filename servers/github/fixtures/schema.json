@@ -1,0 +1,6 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "github fixture",
+  "description": "Any github fixture must be valid JSON. Endpoint-specific shape not enforced here.",
+  "type": ["object", "array"]
+}

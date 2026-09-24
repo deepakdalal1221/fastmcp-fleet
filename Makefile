@@ -90,3 +90,9 @@ ps:
 ## logs: tail gateway logs
 logs:
 	$(COMPOSE) logs -f gateway
+
+
+.PHONY: dev
+## dev: run the whole fleet in a single Python process on :9000 (offline mode)
+dev:
+	MCP_OFFLINE=1 uv run python -m gateway.all_in_one

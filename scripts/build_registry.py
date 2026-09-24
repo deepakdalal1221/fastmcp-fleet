@@ -1790,6 +1790,26 @@ CATALOGUE: list[Entry] = [
         ["generate_content", "embed_content", "list_models"],
         "https://ai.google.dev/api/rest",
     ),
+    Entry(
+        "wordpress",
+        "WordPress",
+        "productivity",
+        "WordPress REST API",
+        "basic",
+        ["WP_URL", "WP_USER", "WP_PASSWORD"],
+        ["list_posts", "create_post", "list_pages"],
+        "https://developer.wordpress.org/rest-api/",
+    ),
+    Entry(
+        "google-analytics",
+        "Google Analytics",
+        "monitoring",
+        "GA4 Data API",
+        "bearer_token",
+        ["GA_TOKEN", "GA_PROPERTY_ID"],
+        ["run_report", "list_dimensions", "list_metrics"],
+        "https://developers.google.com/analytics/devguides/reporting/data/v1",
+    ),
 ]
 
 

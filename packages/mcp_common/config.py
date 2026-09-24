@@ -31,5 +31,6 @@ class ServerSettings(BaseSettings):
     rate_limit_capacity: float = 60.0
     rate_limit_refill_per_sec: float = 1.0
     rate_limit_per_tool: bool = True
+    seed: int = 42
     offline: bool = False
     fixture_dir: str = ""
