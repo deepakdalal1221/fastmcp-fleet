@@ -1,0 +1,20 @@
+{
+  "ok": true,
+  "channels": [
+    {
+      "id": "C_GENERAL",
+      "name": "general",
+      "is_channel": true,
+      "num_members": 42
+    },
+    {
+      "id": "C_DEV",
+      "name": "dev",
+      "is_channel": true,
+      "num_members": 18
+    }
+  ],
+  "response_metadata": {
+    "next_cursor": ""
+  }
+}

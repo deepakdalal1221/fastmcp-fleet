@@ -1,0 +1,9 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "redis fixture",
+  "description": "Any redis fixture must be valid JSON.",
+  "type": [
+    "object",
+    "array"
+  ]
+}

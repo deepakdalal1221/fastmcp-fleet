@@ -1,0 +1,17 @@
+{
+  "ok": true,
+  "members": [
+    {
+      "id": "U_ALICE",
+      "name": "alice",
+      "real_name": "Alice A.",
+      "is_bot": false
+    },
+    {
+      "id": "U_BOB",
+      "name": "bob",
+      "real_name": "Bob B.",
+      "is_bot": false
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "netlify fixture",
+  "description": "Any netlify fixture must be valid JSON.",
+  "type": [
+    "object",
+    "array"
+  ]
+}

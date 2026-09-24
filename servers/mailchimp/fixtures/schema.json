@@ -1,0 +1,9 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "mailchimp fixture",
+  "description": "Any mailchimp fixture must be valid JSON.",
+  "type": [
+    "object",
+    "array"
+  ]
+}

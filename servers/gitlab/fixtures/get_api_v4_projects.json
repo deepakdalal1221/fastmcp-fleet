@@ -1,0 +1,14 @@
+[
+  {
+    "id": 1,
+    "name": "demo",
+    "path_with_namespace": "acme/demo",
+    "default_branch": "main"
+  },
+  {
+    "id": 2,
+    "name": "infra",
+    "path_with_namespace": "acme/infra",
+    "default_branch": "main"
+  }
+]

@@ -1,0 +1,13 @@
+{
+  "object": "list",
+  "data": [
+    {
+      "id": "ch_offline_1",
+      "amount": 2000,
+      "currency": "usd",
+      "status": "succeeded",
+      "customer": "cus_offline123"
+    }
+  ],
+  "has_more": false
+}

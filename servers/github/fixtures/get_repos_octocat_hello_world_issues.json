@@ -1,0 +1,11 @@
+[
+  {
+    "number": 1,
+    "title": "Sample issue",
+    "state": "open",
+    "user": {
+      "login": "octocat"
+    },
+    "body": "from fixture"
+  }
+]
