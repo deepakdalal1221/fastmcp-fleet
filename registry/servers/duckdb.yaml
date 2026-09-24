@@ -11,9 +11,10 @@ port: 8021
 image: yourorg/mcp-duckdb
 version: 0.1.0
 tools:
-- query
+- describe_table
 - list_tables
+- query
 docs: https://duckdb.org/docs/
 maintainers:
 - platform-team
-status: planned
+status: active

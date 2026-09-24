@@ -11,10 +11,10 @@ port: 8086
 image: yourorg/mcp-logseq
 version: 0.1.0
 tools:
+- create_page
 - list_pages
-- read_page
-- search
+- query
 docs: https://docs.logseq.com/
 maintainers:
 - platform-team
-status: planned
+status: active

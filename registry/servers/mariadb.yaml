@@ -11,9 +11,10 @@ port: 8013
 image: yourorg/mcp-mariadb
 version: 0.1.0
 tools:
-- query
+- describe_table
 - list_tables
+- query
 docs: https://mariadb.com/kb/en/documentation/
 maintainers:
 - platform-team
-status: planned
+status: active

@@ -11,9 +11,10 @@ port: 8085
 image: yourorg/mcp-onenote
 version: 0.1.0
 tools:
+- get_page
 - list_notebooks
 - list_pages
 docs: https://learn.microsoft.com/en-us/graph/api/resources/onenote-api-overview
 maintainers:
 - platform-team
-status: planned
+status: active

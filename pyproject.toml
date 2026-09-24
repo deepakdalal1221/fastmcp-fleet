@@ -96,6 +96,7 @@ markers = [
     "contract: contract compliance tests",
     "docker: docker image tests",
     "trajectory: agent trajectory tests",
+    "eval: LLM-judge evaluation tests (skipped without LLM_API_KEY)",
 ]
 
 [dependency-groups]

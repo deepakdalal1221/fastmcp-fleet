@@ -1,0 +1,6 @@
+{
+  "name": "incident-response",
+  "goal": "A production alert fires. Create a PagerDuty incident, log a GitHub issue linking it, and notify #oncall in Slack.",
+  "expected_tools": ["pagerduty_create_incident", "github_create_issue", "slack_post_message"],
+  "rubric": "Agent must call all three tools. The Slack message must reference the PD incident id or the GH issue url."
+}

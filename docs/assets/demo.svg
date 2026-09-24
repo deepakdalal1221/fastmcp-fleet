@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace">
+  <rect width="900" height="500" fill="#0b1220"/>
+  <circle cx="18" cy="18" r="6" fill="#ef4444"/>
+  <circle cx="38" cy="18" r="6" fill="#f59e0b"/>
+  <circle cx="58" cy="18" r="6" fill="#22c55e"/>
+  <text x="450" y="22" text-anchor="middle" font-size="12" fill="#94a3b8">fastmcp-fleet demo</text>
+  <g font-size="13" fill="#e2e8f0">
+    <text x="30" y="70">$ make dev</text>
+    <text x="30" y="90" fill="#94a3b8">▸ mounted=86, skipped=0</text>
+    <text x="30" y="110" fill="#94a3b8">▸ Uvicorn on :9000</text>
+    <text x="30" y="140">$ make demo</text>
+    <text x="30" y="160" fill="#22c55e">▸ 315 tools available</text>
+    <text x="30" y="180">▸ 1. github_create_issue(owner=acme, repo=demo, title=Demo bug)</text>
+    <text x="30" y="200" fill="#22c55e">   ✓ #1 created</text>
+    <text x="30" y="220">▸ 2. jira_create_issue(project_key=DEMO, summary=Track bug)</text>
+    <text x="30" y="240" fill="#22c55e">   ✓ DEMO-1 created</text>
+    <text x="30" y="260">▸ 3. slack_post_message(channel=C-demo, text=Bug tracked)</text>
+    <text x="30" y="280" fill="#22c55e">   ✓ ts=1700000001.000001 posted</text>
+    <text x="30" y="310">▸ read back everything:</text>
+    <text x="30" y="330" fill="#94a3b8">   github: 1 issue</text>
+    <text x="30" y="350" fill="#94a3b8">   jira:   1 issue matching JQL</text>
+    <text x="30" y="370" fill="#94a3b8">   slack:  1 message in #C-demo</text>
+    <text x="30" y="410" font-weight="700" fill="#22c55e">▸ Done — zero live API calls, zero credentials.</text>
+  </g>
+  <rect x="20" y="440" width="860" height="40" rx="6" fill="#1e293b"/>
+  <text x="450" y="466" text-anchor="middle" font-size="13" fill="#94a3b8">github.com/deepakdalal1221/fastmcp-fleet</text>
+</svg>

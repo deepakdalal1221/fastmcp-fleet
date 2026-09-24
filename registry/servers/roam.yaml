@@ -13,8 +13,8 @@ image: yourorg/mcp-roam
 version: 0.1.0
 tools:
 - list_pages
-- query_block
+- query
 docs: https://roamresearch.com/#/app/developer-documentation
 maintainers:
 - platform-team
-status: planned
+status: active
