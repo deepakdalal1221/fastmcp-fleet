@@ -14,6 +14,7 @@ import sys
 from fastmcp import FastMCP
 from mcp_common.logging import get_logger, setup_logging
 from mcp_common.registry import ROOT_DIR
+from mcp_common.store import _seed_sync
 
 
 def build_all_in_one() -> FastMCP:
@@ -27,8 +28,10 @@ def build_all_in_one() -> FastMCP:
     if str(ROOT_DIR) not in sys.path:
         sys.path.insert(0, str(ROOT_DIR))
 
+    offline = os.environ.get("MCP_OFFLINE") == "1"
     mounted = 0
     skipped = 0
+    seeded_rows = 0
     for server_dir in sorted(servers_dir.iterdir()):
         if not server_dir.is_dir():
             continue
@@ -58,8 +61,13 @@ def build_all_in_one() -> FastMCP:
             skipped += 1
             continue
         mounted += 1
+        if offline:
+            try:
+                seeded_rows += _seed_sync(sid)
+            except Exception as exc:
+                log.warning("skip.seed", server=sid, error=str(exc))
 
-    log.info("all_in_one.ready", mounted=mounted, skipped=skipped)
+    log.info("all_in_one.ready", mounted=mounted, skipped=skipped, seeded_rows=seeded_rows)
     return main
 
 
