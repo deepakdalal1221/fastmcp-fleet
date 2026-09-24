@@ -1,0 +1,66 @@
+{
+  "products": [
+    {
+      "key": "1",
+      "value": {
+        "id": 1,
+        "title": "Sample tee",
+        "price": 24.99,
+        "sku": "TSH-001",
+        "seeded": true
+      }
+    },
+    {
+      "key": "2",
+      "value": {
+        "id": 2,
+        "title": "Sample mug",
+        "price": 12.5,
+        "sku": "MUG-001",
+        "seeded": true
+      }
+    }
+  ],
+  "orders": [
+    {
+      "key": "1",
+      "value": {
+        "id": 1,
+        "number": 1001,
+        "status": "paid",
+        "total": 24.99,
+        "seeded": true
+      }
+    },
+    {
+      "key": "2",
+      "value": {
+        "id": 2,
+        "number": 1002,
+        "status": "pending",
+        "total": 37.49,
+        "seeded": true
+      }
+    }
+  ],
+  "customers": [
+    {
+      "key": "1",
+      "value": {
+        "id": 1,
+        "email": "alice@example.com",
+        "orders_count": 3,
+        "seeded": true
+      }
+    },
+    {
+      "key": "2",
+      "value": {
+        "id": 2,
+        "email": "bob@example.com",
+        "orders_count": 1,
+        "seeded": true
+      }
+    }
+  ]
+}

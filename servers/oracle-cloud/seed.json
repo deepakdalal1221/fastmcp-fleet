@@ -1,0 +1,56 @@
+{
+  "instances": [
+    {
+      "key": "1",
+      "value": {
+        "id": 1,
+        "name": "web-1",
+        "status": "running",
+        "shape": "VM.Standard.E4",
+        "seeded": true
+      }
+    },
+    {
+      "key": "2",
+      "value": {
+        "id": 2,
+        "name": "worker-1",
+        "status": "running",
+        "shape": "VM.Standard.E4",
+        "seeded": true
+      }
+    }
+  ],
+  "buckets": [
+    {
+      "key": "1",
+      "value": {
+        "id": 1,
+        "name": "prod-app-logs",
+        "region": "us-east-1",
+        "created": "2025-01-15",
+        "seeded": true
+      }
+    },
+    {
+      "key": "2",
+      "value": {
+        "id": 2,
+        "name": "customer-uploads",
+        "region": "us-west-2",
+        "created": "2025-03-20",
+        "seeded": true
+      }
+    },
+    {
+      "key": "3",
+      "value": {
+        "id": 3,
+        "name": "analytics-archive",
+        "region": "eu-central-1",
+        "created": "2024-11-02",
+        "seeded": true
+      }
+    }
+  ]
+}

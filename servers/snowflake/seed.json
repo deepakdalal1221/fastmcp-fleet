@@ -1,0 +1,43 @@
+{
+  "rows": [
+    {
+      "key": "1",
+      "value": {
+        "id": 1,
+        "name": "Sample rows 1",
+        "seeded": true
+      }
+    },
+    {
+      "key": "2",
+      "value": {
+        "id": 2,
+        "name": "Sample rows 2",
+        "seeded": true
+      }
+    }
+  ],
+  "databases": [
+    {
+      "key": "1",
+      "value": {
+        "id": 1,
+        "name": "PROD_DB",
+        "created": "2025-01-01",
+        "seeded": true
+      }
+    }
+  ],
+  "warehouses": [
+    {
+      "key": "1",
+      "value": {
+        "id": 1,
+        "name": "COMPUTE_WH",
+        "size": "MEDIUM",
+        "state": "STARTED",
+        "seeded": true
+      }
+    }
+  ]
+}

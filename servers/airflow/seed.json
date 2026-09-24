@@ -1,0 +1,66 @@
+{
+  "dags": [
+    {
+      "key": "1",
+      "value": {
+        "id": 1,
+        "dag_id": "daily_etl",
+        "schedule": "0 2 * * *",
+        "is_paused": false,
+        "tags": [
+          "etl",
+          "daily"
+        ],
+        "seeded": true
+      }
+    },
+    {
+      "key": "2",
+      "value": {
+        "id": 2,
+        "dag_id": "hourly_reports",
+        "schedule": "0 * * * *",
+        "is_paused": false,
+        "tags": [
+          "reports"
+        ],
+        "seeded": true
+      }
+    },
+    {
+      "key": "3",
+      "value": {
+        "id": 3,
+        "dag_id": "weekly_cleanup",
+        "schedule": "0 0 * * 0",
+        "is_paused": true,
+        "tags": [
+          "ops"
+        ],
+        "seeded": true
+      }
+    }
+  ],
+  "runs": [
+    {
+      "key": "1",
+      "value": {
+        "id": 1,
+        "dag_id": "daily_etl",
+        "run_id": "manual__2026-09-24T10:00:00",
+        "state": "success",
+        "seeded": true
+      }
+    },
+    {
+      "key": "2",
+      "value": {
+        "id": 2,
+        "dag_id": "hourly_reports",
+        "run_id": "scheduled__2026-09-24T11:00:00",
+        "state": "running",
+        "seeded": true
+      }
+    }
+  ]
+}

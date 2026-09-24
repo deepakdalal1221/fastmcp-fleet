@@ -1,0 +1,24 @@
+{
+  "files": [
+    {
+      "key": "1",
+      "value": {
+        "id": 1,
+        "name": "report-q3.pdf",
+        "size": 240384,
+        "content_type": "application/pdf",
+        "seeded": true
+      }
+    },
+    {
+      "key": "2",
+      "value": {
+        "id": 2,
+        "name": "backup.tar.gz",
+        "size": 15728640,
+        "content_type": "application/gzip",
+        "seeded": true
+      }
+    }
+  ]
+}

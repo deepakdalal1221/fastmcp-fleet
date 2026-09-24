@@ -1,0 +1,24 @@
+{
+  "tasks": [
+    {
+      "key": "1",
+      "value": {
+        "id": 1,
+        "title": "Ship v0.5",
+        "status": "in_progress",
+        "due": "2026-10-01",
+        "seeded": true
+      }
+    },
+    {
+      "key": "2",
+      "value": {
+        "id": 2,
+        "title": "Write postmortem",
+        "status": "todo",
+        "due": "2026-10-05",
+        "seeded": true
+      }
+    }
+  ]
+}

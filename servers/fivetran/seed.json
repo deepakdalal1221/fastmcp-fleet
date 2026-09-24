@@ -1,0 +1,46 @@
+{
+  "connectors": [
+    {
+      "key": "1",
+      "value": {
+        "id": 1,
+        "name": "Salesforce \u2192 Snowflake",
+        "status": "connected",
+        "schedule": "hourly",
+        "seeded": true
+      }
+    },
+    {
+      "key": "2",
+      "value": {
+        "id": 2,
+        "name": "Zendesk \u2192 BigQuery",
+        "status": "connected",
+        "schedule": "daily",
+        "seeded": true
+      }
+    }
+  ],
+  "syncs": [
+    {
+      "key": "1",
+      "value": {
+        "id": 1,
+        "connection_id": "conn-1",
+        "status": "success",
+        "records": 1200,
+        "seeded": true
+      }
+    },
+    {
+      "key": "2",
+      "value": {
+        "id": 2,
+        "connection_id": "conn-2",
+        "status": "running",
+        "records": 340,
+        "seeded": true
+      }
+    }
+  ]
+}

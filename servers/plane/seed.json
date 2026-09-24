@@ -1,0 +1,46 @@
+{
+  "projects": [
+    {
+      "key": "1",
+      "value": {
+        "id": 1,
+        "name": "Alpha",
+        "identifier": "ALP",
+        "owner": "alice",
+        "seeded": true
+      }
+    },
+    {
+      "key": "2",
+      "value": {
+        "id": 2,
+        "name": "Beta",
+        "identifier": "BET",
+        "owner": "bob",
+        "seeded": true
+      }
+    }
+  ],
+  "issues": [
+    {
+      "key": "1",
+      "value": {
+        "id": 1,
+        "name": "Login broken on Safari",
+        "state": "open",
+        "priority": 3,
+        "seeded": true
+      }
+    },
+    {
+      "key": "2",
+      "value": {
+        "id": 2,
+        "name": "Add dark mode",
+        "state": "open",
+        "priority": 2,
+        "seeded": true
+      }
+    }
+  ]
+}

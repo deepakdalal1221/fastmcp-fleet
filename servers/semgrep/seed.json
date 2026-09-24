@@ -1,0 +1,25 @@
+{
+  "findings": [
+    {
+      "key": "1",
+      "value": {
+        "id": 1,
+        "rule_id": "python.sql-injection",
+        "severity": "high",
+        "path": "app/db.py",
+        "seeded": true
+      }
+    }
+  ],
+  "rules": [
+    {
+      "key": "1",
+      "value": {
+        "id": "python.sql-injection",
+        "language": "python",
+        "severity": "high",
+        "seeded": true
+      }
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "queries": [
+    {
+      "key": "1",
+      "value": {
+        "id": 1,
+        "sql": "SELECT count(*) FROM events",
+        "rows_returned": 1,
+        "duration_ms": 42,
+        "seeded": true
+      }
+    }
+  ],
+  "datasets": [
+    {
+      "key": "1",
+      "value": {
+        "id": "analytics",
+        "location": "US",
+        "seeded": true
+      }
+    }
+  ],
+  "tables": [
+    {
+      "key": "1",
+      "value": {
+        "id": 1,
+        "schema": "public",
+        "name": "orders",
+        "rows": 12043,
+        "seeded": true
+      }
+    },
+    {
+      "key": "2",
+      "value": {
+        "id": 2,
+        "schema": "public",
+        "name": "customers",
+        "rows": 3210,
+        "seeded": true
+      }
+    }
+  ]
+}

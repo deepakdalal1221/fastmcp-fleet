@@ -1,0 +1,49 @@
+{
+  "texts": [
+    {
+      "key": "1",
+      "value": {
+        "id": 1,
+        "selector": "h1",
+        "text": "Welcome",
+        "seeded": true
+      }
+    }
+  ],
+  "metadata": [
+    {
+      "key": "1",
+      "value": {
+        "id": 1,
+        "name": "Sample metadata 1",
+        "seeded": true
+      }
+    },
+    {
+      "key": "2",
+      "value": {
+        "id": 2,
+        "name": "Sample metadata 2",
+        "seeded": true
+      }
+    }
+  ],
+  "pages": [
+    {
+      "key": "1",
+      "value": {
+        "id": 1,
+        "name": "Sample pages 1",
+        "seeded": true
+      }
+    },
+    {
+      "key": "2",
+      "value": {
+        "id": 2,
+        "name": "Sample pages 2",
+        "seeded": true
+      }
+    }
+  ]
+}

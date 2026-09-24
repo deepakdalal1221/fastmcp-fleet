@@ -1,0 +1,26 @@
+{
+  "reads": [
+    {
+      "key": "1",
+      "value": {
+        "id": 1,
+        "container": "orders",
+        "item_id": "1",
+        "found": true,
+        "seeded": true
+      }
+    }
+  ],
+  "searches": [
+    {
+      "key": "1",
+      "value": {
+        "id": 1,
+        "query": "fastmcp",
+        "engine": "google",
+        "results": 10,
+        "seeded": true
+      }
+    }
+  ]
+}

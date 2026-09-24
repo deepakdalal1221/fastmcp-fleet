@@ -1,0 +1,22 @@
+{
+  "users": [
+    {
+      "key": "1",
+      "value": {
+        "id": 1,
+        "email": "alice@example.com",
+        "role": "admin",
+        "seeded": true
+      }
+    },
+    {
+      "key": "2",
+      "value": {
+        "id": 2,
+        "email": "bob@example.com",
+        "role": "member",
+        "seeded": true
+      }
+    }
+  ]
+}

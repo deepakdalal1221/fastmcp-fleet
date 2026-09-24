@@ -1,0 +1,25 @@
+{
+  "gcs_buckets": [
+    {
+      "key": "1",
+      "value": {
+        "id": 1,
+        "name": "gcp-app-logs",
+        "location": "US",
+        "seeded": true
+      }
+    }
+  ],
+  "compute_instances": [
+    {
+      "key": "1",
+      "value": {
+        "id": 1,
+        "name": "gcp-vm-1",
+        "zone": "us-central1-a",
+        "machineType": "e2-standard-2",
+        "seeded": true
+      }
+    }
+  ]
+}

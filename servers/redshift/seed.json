@@ -1,0 +1,42 @@
+{
+  "rows": [
+    {
+      "key": "1",
+      "value": {
+        "id": 1,
+        "name": "Sample rows 1",
+        "seeded": true
+      }
+    },
+    {
+      "key": "2",
+      "value": {
+        "id": 2,
+        "name": "Sample rows 2",
+        "seeded": true
+      }
+    }
+  ],
+  "tables": [
+    {
+      "key": "1",
+      "value": {
+        "id": 1,
+        "schema": "public",
+        "name": "orders",
+        "rows": 12043,
+        "seeded": true
+      }
+    },
+    {
+      "key": "2",
+      "value": {
+        "id": 2,
+        "schema": "public",
+        "name": "customers",
+        "rows": 3210,
+        "seeded": true
+      }
+    }
+  ]
+}

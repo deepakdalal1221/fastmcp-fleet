@@ -1,0 +1,35 @@
+{
+  "services": [
+    {
+      "key": "1",
+      "value": {
+        "id": 1,
+        "name": "checkout-api",
+        "trace_count": 1420,
+        "seeded": true
+      }
+    },
+    {
+      "key": "2",
+      "value": {
+        "id": 2,
+        "name": "user-service",
+        "trace_count": 812,
+        "seeded": true
+      }
+    }
+  ],
+  "traces": [
+    {
+      "key": "1",
+      "value": {
+        "id": 1,
+        "trace_id": "abc123def456",
+        "service": "checkout-api",
+        "duration_ms": 245,
+        "spans": 8,
+        "seeded": true
+      }
+    }
+  ]
+}

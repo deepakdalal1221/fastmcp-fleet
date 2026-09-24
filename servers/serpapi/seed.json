@@ -1,0 +1,14 @@
+{
+  "searches": [
+    {
+      "key": "1",
+      "value": {
+        "id": 1,
+        "query": "fastmcp",
+        "engine": "google",
+        "results": 10,
+        "seeded": true
+      }
+    }
+  ]
+}

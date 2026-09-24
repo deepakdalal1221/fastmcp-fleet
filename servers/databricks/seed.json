@@ -1,0 +1,62 @@
+{
+  "sql_runs": [
+    {
+      "key": "1",
+      "value": {
+        "id": 1,
+        "warehouse_id": "wh-1",
+        "statement": "SELECT 1",
+        "state": "SUCCEEDED",
+        "rows": 1,
+        "seeded": true
+      }
+    },
+    {
+      "key": "2",
+      "value": {
+        "id": 2,
+        "warehouse_id": "wh-1",
+        "statement": "SELECT count(*) FROM orders",
+        "state": "SUCCEEDED",
+        "rows": 1,
+        "seeded": true
+      }
+    }
+  ],
+  "jobs": [
+    {
+      "key": "1",
+      "value": {
+        "id": 1,
+        "name": "nightly_report",
+        "settings": {
+          "schedule": "0 3 * * *"
+        },
+        "enabled": true,
+        "seeded": true
+      }
+    },
+    {
+      "key": "2",
+      "value": {
+        "id": 2,
+        "name": "adhoc_backfill",
+        "settings": {},
+        "enabled": false,
+        "seeded": true
+      }
+    }
+  ],
+  "job_runs": [
+    {
+      "key": "1",
+      "value": {
+        "id": 1,
+        "job_id": 1,
+        "state": "SUCCESS",
+        "started": "2026-09-24T03:00:00Z",
+        "seeded": true
+      }
+    }
+  ]
+}

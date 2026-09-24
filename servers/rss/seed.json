@@ -1,0 +1,26 @@
+{
+  "feeds": [
+    {
+      "key": "1",
+      "value": {
+        "id": 1,
+        "url": "https://example.com/rss.xml",
+        "title": "Example Blog",
+        "entries": 20,
+        "seeded": true
+      }
+    }
+  ],
+  "entries": [
+    {
+      "key": "1",
+      "value": {
+        "id": 1,
+        "title": "Post one",
+        "link": "https://example.com/1",
+        "published": "2026-09-20",
+        "seeded": true
+      }
+    }
+  ]
+}

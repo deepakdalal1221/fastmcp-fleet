@@ -1,0 +1,24 @@
+{
+  "resources": [
+    {
+      "key": "1",
+      "value": {
+        "id": 1,
+        "name": "production-cluster",
+        "type": "kubernetes",
+        "region": "us-south",
+        "seeded": true
+      }
+    },
+    {
+      "key": "2",
+      "value": {
+        "id": 2,
+        "name": "data-lake",
+        "type": "cos",
+        "region": "us-east",
+        "seeded": true
+      }
+    }
+  ]
+}

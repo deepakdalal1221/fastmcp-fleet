@@ -1,0 +1,25 @@
+{
+  "searches": [
+    {
+      "key": "1",
+      "value": {
+        "id": 1,
+        "query": "fastmcp",
+        "engine": "google",
+        "results": 10,
+        "seeded": true
+      }
+    }
+  ],
+  "saved_searches": [
+    {
+      "key": "1",
+      "value": {
+        "id": 1,
+        "name": "errors_by_service",
+        "search": "error | stats count by service",
+        "seeded": true
+      }
+    }
+  ]
+}

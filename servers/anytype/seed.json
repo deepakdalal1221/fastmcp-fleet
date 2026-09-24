@@ -1,0 +1,24 @@
+{
+  "objects": [
+    {
+      "key": "1",
+      "value": {
+        "id": 1,
+        "key": "reports/2026-09/summary.json",
+        "size": 4831,
+        "etag": "d41d8cd98f00b204e9800998ecf8427e",
+        "seeded": true
+      }
+    },
+    {
+      "key": "2",
+      "value": {
+        "id": 2,
+        "key": "logs/app-2026-09-24.log",
+        "size": 128412,
+        "etag": "3b0c44298fc1c149afbf4c8996fb9242",
+        "seeded": true
+      }
+    }
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "releases": [
+    {
+      "key": "1",
+      "value": {
+        "id": 1,
+        "name": "prod-api",
+        "chart": "api-0.4.0",
+        "namespace": "prod",
+        "status": "deployed",
+        "seeded": true
+      }
+    },
+    {
+      "key": "2",
+      "value": {
+        "id": 2,
+        "name": "staging-api",
+        "chart": "api-0.5.0-rc1",
+        "namespace": "staging",
+        "status": "deployed",
+        "seeded": true
+      }
+    }
+  ],
+  "upgrades": [
+    {
+      "key": "1",
+      "value": {
+        "id": 1,
+        "name": "Sample upgrades 1",
+        "seeded": true
+      }
+    },
+    {
+      "key": "2",
+      "value": {
+        "id": 2,
+        "name": "Sample upgrades 2",
+        "seeded": true
+      }
+    }
+  ]
+}

@@ -1,0 +1,75 @@
+{
+  "containers": [
+    {
+      "key": "1",
+      "value": {
+        "id": 1,
+        "name": "app-web",
+        "image": "nginx:latest",
+        "status": "running",
+        "ports": [
+          "80:80"
+        ],
+        "seeded": true
+      }
+    },
+    {
+      "key": "2",
+      "value": {
+        "id": 2,
+        "name": "app-db",
+        "image": "postgres:16",
+        "status": "running",
+        "ports": [
+          "5432:5432"
+        ],
+        "seeded": true
+      }
+    },
+    {
+      "key": "3",
+      "value": {
+        "id": 3,
+        "name": "app-cache",
+        "image": "redis:7",
+        "status": "exited",
+        "ports": [],
+        "seeded": true
+      }
+    }
+  ],
+  "images": [
+    {
+      "key": "1",
+      "value": {
+        "id": 1,
+        "tag": "nginx:latest",
+        "size": 145678123,
+        "created": "2026-09-01",
+        "seeded": true
+      }
+    },
+    {
+      "key": "2",
+      "value": {
+        "id": 2,
+        "tag": "postgres:16",
+        "size": 412345678,
+        "created": "2026-08-15",
+        "seeded": true
+      }
+    }
+  ],
+  "logs": [
+    {
+      "key": "1",
+      "value": {
+        "id": 1,
+        "container_id": "app-web",
+        "line": "GET / 200 12ms",
+        "at": "2026-09-24T10:00:00Z",
+        "seeded": true
+      }
+    }
+  ]
+}

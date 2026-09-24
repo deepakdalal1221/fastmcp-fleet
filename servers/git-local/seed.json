@@ -1,0 +1,98 @@
+{
+  "statuses": [
+    {
+      "key": "1",
+      "value": {
+        "id": 1,
+        "name": "Sample statuses 1",
+        "seeded": true
+      }
+    },
+    {
+      "key": "2",
+      "value": {
+        "id": 2,
+        "name": "Sample statuses 2",
+        "seeded": true
+      }
+    }
+  ],
+  "log_entries": [
+    {
+      "key": "1",
+      "value": {
+        "id": 1,
+        "hash": "abc123",
+        "author": "alice",
+        "subject": "Initial commit",
+        "seeded": true
+      }
+    },
+    {
+      "key": "2",
+      "value": {
+        "id": 2,
+        "hash": "def456",
+        "author": "bob",
+        "subject": "Add feature X",
+        "seeded": true
+      }
+    }
+  ],
+  "diffs": [
+    {
+      "key": "1",
+      "value": {
+        "id": 1,
+        "file": "app.py",
+        "additions": 12,
+        "deletions": 3,
+        "seeded": true
+      }
+    }
+  ],
+  "blames": [
+    {
+      "key": "1",
+      "value": {
+        "id": 1,
+        "file": "app.py",
+        "line": 42,
+        "author": "alice",
+        "hash": "abc123",
+        "seeded": true
+      }
+    }
+  ],
+  "shows": [
+    {
+      "key": "1",
+      "value": {
+        "id": 1,
+        "hash": "abc123",
+        "message": "Initial commit",
+        "seeded": true
+      }
+    }
+  ],
+  "branches": [
+    {
+      "key": "1",
+      "value": {
+        "id": 1,
+        "name": "main",
+        "commit": "abc123",
+        "seeded": true
+      }
+    },
+    {
+      "key": "2",
+      "value": {
+        "id": 2,
+        "name": "develop",
+        "commit": "def456",
+        "seeded": true
+      }
+    }
+  ]
+}

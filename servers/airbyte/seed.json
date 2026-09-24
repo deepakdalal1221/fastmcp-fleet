@@ -1,0 +1,59 @@
+{
+  "connections": [
+    {
+      "key": "1",
+      "value": {
+        "id": 1,
+        "name": "Prod \u2192 Warehouse",
+        "source": "postgres",
+        "destination": "snowflake",
+        "status": "active",
+        "seeded": true
+      }
+    },
+    {
+      "key": "2",
+      "value": {
+        "id": 2,
+        "name": "Events pipeline",
+        "source": "kafka",
+        "destination": "bigquery",
+        "status": "active",
+        "seeded": true
+      }
+    },
+    {
+      "key": "3",
+      "value": {
+        "id": 3,
+        "name": "Legacy CRM sync",
+        "source": "salesforce",
+        "destination": "s3",
+        "status": "paused",
+        "seeded": true
+      }
+    }
+  ],
+  "syncs": [
+    {
+      "key": "1",
+      "value": {
+        "id": 1,
+        "connection_id": "conn-1",
+        "status": "success",
+        "records": 1200,
+        "seeded": true
+      }
+    },
+    {
+      "key": "2",
+      "value": {
+        "id": 2,
+        "connection_id": "conn-2",
+        "status": "running",
+        "records": 340,
+        "seeded": true
+      }
+    }
+  ]
+}

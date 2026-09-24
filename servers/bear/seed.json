@@ -1,0 +1,29 @@
+{
+  "notes": [
+    {
+      "key": "1",
+      "value": {
+        "id": 1,
+        "title": "Meeting notes 2026-09-20",
+        "text": "Discussed Q4 planning...",
+        "tags": [
+          "work",
+          "meetings"
+        ],
+        "seeded": true
+      }
+    },
+    {
+      "key": "2",
+      "value": {
+        "id": 2,
+        "title": "Recipe: sourdough",
+        "text": "500g flour, 350g water...",
+        "tags": [
+          "personal"
+        ],
+        "seeded": true
+      }
+    }
+  ]
+}

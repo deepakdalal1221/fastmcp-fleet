@@ -1,0 +1,56 @@
+{
+  "buckets": [
+    {
+      "key": "1",
+      "value": {
+        "id": 1,
+        "name": "prod-app-logs",
+        "region": "us-east-1",
+        "created": "2025-01-15",
+        "seeded": true
+      }
+    },
+    {
+      "key": "2",
+      "value": {
+        "id": 2,
+        "name": "customer-uploads",
+        "region": "us-west-2",
+        "created": "2025-03-20",
+        "seeded": true
+      }
+    },
+    {
+      "key": "3",
+      "value": {
+        "id": 3,
+        "name": "analytics-archive",
+        "region": "eu-central-1",
+        "created": "2024-11-02",
+        "seeded": true
+      }
+    }
+  ],
+  "files": [
+    {
+      "key": "1",
+      "value": {
+        "id": 1,
+        "name": "report-q3.pdf",
+        "size": 240384,
+        "content_type": "application/pdf",
+        "seeded": true
+      }
+    },
+    {
+      "key": "2",
+      "value": {
+        "id": 2,
+        "name": "backup.tar.gz",
+        "size": 15728640,
+        "content_type": "application/gzip",
+        "seeded": true
+      }
+    }
+  ]
+}

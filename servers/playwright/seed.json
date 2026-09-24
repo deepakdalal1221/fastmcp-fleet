@@ -1,0 +1,66 @@
+{
+  "navigations": [
+    {
+      "key": "1",
+      "value": {
+        "id": 1,
+        "session_id": "sess_abc123",
+        "url": "https://example.com/checkout",
+        "at": "2026-09-24T10:00:00Z",
+        "seeded": true
+      }
+    }
+  ],
+  "clicks": [
+    {
+      "key": "1",
+      "value": {
+        "id": 1,
+        "selector": "#submit",
+        "success": true,
+        "seeded": true
+      }
+    }
+  ],
+  "fills": [
+    {
+      "key": "1",
+      "value": {
+        "id": 1,
+        "selector": "#email",
+        "value": "demo@example.com",
+        "seeded": true
+      }
+    }
+  ],
+  "screenshots": [
+    {
+      "key": "1",
+      "value": {
+        "id": 1,
+        "session_id": "sess_abc123",
+        "path": "/tmp/shot-1.png",
+        "at": "2026-09-24T10:01:00Z",
+        "seeded": true
+      }
+    }
+  ],
+  "extracts": [
+    {
+      "key": "1",
+      "value": {
+        "id": 1,
+        "name": "Sample extracts 1",
+        "seeded": true
+      }
+    },
+    {
+      "key": "2",
+      "value": {
+        "id": 2,
+        "name": "Sample extracts 2",
+        "seeded": true
+      }
+    }
+  ]
+}

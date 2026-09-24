@@ -1,0 +1,40 @@
+{
+  "results": [
+    {
+      "key": "1",
+      "value": {
+        "id": 1,
+        "name": "Sample results 1",
+        "seeded": true
+      }
+    },
+    {
+      "key": "2",
+      "value": {
+        "id": 2,
+        "name": "Sample results 2",
+        "seeded": true
+      }
+    }
+  ],
+  "boards": [
+    {
+      "key": "1",
+      "value": {
+        "id": 1,
+        "name": "Latency overview",
+        "queries": 3,
+        "seeded": true
+      }
+    },
+    {
+      "key": "2",
+      "value": {
+        "id": 2,
+        "name": "Error rates",
+        "queries": 5,
+        "seeded": true
+      }
+    }
+  ]
+}

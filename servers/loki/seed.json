@@ -1,0 +1,48 @@
+{
+  "streams": [
+    {
+      "key": "1",
+      "value": {
+        "id": 1,
+        "name": "Sample streams 1",
+        "seeded": true
+      }
+    },
+    {
+      "key": "2",
+      "value": {
+        "id": 2,
+        "name": "Sample streams 2",
+        "seeded": true
+      }
+    }
+  ],
+  "labels": [
+    {
+      "key": "1",
+      "value": {
+        "id": 1,
+        "name": "app",
+        "values": [
+          "web",
+          "api",
+          "worker"
+        ],
+        "seeded": true
+      }
+    },
+    {
+      "key": "2",
+      "value": {
+        "id": 2,
+        "name": "env",
+        "values": [
+          "prod",
+          "staging",
+          "dev"
+        ],
+        "seeded": true
+      }
+    }
+  ]
+}

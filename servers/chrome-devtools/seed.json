@@ -1,0 +1,44 @@
+{
+  "navigations": [
+    {
+      "key": "1",
+      "value": {
+        "id": 1,
+        "session_id": "sess_abc123",
+        "url": "https://example.com/checkout",
+        "at": "2026-09-24T10:00:00Z",
+        "seeded": true
+      }
+    }
+  ],
+  "evaluations": [
+    {
+      "key": "1",
+      "value": {
+        "id": 1,
+        "name": "Sample evaluations 1",
+        "seeded": true
+      }
+    },
+    {
+      "key": "2",
+      "value": {
+        "id": 2,
+        "name": "Sample evaluations 2",
+        "seeded": true
+      }
+    }
+  ],
+  "screenshots": [
+    {
+      "key": "1",
+      "value": {
+        "id": 1,
+        "session_id": "sess_abc123",
+        "path": "/tmp/shot-1.png",
+        "at": "2026-09-24T10:01:00Z",
+        "seeded": true
+      }
+    }
+  ]
+}

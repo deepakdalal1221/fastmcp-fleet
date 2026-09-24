@@ -1,0 +1,25 @@
+{
+  "resource_groups": [
+    {
+      "key": "1",
+      "value": {
+        "id": 1,
+        "name": "rg-prod",
+        "location": "eastus",
+        "seeded": true
+      }
+    }
+  ],
+  "vms": [
+    {
+      "key": "1",
+      "value": {
+        "id": 1,
+        "name": "vm-web-1",
+        "location": "eastus",
+        "size": "Standard_B2s",
+        "seeded": true
+      }
+    }
+  ]
+}

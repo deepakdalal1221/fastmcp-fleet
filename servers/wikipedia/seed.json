@@ -1,0 +1,37 @@
+{
+  "searches": [
+    {
+      "key": "1",
+      "value": {
+        "id": 1,
+        "query": "fastmcp",
+        "engine": "google",
+        "results": 10,
+        "seeded": true
+      }
+    }
+  ],
+  "articles": [
+    {
+      "key": "1",
+      "value": {
+        "id": 1,
+        "title": "FastMCP",
+        "url": "https://en.wikipedia.org/wiki/FastMCP",
+        "extract": "...",
+        "seeded": true
+      }
+    }
+  ],
+  "summaries": [
+    {
+      "key": "1",
+      "value": {
+        "id": 1,
+        "query": "FastMCP",
+        "extract": "FastMCP is a Python framework...",
+        "seeded": true
+      }
+    }
+  ]
+}

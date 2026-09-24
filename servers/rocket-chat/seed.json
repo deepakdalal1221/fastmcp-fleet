@@ -1,0 +1,35 @@
+{
+  "channels": [
+    {
+      "key": "1",
+      "value": {
+        "id": 1,
+        "name": "general",
+        "purpose": "Company-wide",
+        "seeded": true
+      }
+    },
+    {
+      "key": "2",
+      "value": {
+        "id": 2,
+        "name": "engineering",
+        "purpose": "Eng discussions",
+        "seeded": true
+      }
+    }
+  ],
+  "messages": [
+    {
+      "key": "1",
+      "value": {
+        "id": 1,
+        "channel": "general",
+        "user": "alice",
+        "text": "Welcome!",
+        "ts": "1700000000.000100",
+        "seeded": true
+      }
+    }
+  ]
+}
