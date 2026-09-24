@@ -16,4 +16,4 @@ tools:
 docs: https://docs.aws.amazon.com/redshift/
 maintainers:
 - platform-team
-status: planned
+status: active

@@ -16,4 +16,4 @@ tools:
 docs: https://semgrep.dev/api/v1/docs/
 maintainers:
 - platform-team
-status: planned
+status: active
