@@ -101,3 +101,6 @@ dev:
 ## demo: scripted multi-server agent trajectory (github → jira → slack)
 demo:
 	@./scripts/demo.sh
+
+dashboard:
+	uv run python -m gateway.dashboard
