@@ -94,6 +94,26 @@ Each MCP server runs in its own container on its own port (`8001`–`8173`). The
 
 ## Quickstart
 
+### Docker (one container, one command — recommended)
+
+The whole fleet (175 servers, 539 tools, ~200 seeded mock rows) as **one image on one port**.
+
+```bash
+git clone https://github.com/deepakdalal1221/fastmcp-fleet.git
+cd fastmcp-fleet
+make start
+```
+
+`make start` builds `docker/Dockerfile.mono` (first time only, ~5 min) and runs it on `http://localhost:9000/mcp`. Point Claude Desktop / Cursor / any MCP client at that URL and every server is reachable via namespaced tools (`github_list_issues`, `stripe_list_charges`, etc.).
+
+```bash
+make logs-mono     # tail startup logs (wait for 'all_in_one.ready mounted=175')
+make stop          # shut down
+make restart       # rebuild & restart
+```
+
+State persists in `./state/` across restarts; delete that dir to reset all mock data.
+
 ### Local (Python + uv)
 
 ```bash

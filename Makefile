@@ -104,3 +104,39 @@ demo:
 
 dashboard:
 	uv run python -m gateway.dashboard
+
+# ============================================================================
+# One-command offline mock fleet (all 175 servers in 1 container on :9000)
+# ============================================================================
+IMAGE_MONO ?= mcp-fleet:local
+CONTAINER_MONO ?= mcp-fleet
+
+.PHONY: start stop restart logs-mono rebuild mono-build mono-run
+
+start: mono-build mono-run
+
+mono-build:
+	docker build -f docker/Dockerfile.mono -t $(IMAGE_MONO) .
+
+mono-run:
+	@mkdir -p state
+	@docker rm -f $(CONTAINER_MONO) 2>/dev/null || true
+	docker run -d --name $(CONTAINER_MONO) \
+		-p 9000:9000 \
+		-e MCP_OFFLINE=1 \
+		-v $(PWD)/state:/state \
+		$(IMAGE_MONO)
+	@echo ""
+	@echo "Fleet up on http://localhost:9000/mcp"
+	@echo "  logs:  make logs-mono"
+	@echo "  stop:  make stop"
+
+stop:
+	docker rm -f $(CONTAINER_MONO) 2>/dev/null || true
+
+restart: stop mono-run
+
+logs-mono:
+	docker logs -f $(CONTAINER_MONO)
+
+rebuild: stop mono-build mono-run
