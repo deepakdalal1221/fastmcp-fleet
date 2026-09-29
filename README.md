@@ -2,18 +2,19 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Python 3.12+](https://img.shields.io/badge/python-3.12+-blue.svg)](https://www.python.org/downloads/)
-[![Tests](https://img.shields.io/badge/tests-478%20passing-brightgreen.svg)](tests/)
+[![Tests](https://img.shields.io/badge/tests-610%20passing-brightgreen.svg)](tests/)
 [![Offline First](https://img.shields.io/badge/mode-offline%20first-informational.svg)](docs/architecture.md)
 [![Servers](https://img.shields.io/badge/servers-170%20active%20%2B%205%20pilot%20%2F%20175%20catalogued-blueviolet.svg)](registry/servers/)
 [![FastMCP](https://img.shields.io/badge/framework-FastMCP-orange.svg)](https://github.com/jlowin/fastmcp)
 [![Docker](https://img.shields.io/badge/docker-compose%20ready-2496ED.svg)](deployment/compose/docker-compose.yml)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-ff69b4.svg)](CONTRIBUTING.md)
 [![CodeQL](https://img.shields.io/badge/security-CodeQL-blue.svg)](.github/workflows/codeql.yml)
+[![Docker Image](https://img.shields.io/badge/ghcr.io-fastmcp--fleet-2496ED?logo=docker)](https://github.com/deepakdalal1221/fastmcp-fleet/pkgs/container/fastmcp-fleet)
 
-> **A local-first FastMCP platform of 160+ mock MCP servers — GitHub, Slack, Stripe, Jira, Notion, Cloudflare, Datadog, and more — running behind one central gateway. Zero live API calls. Deterministic. Perfect for agent trajectory testing and OpenHands integration.**
+> **A local-first FastMCP platform of **175 mock MCP servers** (539 tools) — GitHub, Slack, Stripe, Jira, Notion, Cloudflare, Datadog, and more — running behind one central gateway. Zero live API calls. Deterministic. Perfect for agent trajectory testing and OpenHands integration.**
 
 <p align="center">
-  <img src="docs/assets/hero.svg" alt="fastmcp-fleet — 49 mock MCP servers behind a central gateway" width="820">
+  <img src="docs/assets/hero.svg" alt="fastmcp-fleet — 175 mock MCP servers behind one Docker container" width="820">
 </p>
 
 ---
@@ -37,7 +38,7 @@
 
 ## What is fastmcp-fleet?
 
-fastmcp-fleet is a **catalogue of 175 MCP servers — 170 active + 5 pilot**, packaged behind one FastMCP gateway on port `:8000`. Every server can run **fully offline** — HTTP requests are intercepted by a custom transport that serves fixture JSON, and stateful tools persist to a per-server SQLite store so subsequent reads see prior writes.
+fastmcp-fleet is a **catalogue of 175 MCP servers (539 tools) — 170 active + 5 pilot**, packaged behind one FastMCP gateway on port `:9000` (single container) or `:8000` (docker compose). Every server can run **fully offline** — HTTP requests are intercepted by a custom transport that serves fixture JSON, and stateful tools persist to a per-server SQLite store so subsequent reads see prior writes.
 
 The point is not to replace live SaaS APIs. It is to give AI agents (OpenHands, Claude, Cursor, custom stacks) a **realistic, deterministic, credential-free** environment for:
 
